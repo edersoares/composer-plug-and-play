@@ -31,5 +31,11 @@
     },
     "extra": {
         "class": "Dex\\Composer\\PlugAndPlay\\PlugAndPlayPlugin"
+    },
+    "scripts": {
+        "tests": "vendor/bin/phpunit tests --colors"
+    },
+    "scripts-descriptions": {
+        "tests": "Runs package tests"
     }
 }
