@@ -1,7 +1,7 @@
 # Composer Plug and Play
 
-<a href="https://github.com/edersoares/composer-plug-and-play/actions" target="_blank"><img src="https://github.com/edersoares/composer-plug-and-play/workflows/tests/badge.svg" alt="Tests" /></a>
-<a href="https://github.com/edersoares/composer-plug-and-play/blob/master/LICENSE" target="_blank"><img src="https://img.shields.io/github/license/edersoares/composer-plug-and-play" alt="License" /></a>
+<a href="https://github.com/edersoares/composer-plug-and-play/actions"><img src="https://github.com/edersoares/composer-plug-and-play/workflows/tests/badge.svg" alt="Tests" /></a>
+<a href="https://github.com/edersoares/composer-plug-and-play/blob/master/LICENSE"><img src="https://img.shields.io/github/license/edersoares/composer-plug-and-play" alt="License" /></a>
 
 Add to [Composer](https://getcomposer.org/), a dependency manager for PHP, the ability to plug and play packages without
 necessarily installing a new dependency on `composer.json`.
