@@ -9,7 +9,7 @@ necessarily installing a new dependency on `composer.json`.
 `2.0.0` or newer.
 
 ```bash
-composer require edersoares/composer-plug-and-play
+composer require dex/composer-plug-and-play
 ```
 
 ## Usage
