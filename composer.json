@@ -1,0 +1,35 @@
+{
+    "name": "dex/composer-plug-and-play",
+    "description": "Plug and play packages for Composer",
+    "type": "composer-plugin",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Eder Soares",
+            "email": "edersoares@me.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=7.3",
+        "ext-json": "*",
+        "composer-plugin-api": "^2.0"
+    },
+    "require-dev": {
+        "composer/composer": "^2.0",
+        "phpunit/phpunit": "^9.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "Dex\\Composer\\PlugAndPlay\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Dex\\Composer\\PlugAndPlay\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "class": "Dex\\Composer\\PlugAndPlay\\PlugAndPlayPlugin"
+    }
+}

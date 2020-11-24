@@ -1,0 +1,11 @@
+{
+    "require": {
+        "dex/composer-plug-and-play": "*"
+    },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../../../"
+        }
+    ]
+}
