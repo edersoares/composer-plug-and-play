@@ -41,7 +41,7 @@ class Factory extends ComposerFactory implements PlugAndPlayInterface
      */
     private function saveComposerPlugAndPlayFile(array $data)
     {
-        $json = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES) . PHP_EOL;
+        $json = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . PHP_EOL;
 
         file_put_contents(self::FILENAME, $json);
     }
