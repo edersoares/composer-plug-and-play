@@ -57,7 +57,7 @@ class Factory extends ComposerFactory implements PlugAndPlayInterface
     {
         return [
             'type' => 'path',
-            'url' => realpath(dirname($package)),
+            'url' => './' . dirname($package),
             'symlink' => true
         ];
     }
