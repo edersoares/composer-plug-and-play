@@ -29,6 +29,39 @@ class ComposerCommandsTest extends TestCase
         $this->assertStringContainsString('plug-and-play:update', $content);
     }
 
+    public function testInstallCommand()
+    {
+        $application = new Application();
+        $input = new StringInput("install --plug-and-play --plug-and-play-pretend -d {$this->directory}");
+        $output = new BufferedOutput();
+
+        $application->doRun($input, $output);
+
+        $this->assertStringContainsString('You are using Composer Plug and Play Plugin.', $output->fetch());
+    }
+
+    public function testUpdateCommand()
+    {
+        $application = new Application();
+        $input = new StringInput("update --plug-and-play --plug-and-play-pretend -d {$this->directory}");
+        $output = new BufferedOutput();
+
+        $application->doRun($input, $output);
+
+        $this->assertStringContainsString('You are using Composer Plug and Play Plugin.', $output->fetch());
+    }
+
+    public function testDumpautoloadCommand()
+    {
+        $application = new Application();
+        $input = new StringInput("dumpautoload --plug-and-play --plug-and-play-pretend -d {$this->directory}");
+        $output = new BufferedOutput();
+
+        $application->doRun($input, $output);
+
+        $this->assertStringContainsString('You are using Composer Plug and Play Plugin.', $output->fetch());
+    }
+
     public function testIfOptionIsPresentInInstallCommand()
     {
         $application = new Application();
