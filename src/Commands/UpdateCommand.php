@@ -12,6 +12,6 @@ class UpdateCommand extends ComposerUpdateCommand
     {
         parent::configure();
 
-        $this->naming('plug-and-play:update', ['u', 'update']);
+        $this->naming('plug-and-play:update');
     }
 }
