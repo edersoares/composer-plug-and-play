@@ -21,15 +21,15 @@ Now, you can create or clone a [Composer](https://getcomposer.org/) package into
 and run:
 
 ```bash
-composer install --plug-and-play
+composer plug-and-play:install
 
 # or
 
-composer update --plug-and-play
+composer plug-and-play:update
 
 # or
 
-composer dump-autoload --plug-and-play
+composer plug-and-play:dump
 ```
 
 ### Directories and files
