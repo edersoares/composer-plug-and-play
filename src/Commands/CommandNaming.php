@@ -16,7 +16,6 @@ trait CommandNaming
     public function naming(string $command)
     {
         $this->setName($command);
-        $this->addOption('plug-and-play', null, InputOption::VALUE_NONE, 'Run using plug and play plugin.');
         $this->addOption('plug-and-play-pretend', null, InputOption::VALUE_NONE, 'Run pretending to use plug and play plugin.');
     }
 }
