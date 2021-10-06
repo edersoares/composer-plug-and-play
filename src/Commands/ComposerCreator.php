@@ -68,7 +68,10 @@ trait ComposerCreator
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        if ($input->getOption('plug-and-play')) {
+        $isTheCommand = $input->getFirstArgument() === $this->getName();
+        $hasOption = $input->getOption('plug-and-play');
+
+        if ($isTheCommand || $hasOption) {
             $this->usePlugAndPlay = true;
             $output->writeln('<info>You are using Composer Plug and Play Plugin.</info>');
         }

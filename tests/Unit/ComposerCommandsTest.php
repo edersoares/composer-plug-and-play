@@ -14,6 +14,39 @@ class ComposerCommandsTest extends TestCase
      */
     protected $directory = __DIR__ . '/../Fixtures/Plugin/';
 
+    public function testPlugAndPlayInstallCommand()
+    {
+        $application = new Application();
+        $input = new StringInput("plug-and-play:install --plug-and-play-pretend -d {$this->directory}");
+        $output = new BufferedOutput();
+
+        $application->doRun($input, $output);
+
+        $this->assertStringContainsString('You are using Composer Plug and Play Plugin.', $output->fetch());
+    }
+
+    public function testPlugAndPlayUpdateCommand()
+    {
+        $application = new Application();
+        $input = new StringInput("plug-and-play:update --plug-and-play-pretend -d {$this->directory}");
+        $output = new BufferedOutput();
+
+        $application->doRun($input, $output);
+
+        $this->assertStringContainsString('You are using Composer Plug and Play Plugin.', $output->fetch());
+    }
+
+    public function testPlugAndPlayDumpCommand()
+    {
+        $application = new Application();
+        $input = new StringInput("plug-and-play:dump --plug-and-play-pretend -d {$this->directory}");
+        $output = new BufferedOutput();
+
+        $application->doRun($input, $output);
+
+        $this->assertStringContainsString('You are using Composer Plug and Play Plugin.', $output->fetch());
+    }
+
     public function testListCommand()
     {
         $application = new Application();
