@@ -12,6 +12,6 @@ class InstallCommand extends ComposerInstallCommand
     {
         parent::configure();
 
-        $this->naming('plug-and-play:install', ['i', 'install']);
+        $this->naming('plug-and-play:install');
     }
 }
