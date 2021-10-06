@@ -29,7 +29,7 @@ class ComposerCommandsTest extends TestCase
         $this->assertStringContainsString('plug-and-play:update', $content);
     }
 
-    public function testInstallCommand()
+    public function testIfOptionIsPresentInInstallCommand()
     {
         $application = new Application();
         $input = new StringInput("install --help -d {$this->directory}");
@@ -40,7 +40,7 @@ class ComposerCommandsTest extends TestCase
         $this->assertStringContainsString('--plug-and-play', $output->fetch());
     }
 
-    public function testUpdateCommand()
+    public function testIfOptionIsPresentInUpdateCommand()
     {
         $application = new Application();
         $input = new StringInput("update --help -d {$this->directory}");
@@ -51,7 +51,7 @@ class ComposerCommandsTest extends TestCase
         $this->assertStringContainsString('--plug-and-play', $output->fetch());
     }
 
-    public function testDumpCommand()
+    public function testIfOptionIsPresentInDumpCommand()
     {
         $application = new Application();
         $input = new StringInput("dumpautoload --help -d {$this->directory}");
