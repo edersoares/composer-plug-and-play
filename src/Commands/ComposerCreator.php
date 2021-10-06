@@ -73,6 +73,10 @@ trait ComposerCreator
             $output->writeln('<info>You are using Composer Plug and Play Plugin.</info>');
         }
 
+        if ($input->getOption('plug-and-play-pretend')) {
+            return 0;
+        }
+
         return parent::execute($input, $output);
     }
 }
