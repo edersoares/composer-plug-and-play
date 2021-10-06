@@ -84,7 +84,7 @@ class ComposerCommandsTest extends TestCase
         $this->assertStringContainsString('--plug-and-play', $output->fetch());
     }
 
-    public function testIfOptionIsPresentInDumpCommand()
+    public function testIfOptionIsPresentInDumpautoloadCommand()
     {
         $application = new Application();
         $input = new StringInput("dumpautoload --help -d {$this->directory}");
