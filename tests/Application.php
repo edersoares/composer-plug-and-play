@@ -15,9 +15,9 @@ class Application extends ComposerApplication
     /**
      * @inheritDoc
      */
-    public function getComposer($required = true, $disablePlugins = null)
+    public function getComposer($required = true, $disablePlugins = null, $disableScripts = null)
     {
-        $composer = $this->createComposer($required, $disablePlugins);
+        $composer = $this->createComposer($required, $disablePlugins, $disableScripts);
 
         $composer->getPluginManager()->addPlugin(new PlugAndPlayPlugin());
 

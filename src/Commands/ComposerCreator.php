@@ -30,7 +30,7 @@ trait ComposerCreator
      *
      * @return Composer
      */
-    public function getComposer($required = true, $disablePlugins = null)
+    public function getComposer($required = true, $disablePlugins = null, $disableScripts = null)
     {
         $composer = $this->composer;
 
@@ -48,7 +48,7 @@ trait ComposerCreator
         }
 
         if (is_null($composer)) {
-            $composer = parent::getComposer($required, $disablePlugins);
+            $composer = parent::getComposer($required, $disablePlugins, $disableScripts);
         }
 
         if ($required) {

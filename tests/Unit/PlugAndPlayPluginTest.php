@@ -3,6 +3,7 @@
 namespace Dex\Composer\PlugAndPlay\Tests\Unit;
 
 use Composer\Composer;
+use Composer\Config;
 use Composer\IO\BufferIO;
 use Composer\Plugin\Capability\CommandProvider;
 use Composer\Plugin\PluginManager;
@@ -31,6 +32,7 @@ class PlugAndPlayPluginTest extends TestCase
     {
         $this->io = new BufferIO('', StreamOutput::VERBOSITY_DEBUG);
         $this->composer = new Composer();
+        $this->composer->setConfig(new Config());
         $this->pm = new PluginManager($this->io, $this->composer);
     }
 

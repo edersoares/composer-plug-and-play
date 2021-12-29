@@ -82,7 +82,8 @@ class Factory extends ComposerFactory implements PlugAndPlayInterface
         $localConfig = null,
         $disablePlugins = false,
         $cwd = null,
-        $fullLoad = true
+        $fullLoad = true,
+        $disableScripts = false
     ) {
         $cwd = $cwd ?: getcwd();
 
@@ -107,6 +108,6 @@ class Factory extends ComposerFactory implements PlugAndPlayInterface
             $this->saveComposerPlugAndPlayFile($localConfig);
         }
 
-        return parent::createComposer($io, self::FILENAME, $disablePlugins, $cwd, $fullLoad);
+        return parent::createComposer($io, self::FILENAME, $disablePlugins, $cwd, $fullLoad, $disableScripts);
     }
 }
