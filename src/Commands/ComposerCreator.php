@@ -54,6 +54,28 @@ trait ComposerCreator
     }
 
     /**
+     * Retrieves the default Composer\Composer instance or throws
+     *
+     * Use this instead of getComposer if you absolutely need an instance
+     *
+     * @see Application::getPluginCommands()
+     *
+     * @param bool|null $disablePlugins If null, reads --no-plugins as default
+     * @param bool|null $disableScripts If null, reads --no-scripts as default
+     * @throws \RuntimeException
+     */
+    public function requireComposer(bool $disablePlugins = null, bool $disableScripts = null): Composer
+    {
+        // It's needed that Composer will be reseted because
+        // Application::getPluginCommands() creates a Composer instance without
+        // plug and play capabilities.
+
+        $this->resetComposer();
+
+        return Factory::create($this->getApplication()->getIO());
+    }
+
+    /**
      * Check if plug and play plugin is running.
      *
      * @param InputInterface  $input
