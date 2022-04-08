@@ -13,11 +13,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 trait ComposerCreator
 {
     /**
-     * @var Composer
-     */
-    protected $composer;
-
-    /**
      * @var bool
      */
     protected $usePlugAndPlay = false;
