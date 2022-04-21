@@ -27,7 +27,7 @@ trait ComposerCreator
      */
     public function getComposer($required = true, $disablePlugins = null, $disableScripts = null)
     {
-        $composer = $this->composer;
+        $composer = $this->composer ?? null;
 
         if ($this->usePlugAndPlay && is_null($composer)) {
             $application = $this->getApplication();
