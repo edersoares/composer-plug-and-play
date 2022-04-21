@@ -5,6 +5,8 @@ namespace Dex\Composer\PlugAndPlay\Tests\Unit;
 use Composer\Composer;
 use Composer\Config;
 use Composer\IO\BufferIO;
+use Composer\Package\Package;
+use Composer\Package\PackageInterface;
 use Composer\Plugin\Capability\CommandProvider;
 use Composer\Plugin\PluginManager;
 use Dex\Composer\PlugAndPlay\PlugAndPlayPlugin;
@@ -38,7 +40,7 @@ class PlugAndPlayPluginTest extends TestCase
 
     public function testAddPlugin()
     {
-        $this->pm->addPlugin(new PlugAndPlayPlugin());
+        $this->pm->addPlugin(new PlugAndPlayPlugin(), false, new Package('dex/fake', '0.0.0', '0.0.0'));
 
         $this->assertCount(1, $this->pm->getPlugins());
         $this->assertStringContainsString('Loading plugin ' . PlugAndPlayPlugin::class, $this->io->getOutput());
