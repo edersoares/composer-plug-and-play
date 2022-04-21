@@ -6,12 +6,11 @@ use Composer\Composer;
 use Composer\Config;
 use Composer\IO\BufferIO;
 use Composer\Package\Package;
-use Composer\Package\PackageInterface;
 use Composer\Plugin\Capability\CommandProvider;
 use Composer\Plugin\PluginManager;
 use Dex\Composer\PlugAndPlay\PlugAndPlayPlugin;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Console\Output\StreamOutput;
+use Symfony\Component\Console\Output\OutputInterface;
 
 class PlugAndPlayPluginTest extends TestCase
 {
@@ -32,7 +31,7 @@ class PlugAndPlayPluginTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->io = new BufferIO('', StreamOutput::VERBOSITY_DEBUG);
+        $this->io = new BufferIO('', OutputInterface::VERBOSITY_DEBUG);
         $this->composer = new Composer();
         $this->composer->setConfig(new Config());
         $this->pm = new PluginManager($this->io, $this->composer);
