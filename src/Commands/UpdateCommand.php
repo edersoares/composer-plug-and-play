@@ -13,5 +13,6 @@ class UpdateCommand extends ComposerUpdateCommand
         parent::configure();
 
         $this->naming('plug-and-play:update');
+        $this->setDescription('Updates your dependencies to the latest version according to composer-plug-and-play.json, and updates the composer-plug-and-play.lock file.');
     }
 }

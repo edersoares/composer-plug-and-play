@@ -13,5 +13,6 @@ class DumpAutoloadCommand extends ComposerDumpAutoloadCommand
         parent::configure();
 
         $this->naming('plug-and-play:dump');
+        $this->setDescription('Dumps the autoloader with plug and play dependencies.');
     }
 }
