@@ -9,6 +9,7 @@ use Composer\Plugin\Capable;
 use Composer\Plugin\PluginInterface;
 use Dex\Composer\PlugAndPlay\Commands\DumpAutoloadCommand;
 use Dex\Composer\PlugAndPlay\Commands\InstallCommand;
+use Dex\Composer\PlugAndPlay\Commands\PlugAndPlayCommand;
 use Dex\Composer\PlugAndPlay\Commands\UpdateCommand;
 
 class PlugAndPlayPlugin implements Capable, CommandProvider, PluginInterface
@@ -35,6 +36,7 @@ class PlugAndPlayPlugin implements Capable, CommandProvider, PluginInterface
     public function getCommands()
     {
         return [
+            new PlugAndPlayCommand(),
             new InstallCommand(),
             new UpdateCommand(),
             new DumpAutoloadCommand(),
