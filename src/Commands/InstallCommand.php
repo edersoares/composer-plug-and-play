@@ -13,5 +13,6 @@ class InstallCommand extends ComposerInstallCommand
         parent::configure();
 
         $this->naming('plug-and-play:install');
+        $this->setDescription('Installs the project dependencies from the composer-plug-and-play.lock file if present, or falls back on the composer-plug-and-play.json.');
     }
 }
