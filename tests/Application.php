@@ -21,7 +21,7 @@ class Application extends ComposerApplication
     {
         $composer = $this->createComposer($required, $disablePlugins, $disableScripts);
 
-        $composer->getPluginManager()->addPlugin(new PlugAndPlayPlugin(), null, new Package('dex/fake', '0.0.0', '0.0.0'));
+        $composer->getPluginManager()->addPlugin(new PlugAndPlayPlugin(), false, new Package('dex/fake', '0.0.0', '0.0.0'));
 
         return $composer;
     }
