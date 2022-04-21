@@ -15,22 +15,31 @@ necessarily installing a new dependency on `composer.json`.
 composer require dex/composer-plug-and-play
 ```
 
-## Usage
+### Global installation
 
-Now, you can create or clone a [Composer](https://getcomposer.org/) package into `packages/<vendor>/<package>` folder
-and run:
+You can install [Composer Plug and Play](https://github.com/edersoares/composer-plug-and-play/) globally to use its
+abilities in all your local projects.
 
 ```bash
-composer plug-and-play:install
-
-# or
-
-composer plug-and-play:update
-
-# or
-
-composer plug-and-play:dump
+composer global require dex/composer-plug-and-play
 ```
+
+## Usage
+
+Create or clone a [Composer](https://getcomposer.org/) package into `packages/<vendor>/<package>` folder and run:
+
+```bash
+composer plug-and-play
+```
+
+### Another commands
+
+All commands use `composer-plug-and-play.json` and `composer-plug-and-play.lock` instead of `composer.json` and 
+`composer.lock` files as root package dependencies.
+
+- `plug-and-play:install`: same that `composer install`, but using `composer-plug-and-play` files.
+- `plug-and-play:update`: same that `composer update`, but using `composer-plug-and-play` files.
+- `plug-and-play:dump`: same that `composer dump-autoload`, but using `composer-plug-and-play` files.
 
 ### Directories and files
 
