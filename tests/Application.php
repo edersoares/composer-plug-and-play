@@ -4,6 +4,7 @@ namespace Dex\Composer\PlugAndPlay\Tests;
 
 use Composer\Composer;
 use Composer\Console\Application as ComposerApplication;
+use Composer\Package\Package;
 use Dex\Composer\PlugAndPlay\Commands\ComposerCreator;
 use Dex\Composer\PlugAndPlay\PlugAndPlayPlugin;
 
@@ -20,7 +21,7 @@ class Application extends ComposerApplication
     {
         $composer = $this->createComposer($required, $disablePlugins, $disableScripts);
 
-        $composer->getPluginManager()->addPlugin(new PlugAndPlayPlugin());
+        $composer->getPluginManager()->addPlugin(new PlugAndPlayPlugin(), null, new Package('dex/fake', '0.0.0', '0.0.0'));
 
         return $composer;
     }
