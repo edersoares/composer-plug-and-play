@@ -49,6 +49,14 @@ class FactoryTest extends TestCase
             'config' => [
                 'allow-plugins' => true,
             ],
+            "extra" => [
+                'composer-plug-and-play' => [
+                    'ignore' => [
+                        "dex/ignore"
+
+                    ]
+                ]
+            ],
             'repositories' => [
                 [
                     'type' => 'path',
