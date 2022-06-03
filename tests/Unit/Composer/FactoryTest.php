@@ -46,6 +46,9 @@ class FactoryTest extends TestCase
                 'dex/composer-plug-and-play' => '*',
                 'dex/fake' => '*',
             ],
+            'config' => [
+                'allow-plugins' => true,
+            ],
             'repositories' => [
                 [
                     'type' => 'path',
