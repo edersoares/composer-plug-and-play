@@ -95,6 +95,12 @@ class Factory extends ComposerFactory implements PlugAndPlayInterface
             $localConfig = $this->loadJsonFile($io, $localConfig);
         }
 
+        if (file_exists(self::PACKAGES_FILE)) {
+            $packagesConfig = $this->loadJsonFile($io, self::PACKAGES_FILE);
+
+            $localConfig = array_merge_recursive($localConfig, $packagesConfig);
+        }
+
         $ignore = $localConfig['extra']['composer-plug-and-play']['ignore'] ?? [];
 
         $packages = glob(self::PATH);
