@@ -44,6 +44,7 @@ class FactoryTest extends TestCase
         $json = json_encode([
             'require' => [
                 'dex/composer-plug-and-play' => '*',
+                'dex/packages' => '*',
                 'dex/fake' => '*',
             ],
             'config' => [
