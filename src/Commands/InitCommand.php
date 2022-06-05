@@ -38,7 +38,7 @@ class InitCommand extends BaseCommand
             file_put_contents('packages/.gitignore', $this->gitignore());
         }
 
-        if (file_exists('composer.json')) {
+        if (file_exists('packages/composer.json')) {
             $output->writeln('The [packages/composer.json] file already exists.');
         } else {
             file_put_contents('packages/composer.json', $this->composer());
@@ -49,18 +49,16 @@ class InitCommand extends BaseCommand
 
     private function gitignore(): string
     {
-        $gitignore = <<<IGNORE
+        return <<<IGNORE
 *
 */
 .gitignore
 IGNORE;
-
-        return trim($gitignore);
     }
 
     private function composer(): string
     {
-        $composer = <<<COMPOSER
+        return <<<COMPOSER
 {
     "config": {
         "allow-plugins": {
@@ -76,7 +74,5 @@ IGNORE;
     "prefer-stable": true
 }
 COMPOSER;
-
-        return trim($composer);
     }
 }
