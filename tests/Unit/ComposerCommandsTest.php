@@ -72,4 +72,15 @@ class ComposerCommandsTest extends TestCase
         $this->assertStringContainsString('plug-and-play:install', $content);
         $this->assertStringContainsString('plug-and-play:update', $content);
     }
+
+    public function testPlugAndPlayInitCommand()
+    {
+        $application = new Application();
+        $input = new StringInput("plug-and-play:init --plug-and-play-pretend -d {$this->directory}");
+        $output = new BufferedOutput();
+
+        $application->doRun($input, $output);
+
+        $this->assertStringContainsString('You are using Composer Plug and Play Plugin.', $output->fetch());
+    }
 }
