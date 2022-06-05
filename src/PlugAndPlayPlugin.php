@@ -14,26 +14,26 @@ use Dex\Composer\PlugAndPlay\Commands\UpdateCommand;
 
 class PlugAndPlayPlugin implements Capable, CommandProvider, PluginInterface
 {
-    public function activate(Composer $composer, IOInterface $io)
+    public function activate(Composer $composer, IOInterface $io): void
     {
     }
 
-    public function deactivate(Composer $composer, IOInterface $io)
+    public function deactivate(Composer $composer, IOInterface $io): void
     {
     }
 
-    public function uninstall(Composer $composer, IOInterface $io)
+    public function uninstall(Composer $composer, IOInterface $io): void
     {
     }
 
-    public function getCapabilities()
+    public function getCapabilities(): array
     {
         return [
             CommandProvider::class => self::class,
         ];
     }
 
-    public function getCommands()
+    public function getCommands(): array
     {
         return [
             new PlugAndPlayCommand(),
