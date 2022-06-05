@@ -8,6 +8,7 @@ use Composer\Plugin\Capability\CommandProvider;
 use Composer\Plugin\Capable;
 use Composer\Plugin\PluginInterface;
 use Dex\Composer\PlugAndPlay\Commands\DumpAutoloadCommand;
+use Dex\Composer\PlugAndPlay\Commands\InitCommand;
 use Dex\Composer\PlugAndPlay\Commands\InstallCommand;
 use Dex\Composer\PlugAndPlay\Commands\PlugAndPlayCommand;
 use Dex\Composer\PlugAndPlay\Commands\UpdateCommand;
@@ -40,6 +41,7 @@ class PlugAndPlayPlugin implements Capable, CommandProvider, PluginInterface
             new InstallCommand(),
             new UpdateCommand(),
             new DumpAutoloadCommand(),
+            new InitCommand(),
         ];
     }
 }
