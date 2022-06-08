@@ -102,6 +102,9 @@ class Factory extends ComposerFactory implements PlugAndPlayInterface
     ) {
         $cwd = $cwd ?: getcwd();
 
+        $ignored = [];
+        $plugged = [];
+
         if (null === $localConfig) {
             $localConfig = static::getComposerFile();
         }
@@ -112,6 +115,11 @@ class Factory extends ComposerFactory implements PlugAndPlayInterface
 
         if (file_exists(self::PACKAGES_FILE)) {
             $packagesConfig = $this->loadJsonFile($io, self::PACKAGES_FILE);
+            $required = $packagesConfig['require'] ?? [];
+
+            foreach ($required as $package => $version) {
+                $plugged[] = $package;
+            }
 
             $localConfig = array_merge_recursive($localConfig, $packagesConfig);
         }
@@ -119,9 +127,6 @@ class Factory extends ComposerFactory implements PlugAndPlayInterface
         $ignore = $localConfig['extra']['composer-plug-and-play']['ignore'] ?? [];
 
         $packages = glob(self::PATH);
-
-        $ignored = [];
-        $plugged = [];
 
         foreach ($packages as $package) {
             $data = $this->loadJsonFile($io, $package);

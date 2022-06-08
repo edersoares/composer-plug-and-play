@@ -89,6 +89,7 @@ class FactoryTest extends TestCase
         $output = $io->getOutput();
 
         $this->assertStringContainsString('Plugged: dex/fake', $output);
+        $this->assertStringContainsString('Plugged: dex/packages', $output);
         $this->assertStringContainsString('Ignored: dex/ignore', $output);
     }
 }
