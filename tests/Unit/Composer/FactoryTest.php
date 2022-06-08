@@ -3,6 +3,7 @@
 namespace Dex\Composer\PlugAndPlay\Tests\Unit\Composer;
 
 use Composer\Composer;
+use Composer\IO\BufferIO;
 use Composer\IO\IOInterface;
 use Dex\Composer\PlugAndPlay\Composer\Factory;
 use Dex\Composer\PlugAndPlay\PlugAndPlayInterface;
@@ -26,6 +27,8 @@ class FactoryTest extends TestCase
     protected function tearDown(): void
     {
         parent::tearDown();
+
+        Factory::restart();
 
         chdir($this->cwd);
         unlink(self::PATH . PlugAndPlayInterface::FILENAME);
@@ -74,5 +77,18 @@ class FactoryTest extends TestCase
         $this->assertInstanceOf(Composer::class, $composer);
         $this->assertFileExists($composerPlugAndPlayFile);
         $this->assertStringEqualsFile($composerPlugAndPlayFile, $json);
+    }
+
+    public function testDisplayIgnoredAndPluggedPackages(): void
+    {
+        $factory = new Factory();
+        $io = new BufferIO();
+
+        $factory->createComposer($io, null, false, self::PATH);
+
+        $output = $io->getOutput();
+
+        $this->assertStringContainsString('Plugged: dex/fake', $output);
+        $this->assertStringContainsString('Ignored: dex/ignore', $output);
     }
 }

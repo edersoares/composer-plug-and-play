@@ -14,6 +14,21 @@ use UnexpectedValueException;
 class Factory extends ComposerFactory implements PlugAndPlayInterface
 {
     /**
+     * @var bool
+     */
+    private static $loaded = false;
+
+    /**
+     * Restart factory.
+     *
+     * @return void
+     */
+    public static function restart(): void
+    {
+        static::$loaded = false;
+    }
+
+    /**
      * Loads Composer JSON file if has a validated schema.
      *
      * @param IOInterface $io
@@ -105,15 +120,42 @@ class Factory extends ComposerFactory implements PlugAndPlayInterface
 
         $packages = glob(self::PATH);
 
+        $ignored = [];
+        $plugged = [];
+
         foreach ($packages as $package) {
             $data = $this->loadJsonFile($io, $package);
 
             if (in_array($data['name'], $ignore)) {
+                $ignored[] = $data['name'];
+
                 continue;
             }
 
+            $plugged[] = $data['name'];
+
             $localConfig['require'][$data['name']] = '*';
             $localConfig['repositories'][] = $this->createRepositoryItem($package);
+        }
+
+        if (static::$loaded === false) {
+            if ($plugged) {
+                $io->write('<info>Plugged packages</info>');
+            }
+
+            foreach ($plugged as $package) {
+                $io->write("  Plugged: <info>$package</info>");
+            }
+
+            if ($plugged) {
+                $io->write('<info>Ignored packages</info>');
+            }
+
+            foreach ($ignored as $package) {
+                $io->write("  Ignored: $package");
+            }
+
+            static::$loaded = true;
         }
 
         if ($fullLoad) {
