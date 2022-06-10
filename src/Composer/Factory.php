@@ -48,7 +48,7 @@ class Factory extends ComposerFactory implements PlugAndPlayInterface
     }
 
     /**
-     * Saves composer-plug-and-play.json and composer-plug-and-play.lock files.
+     * Saves plug-and-play.json and plug-and-play.lock files.
      *
      * @param array $data
      *
