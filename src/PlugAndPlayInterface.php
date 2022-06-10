@@ -4,7 +4,7 @@ namespace Dex\Composer\PlugAndPlay;
 
 interface PlugAndPlayInterface
 {
-    const FILENAME = 'composer-plug-and-play.json';
+    const FILENAME = 'packages/plug-and-play.json';
 
     const PACKAGES_FILE = 'packages/composer.json';
 
