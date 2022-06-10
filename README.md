@@ -26,6 +26,12 @@ composer global require dex/composer-plug-and-play
 
 ## Usage
 
+Initialize a plug and play structure:
+
+```bash
+composer plug-and-play:init
+```
+
 Create or clone a [Composer](https://getcomposer.org/) package into `packages/<vendor>/<package>` folder and run:
 
 ```bash
@@ -34,36 +40,38 @@ composer plug-and-play
 
 ### Another commands
 
-All commands use `composer-plug-and-play.json` and `composer-plug-and-play.lock` instead of `composer.json` and 
-`composer.lock` files as root package dependencies.
+All commands use the `plug-and-play.json` and `plug-and-play.lock` files as source to project dependencies instead of 
+`composer.json` and `composer.lock` original files.
 
-- `plug-and-play:install`: same that `composer install`, but using `composer-plug-and-play` files.
-- `plug-and-play:update`: same that `composer update`, but using `composer-plug-and-play` files.
-- `plug-and-play:dump`: same that `composer dump-autoload`, but using `composer-plug-and-play` files.
+- `plug-and-play:install`: same that `composer install`, but using `plug-and-play` files.
+- `plug-and-play:update`: same that `composer update`, but using `plug-and-play` files.
+- `plug-and-play:dump`: same that `composer dump-autoload`, but using `plug-and-play` files.
 
 ### Directories and files
 
-[Composer Plug and Play](https://github.com/edersoares/composer-plug-and-play/) plugin needs a `packages` directory in
-the project's root directory.
+[Composer Plug and Play](https://github.com/edersoares/composer-plug-and-play/) plugin needs a `packages` folder in 
+the project root directory where the plug and play structure will live.
 
-It will create `composer-plug-and-play.json` and `composer-plug-and-play.lock` files in the project's root directory
-that will contain the real project dependencies and plug and play dependencies.
+The `plug-and-play.json` and `plug-and-play.lock` files will contain the real project dependencies and plug and play 
+dependencies.
 
 Your root directory will look like this:
 
 ```
-packages
-\_ <vendor>
-  \_ <plug-and-play-package>
-    \_ composer.json
-vendor
-\_ <vendor>
-  \_ <require-package>
-    \_ composer.json
-composer.json
-composer.lock
-composer-plug-and-play.json
-composer-plug-and-play.lock
+|-- packages 
+|   \__ <vendor-name>
+|       \__ <plug-and-play-package>
+|           \__ composer.json
+|   \__ composer.json
+|   \__ plug-and-play.json
+|   \__ plug-and-play.lock
+|-- vendor
+|   \__ <vendor-name>
+|       \__ <require-package>
+|           \__ composer.json
+|           \__ composer.json
+|-- composer.json
+|-- composer.lock
 ```
 
 ## License
