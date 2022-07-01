@@ -58,6 +58,10 @@ class Factory extends ComposerFactory implements PlugAndPlayInterface
     {
         $json = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . PHP_EOL;
 
+        if (is_dir(self::PACKAGES_PATH) === false) {
+            mkdir(self::PACKAGES_PATH);
+        }
+
         file_put_contents(self::FILENAME, $json);
     }
 
