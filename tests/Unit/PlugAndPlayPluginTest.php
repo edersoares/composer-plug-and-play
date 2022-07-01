@@ -31,9 +31,17 @@ class PlugAndPlayPluginTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->io = new BufferIO('', OutputInterface::VERBOSITY_DEBUG);
+        $config = new Config();
+        $config->merge([
+            'config' => [
+                'allow-plugins' => true,
+            ],
+        ]);
+
         $this->composer = new Composer();
-        $this->composer->setConfig(new Config());
+        $this->composer->setConfig($config);
+
+        $this->io = new BufferIO('', OutputInterface::VERBOSITY_DEBUG);
         $this->pm = new PluginManager($this->io, $this->composer);
     }
 
