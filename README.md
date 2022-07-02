@@ -9,7 +9,7 @@ necessarily installing a new dependency on `composer.json`.
 ## Installation
 
 [Composer Plug and Play](https://github.com/edersoares/composer-plug-and-play/) requires [Composer](https://getcomposer.org/)
-`2.0.0` or newer.
+`2.3.0` or newer.
 
 ```bash
 composer require dex/composer-plug-and-play
@@ -37,6 +37,11 @@ Create or clone a [Composer](https://getcomposer.org/) package into `packages/<v
 ```bash
 composer plug-and-play
 ```
+
+### Additional configuration
+
+You can add some additional configuration in `packages/composer.json` to add more data in the final resolution of the 
+`composer.json` file.
 
 ### Another commands
 
