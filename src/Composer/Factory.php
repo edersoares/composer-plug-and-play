@@ -156,7 +156,7 @@ class Factory extends ComposerFactory implements PlugAndPlayInterface
                 $io->write("  Plugged: <info>$package</info>");
             }
 
-            if ($plugged) {
+            if ($ignored) {
                 $io->write('<info>Ignored packages</info>');
             }
 
