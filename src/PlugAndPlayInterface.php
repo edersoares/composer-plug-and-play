@@ -8,5 +8,7 @@ interface PlugAndPlayInterface
 
     const PACKAGES_FILE = 'packages/composer.json';
 
+    const PACKAGES_PATH = 'packages';
+
     const PATH = 'packages/*/*/composer.json';
 }
