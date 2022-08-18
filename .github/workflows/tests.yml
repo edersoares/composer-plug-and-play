@@ -12,11 +12,10 @@ jobs:
     strategy:
       matrix:
         php-version:
-          - 8.0
           - 8.1
         tools-version:
           - composer:2.3
-          - composer:2.4
+          - composer
 
     steps:
     - uses: actions/checkout@v2
