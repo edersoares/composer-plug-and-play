@@ -5,6 +5,7 @@ namespace Dex\Composer\PlugAndPlay\Tests\Unit;
 use Composer\Composer;
 use Composer\Config;
 use Composer\IO\BufferIO;
+use Composer\Package\Locker;
 use Composer\Package\Package;
 use Composer\Plugin\Capability\CommandProvider;
 use Composer\Plugin\PluginManager;
@@ -31,6 +32,8 @@ class PlugAndPlayPluginTest extends TestCase
 
     protected function setUp(): void
     {
+        $locker = $this->createMock(Locker::class);
+
         $config = new Config();
         $config->merge([
             'config' => [
@@ -40,6 +43,7 @@ class PlugAndPlayPluginTest extends TestCase
 
         $this->composer = new Composer();
         $this->composer->setConfig($config);
+        $this->composer->setLocker($locker);
 
         $this->io = new BufferIO('', OutputInterface::VERBOSITY_DEBUG);
         $this->pm = new PluginManager($this->io, $this->composer);
