@@ -13,9 +13,9 @@ jobs:
       matrix:
         php-version:
           - 8.1
-        tools-version:
-          - composer:2.3
-          - composer
+        composer-version:
+          - 2.3
+          - 2.4
 
     steps:
     - uses: actions/checkout@v2
@@ -24,7 +24,7 @@ jobs:
       uses: shivammathur/setup-php@v2
       with:
         php-version: "${{ matrix.php-version }}"
-        tools: "${{ matrix.tools-version }}"
+        tools: "composer:${{ matrix.composer-version }}"
 
     - name: Validate composer.json and composer.lock
       run: composer validate
