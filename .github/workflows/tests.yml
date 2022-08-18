@@ -9,8 +9,23 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        php-version:
+          - 8.0
+          - 8.1
+        tools-version:
+          - composer:2.3
+          - composer:2.4
+
     steps:
     - uses: actions/checkout@v2
+
+    - name: Install PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: "${{ matrix.php-version }}"
+        tools: "${{ matrix.tools-version }}"
 
     - name: Validate composer.json and composer.lock
       run: composer validate
