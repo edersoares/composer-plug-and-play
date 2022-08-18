@@ -9,8 +9,23 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        php-version:
+          - 8.0
+          - 8.1
+        composer-version:
+          - 2.3
+          - 2.4
+
     steps:
     - uses: actions/checkout@v2
+
+    - name: Install PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: "${{ matrix.php-version }}"
+        tools: "composer:${{ matrix.composer-version }}"
 
     - name: Validate composer.json and composer.lock
       run: composer validate
@@ -20,9 +35,9 @@ jobs:
       uses: actions/cache@v2
       with:
         path: vendor
-        key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+        key: ${{ runner.os }}-php-${{ matrix.composer-version }}-${{ hashFiles('**/composer.lock') }}
         restore-keys: |
-          ${{ runner.os }}-php-
+          ${{ runner.os }}-php-${{ matrix.composer-version }}
 
     - name: Install dependencies
       if: steps.composer-cache.outputs.cache-hit != 'true'
