@@ -32,14 +32,17 @@ class PlugAndPlayCommandTest extends TestCase
         exec('rm -r ' . $this->directory);
     }
 
-    public function testPackagesDirectoryIsCreated(): void
+    public function testPackagesDirectoryAndFilesAreCreated(): void
     {
         $application = new Application();
         $input = new StringInput("plug-and-play -d {$this->directory}");
         $output = new BufferedOutput();
 
-        $application->doRun($input, $output);
+        $application->doRun($input, $output); // Runs UpdateCommand
+        $application->doRun($input, $output); // Runs InstallCommand
 
-        $this->assertDirectoryExists($this->directory);
+        $this->assertDirectoryExists($this->directory . '/packages');
+        $this->assertFileExists($this->directory . '/packages/plug-and-play.json');
+        $this->assertFileExists($this->directory . '/packages/plug-and-play.lock');
     }
 }
