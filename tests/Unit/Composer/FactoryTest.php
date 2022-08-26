@@ -31,7 +31,6 @@ class FactoryTest extends TestCase
         Factory::restart();
 
         chdir($this->cwd);
-        unlink(self::PATH . PlugAndPlayInterface::FILENAME);
     }
 
     public function testFactory()
