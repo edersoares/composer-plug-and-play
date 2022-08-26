@@ -72,6 +72,7 @@ class FactoryTest extends TestCase
                     'symlink' => true,
                 ],
             ],
+            'minimum-stability' => 'dev',
         ], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . PHP_EOL;
 
         $this->assertInstanceOf(Composer::class, $composer);
