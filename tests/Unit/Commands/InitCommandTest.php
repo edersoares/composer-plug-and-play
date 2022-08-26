@@ -42,5 +42,13 @@ class InitCommandTest extends TestCase
 
         $this->assertFileExists($this->directory . '/packages/.gitignore');
         $this->assertFileExists($this->directory . '/packages/composer.json');
+
+        $application->doRun($input, $output);
+
+        $output = $output->fetch();
+
+        $this->assertStringContainsString('The [packages] directory already exists.', $output);
+        $this->assertStringContainsString('The [packages/.gitignore] file already exists.', $output);
+        $this->assertStringContainsString('The [packages/composer.json] file already exists.', $output);
     }
 }

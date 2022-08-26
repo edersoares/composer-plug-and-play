@@ -1,0 +1,29 @@
+{
+    "require": {
+        "dex/composer-plug-and-play": "*",
+        "composer/composer": "*",
+        "dex/fake": "*"
+    },
+    "config": {
+        "allow-plugins": true
+    },
+    "extra": {
+        "composer-plug-and-play": {
+            "ignore": [
+                "dex/ignore"
+            ]
+        }
+    },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../../../"
+        },
+        {
+            "type": "path",
+            "url": "./packages/dex/fake",
+            "symlink": true
+        }
+    ],
+    "minimum-stability": "dev"
+}

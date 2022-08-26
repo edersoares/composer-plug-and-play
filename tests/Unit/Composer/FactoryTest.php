@@ -31,7 +31,6 @@ class FactoryTest extends TestCase
         Factory::restart();
 
         chdir($this->cwd);
-        unlink(self::PATH . PlugAndPlayInterface::FILENAME);
     }
 
     public function testFactory()
@@ -47,7 +46,7 @@ class FactoryTest extends TestCase
         $json = json_encode([
             'require' => [
                 'dex/composer-plug-and-play' => '*',
-                'dex/packages' => '*',
+                'composer/composer' => '*',
                 'dex/fake' => '*',
             ],
             'config' => [
@@ -89,8 +88,8 @@ class FactoryTest extends TestCase
 
         $output = $io->getOutput();
 
+        $this->assertStringContainsString('Plugged: composer/composer', $output);
         $this->assertStringContainsString('Plugged: dex/fake', $output);
-        $this->assertStringContainsString('Plugged: dex/packages', $output);
         $this->assertStringContainsString('Ignored: dex/ignore', $output);
     }
 }
