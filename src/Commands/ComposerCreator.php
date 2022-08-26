@@ -29,19 +29,6 @@ trait ComposerCreator
     {
         $composer = $this->composer ?? null;
 
-        if ($this->usePlugAndPlay && is_null($composer)) {
-            $application = $this->getApplication();
-
-            if ($application instanceof Application) {
-                $composer = Factory::create($application->getIO(), null, $disablePlugins);
-            } elseif ($required) {
-                throw new RuntimeException(
-                    'Could not create a Composer\Composer instance, you must inject ' .
-                    'one if this command is not used with a Composer\Console\Application instance'
-                );
-            }
-        }
-
         if (is_null($composer)) {
             $composer = parent::getComposer($required, $disablePlugins, $disableScripts);
         }
