@@ -51,7 +51,7 @@ trait ComposerCreator
      * @param bool|null $disableScripts If null, reads --no-scripts as default
      * @throws \RuntimeException
      */
-    public function requireComposer(bool $disablePlugins = null, bool $disableScripts = null): Composer
+    public function requireComposer(?bool $disablePlugins = null, ?bool $disableScripts = null): Composer
     {
         // It's needed that Composer will be reseted because
         // Application::getPluginCommands() creates a Composer instance without

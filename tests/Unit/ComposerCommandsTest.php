@@ -9,9 +9,8 @@ use Symfony\Component\Console\Output\BufferedOutput;
 
 class ComposerCommandsTest extends TestCase
 {
-    /**
-     * @var string
-     */
+    const WELCOME_MESSAGE = 'You are using Composer Plug and Play Plugin.';
+
     protected $directory = __DIR__ . '/../Fixtures/Plugin/';
 
     public function testPlugAndPlayCommand()
@@ -22,7 +21,7 @@ class ComposerCommandsTest extends TestCase
 
         $application->doRun($input, $output);
 
-        $this->assertStringContainsString('You are using Composer Plug and Play Plugin.', $output->fetch());
+        $this->assertStringContainsString(self::WELCOME_MESSAGE, $output->fetch());
     }
 
     public function testPlugAndPlayInstallCommand()
@@ -33,7 +32,7 @@ class ComposerCommandsTest extends TestCase
 
         $application->doRun($input, $output);
 
-        $this->assertStringContainsString('You are using Composer Plug and Play Plugin.', $output->fetch());
+        $this->assertStringContainsString(self::WELCOME_MESSAGE, $output->fetch());
     }
 
     public function testPlugAndPlayUpdateCommand()
@@ -44,7 +43,7 @@ class ComposerCommandsTest extends TestCase
 
         $application->doRun($input, $output);
 
-        $this->assertStringContainsString('You are using Composer Plug and Play Plugin.', $output->fetch());
+        $this->assertStringContainsString(self::WELCOME_MESSAGE, $output->fetch());
     }
 
     public function testPlugAndPlayDumpCommand()
@@ -55,7 +54,7 @@ class ComposerCommandsTest extends TestCase
 
         $application->doRun($input, $output);
 
-        $this->assertStringContainsString('You are using Composer Plug and Play Plugin.', $output->fetch());
+        $this->assertStringContainsString(self::WELCOME_MESSAGE, $output->fetch());
     }
 
     public function testListCommand()
@@ -81,6 +80,6 @@ class ComposerCommandsTest extends TestCase
 
         $application->doRun($input, $output);
 
-        $this->assertStringContainsString('You are using Composer Plug and Play Plugin.', $output->fetch());
+        $this->assertStringContainsString(self::WELCOME_MESSAGE, $output->fetch());
     }
 }
