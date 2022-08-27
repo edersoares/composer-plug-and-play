@@ -106,9 +106,6 @@ class Factory extends ComposerFactory implements PlugAndPlayInterface
     ) {
         $cwd = $cwd ?: getcwd();
 
-        $ignored = [];
-        $plugged = [];
-
         if (null === $localConfig) {
             $localConfig = static::getComposerFile();
         }
@@ -117,17 +114,35 @@ class Factory extends ComposerFactory implements PlugAndPlayInterface
             $localConfig = $this->loadJsonFile($io, $localConfig);
         }
 
-        if (file_exists(self::PACKAGES_FILE)) {
-            $packagesConfig = $this->loadJsonFile($io, self::PACKAGES_FILE);
-            $required = $packagesConfig['require'] ?? [];
+        $ignored = [];
+        $plugged = [];
 
-            foreach ($required as $package => $version) {
-                $plugged[] = $package;
-            }
+        $this->loadComposerPackageFile($io, $plugged, $localConfig);
+        $this->definePluggedAndIgnoredPackages($io, $plugged, $ignored, $localConfig);
+        $this->writePluggedAndIgnoredPackages($io, $plugged, $ignored);
 
-            $localConfig = array_merge_recursive($localConfig, $packagesConfig);
+        if ($fullLoad) {
+            $this->saveComposerPlugAndPlayFile($localConfig);
         }
 
+        return parent::createComposer($io, self::FILENAME, $disablePlugins, $cwd, $fullLoad, $disableScripts);
+    }
+
+    private function loadComposerPackageFile(IOInterface $io, array &$plugged, array &$localConfig): void
+    {
+        $packagesConfig = file_exists(self::PACKAGES_FILE)
+            ? $this->loadJsonFile($io, self::PACKAGES_FILE)
+            : [];
+
+        foreach ($packagesConfig['require'] ?? [] as $package => $version) {
+            $plugged[] = $package;
+        }
+
+        $localConfig = array_merge_recursive($localConfig, $packagesConfig);
+    }
+
+    private function definePluggedAndIgnoredPackages(IOInterface $io, array &$plugged, array &$ignored, array &$localConfig): void
+    {
         $ignore = $localConfig['extra']['composer-plug-and-play']['ignore'] ?? [];
 
         $packages = glob(self::PATH);
@@ -146,14 +161,6 @@ class Factory extends ComposerFactory implements PlugAndPlayInterface
             $localConfig['require'][$data['name']] = '*';
             $localConfig['repositories'][] = $this->createRepositoryItem($package);
         }
-
-        $this->writePluggedAndIgnoredPackages($io, $plugged, $ignored);
-
-        if ($fullLoad) {
-            $this->saveComposerPlugAndPlayFile($localConfig);
-        }
-
-        return parent::createComposer($io, self::FILENAME, $disablePlugins, $cwd, $fullLoad, $disableScripts);
     }
 
     private function writePluggedAndIgnoredPackages(IOInterface $io, array $plugged, array $ignored): void
