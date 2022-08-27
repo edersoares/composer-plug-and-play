@@ -61,13 +61,14 @@ the project root directory where the plug and play structure will live.
 The `plug-and-play.json` and `plug-and-play.lock` files will contain the real project dependencies and plug and play 
 dependencies.
 
-Your root directory will look like this:
+Your project directory will look like this:
 
 ```
 |-- packages 
 |   \__ <vendor-name>
 |       \__ <plug-and-play-package>
 |           \__ composer.json
+|           \__ composer.lock
 |   \__ composer.json
 |   \__ plug-and-play.json
 |   \__ plug-and-play.lock
@@ -75,7 +76,7 @@ Your root directory will look like this:
 |   \__ <vendor-name>
 |       \__ <require-package>
 |           \__ composer.json
-|           \__ composer.json
+|           \__ composer.lock
 |-- composer.json
 |-- composer.lock
 ```
