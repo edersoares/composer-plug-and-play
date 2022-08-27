@@ -1,6 +1,7 @@
 # Composer Plug and Play
 
 <a href="https://github.com/edersoares/composer-plug-and-play/actions"><img src="https://github.com/edersoares/composer-plug-and-play/workflows/tests/badge.svg" alt="Tests" /></a>
+<a href="https://github.com/edersoares/composer-plug-and-play/releases"><img src="https://img.shields.io/github/release/edersoares/composer-plug-and-play.svg?label=latest%20release" alt="Latest Release" /></a>
 <a href="https://github.com/edersoares/composer-plug-and-play/blob/master/LICENSE"><img src="https://img.shields.io/github/license/edersoares/composer-plug-and-play" alt="License" /></a>
 
 Add to [Composer](https://getcomposer.org/), a dependency manager for PHP, the ability to plug and play packages without
@@ -60,13 +61,14 @@ the project root directory where the plug and play structure will live.
 The `plug-and-play.json` and `plug-and-play.lock` files will contain the real project dependencies and plug and play 
 dependencies.
 
-Your root directory will look like this:
+Your project directory will look like this:
 
 ```
 |-- packages 
 |   \__ <vendor-name>
 |       \__ <plug-and-play-package>
 |           \__ composer.json
+|           \__ composer.lock
 |   \__ composer.json
 |   \__ plug-and-play.json
 |   \__ plug-and-play.lock
@@ -74,7 +76,7 @@ Your root directory will look like this:
 |   \__ <vendor-name>
 |       \__ <require-package>
 |           \__ composer.json
-|           \__ composer.json
+|           \__ composer.lock
 |-- composer.json
 |-- composer.lock
 ```
