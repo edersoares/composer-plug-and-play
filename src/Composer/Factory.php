@@ -147,30 +147,37 @@ class Factory extends ComposerFactory implements PlugAndPlayInterface
             $localConfig['repositories'][] = $this->createRepositoryItem($package);
         }
 
-        if (static::$loaded === false) {
-            if ($plugged) {
-                $io->write('<info>Plugged packages</info>');
-            }
-
-            foreach ($plugged as $package) {
-                $io->write("  Plugged: <info>$package</info>");
-            }
-
-            if ($ignored) {
-                $io->write('<info>Ignored packages</info>');
-            }
-
-            foreach ($ignored as $package) {
-                $io->write("  Ignored: $package");
-            }
-
-            static::$loaded = true;
-        }
+        $this->writePluggedAndIgnoredPackages($io, $plugged, $ignored);
 
         if ($fullLoad) {
             $this->saveComposerPlugAndPlayFile($localConfig);
         }
 
         return parent::createComposer($io, self::FILENAME, $disablePlugins, $cwd, $fullLoad, $disableScripts);
+    }
+
+    private function writePluggedAndIgnoredPackages(IOInterface $io, array $plugged, array $ignored): void
+    {
+        if (static::$loaded) {
+            return;
+        }
+
+        if ($plugged) {
+            $io->write('<info>Plugged packages</info>');
+        }
+
+        foreach ($plugged as $package) {
+            $io->write("  Plugged: <info>$package</info>");
+        }
+
+        if ($ignored) {
+            $io->write('<info>Ignored packages</info>');
+        }
+
+        foreach ($ignored as $package) {
+            $io->write("  Ignored: $package");
+        }
+
+        static::$loaded = true;
     }
 }
