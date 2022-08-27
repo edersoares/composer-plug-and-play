@@ -163,6 +163,8 @@ class Factory extends ComposerFactory implements PlugAndPlayInterface
         }
 
         if ($plugged) {
+            sort($plugged);
+
             $io->write('<info>Plugged packages</info>');
         }
 
@@ -171,6 +173,8 @@ class Factory extends ComposerFactory implements PlugAndPlayInterface
         }
 
         if ($ignored) {
+            sort($ignored);
+
             $io->write('<info>Ignored packages</info>');
         }
 
