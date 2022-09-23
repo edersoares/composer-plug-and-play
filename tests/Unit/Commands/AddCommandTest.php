@@ -10,7 +10,7 @@ use Symfony\Component\Console\Output\BufferedOutput;
 
 class AddCommandTest extends TestCase
 {
-    protected $directory = __DIR__ . '/../../tmp';
+    protected $directory = __DIR__ . '/../../tmp/';
 
     protected function setUp(): void
     {
@@ -25,8 +25,8 @@ class AddCommandTest extends TestCase
         ], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
 
         mkdir($this->directory);
-        mkdir($this->directory . '/packages');
-        file_put_contents($this->directory . '/composer.json', $composer);
+        mkdir($this->directory . PlugAndPlayInterface::PACKAGES_PATH);
+        file_put_contents($this->directory . 'composer.json', $composer);
     }
 
     protected function tearDown(): void
@@ -94,6 +94,6 @@ class AddCommandTest extends TestCase
 
         $output = $output->fetch();
 
-        $this->assertStringContainsString('The [packages/composer.json] file not exists.', $output);
+        $this->assertStringContainsString('The [' . PlugAndPlayInterface::PACKAGES_FILE . '] file not exists.', $output);
     }
 }
