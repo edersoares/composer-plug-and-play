@@ -13,11 +13,11 @@
     "require": {
         "php": "^8.0",
         "ext-json": "*",
-        "composer-plugin-api": "^2.0"
+        "composer-plugin-api": "^2.3"
     },
     "require-dev": {
         "composer/composer": "^2.3.0",
-        "phpunit/phpunit": "^9.4"
+        "phpunit/phpunit": "^9.5"
     },
     "autoload": {
         "psr-4": {
