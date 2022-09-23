@@ -94,6 +94,8 @@ class AddCommandTest extends TestCase
 
         $output = $output->fetch();
 
-        $this->assertStringContainsString('The [' . PlugAndPlayInterface::PACKAGES_FILE . '] file not exists.', $output);
+        $message = 'The [' . PlugAndPlayInterface::PACKAGES_FILE . '] file not exists.';
+
+        $this->assertStringContainsString($message, $output);
     }
 }
