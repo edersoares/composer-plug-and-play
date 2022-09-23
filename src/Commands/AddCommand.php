@@ -18,6 +18,7 @@ class AddCommand extends BaseCommand
         $this->naming('plug-and-play:add');
         $this->setDescription('Add a required package to install using plug and play plugin.');
         $this->addArgument('package', InputArgument::REQUIRED, 'Package to add in plug and play dependencies');
+        $this->addArgument('version', InputArgument::OPTIONAL, 'Version of the package', '*');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -34,7 +35,7 @@ class AddCommand extends BaseCommand
 
         $json = json_decode($composer, true);
 
-        $json['require'][$input->getArgument('package')] = '*';
+        $json['require'][$input->getArgument('package')] = $input->getArgument('version');
 
         $json = json_encode($json, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
 

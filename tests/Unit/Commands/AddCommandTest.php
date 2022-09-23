@@ -58,6 +58,31 @@ class AddCommandTest extends TestCase
         $this->assertJsonStringEqualsJsonFile($this->directory . '/packages/composer.json', $expected);
     }
 
+    public function testWithVersion(): void
+    {
+        $base = json_encode([
+            'minimum-stability' => 'dev',
+        ], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+
+        file_put_contents($this->directory . '/packages/composer.json', $base);
+
+        $application = new Application();
+        $input = new StringInput("plug-and-play:add -d {$this->directory} dex/extra 1.0");
+        $output = new BufferedOutput();
+
+        $application->doRun($input, $output);
+
+        $expected = json_encode([
+            'minimum-stability' => 'dev',
+            'require' => [
+                'dex/extra' => '1.0',
+            ],
+        ], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+
+        $this->assertFileExists($this->directory . '/packages/composer.json');
+        $this->assertJsonStringEqualsJsonFile($this->directory . '/packages/composer.json', $expected);
+    }
+
     public function testFileNotExists(): void
     {
         $application = new Application();
