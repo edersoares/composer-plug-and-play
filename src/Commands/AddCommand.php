@@ -24,10 +24,6 @@ class AddCommand extends BaseCommand
     {
         $output->writeln('<info>You are using Composer Plug and Play Plugin.</info>');
 
-        if ($input->getOption('plug-and-play-pretend')) {
-            return 0;
-        }
-
         if (file_exists('packages/composer.json') === false) {
             $output->writeln('The [packages/composer.json] file not exists.');
 
