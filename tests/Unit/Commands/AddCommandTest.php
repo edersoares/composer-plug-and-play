@@ -55,4 +55,17 @@ class AddCommandTest extends TestCase
 
         $this->assertJsonStringEqualsJsonFile($expected, $this->directory . '/packages/composer.json');
     }
+
+    public function testFileNotExists(): void
+    {
+        $application = new Application();
+        $input = new StringInput("plug-and-play:add -d {$this->directory} dex/extra");
+        $output = new BufferedOutput();
+
+        $application->doRun($input, $output);
+
+        $output = $output->fetch();
+
+        $this->assertStringContainsString('The [packages/composer.json] file not exists.', $output);
+    }
 }
