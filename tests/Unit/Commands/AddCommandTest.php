@@ -3,15 +3,10 @@
 namespace Dex\Composer\PlugAndPlay\Tests\Unit\Commands;
 
 use Dex\Composer\PlugAndPlay\PlugAndPlayInterface;
-use Dex\Composer\PlugAndPlay\Tests\Application;
-use Dex\Composer\PlugAndPlay\Tests\TestCase;
-use Symfony\Component\Console\Input\StringInput;
-use Symfony\Component\Console\Output\BufferedOutput;
+use Dex\Composer\PlugAndPlay\Tests\CommandTestCase;
 
-class AddCommandTest extends TestCase
+class AddCommandTest extends CommandTestCase
 {
-    protected $directory = __DIR__ . '/../../tmp/';
-
     protected function setUp(): void
     {
         $composer = json_encode([
@@ -29,6 +24,15 @@ class AddCommandTest extends TestCase
         file_put_contents($this->directory . 'composer.json', $composer);
     }
 
+    protected function createPackagesComposerJson(): void
+    {
+        $base = json_encode([
+            'minimum-stability' => 'dev',
+        ], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+
+        file_put_contents($this->packagesFile(), $base);
+    }
+
     protected function tearDown(): void
     {
         exec('rm -r ' . $this->directory);
@@ -36,66 +40,44 @@ class AddCommandTest extends TestCase
 
     public function test(): void
     {
-        $base = json_encode([
-            'minimum-stability' => 'dev',
-        ], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+        $this->createPackagesComposerJson();
 
-        file_put_contents($this->directory . PlugAndPlayInterface::PACKAGES_FILE, $base);
+        $this->runCommand('plug-and-play:add dex/extra');
 
-        $application = new Application();
-        $input = new StringInput("plug-and-play:add -d {$this->directory} dex/extra");
-        $output = new BufferedOutput();
-
-        $application->doRun($input, $output);
-
-        $expected = json_encode([
+        $expected = $this->encodeContent([
             'minimum-stability' => 'dev',
             'require' => [
                 'dex/extra' => '*',
             ],
-        ], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+        ]);
 
-        $this->assertFileExists($this->directory . PlugAndPlayInterface::PACKAGES_FILE);
-        $this->assertJsonStringEqualsJsonFile($this->directory . PlugAndPlayInterface::PACKAGES_FILE, $expected);
+        $this->assertFileExists($this->packagesFile());
+        $this->assertJsonStringEqualsJsonFile($this->packagesFile(), $expected);
     }
 
     public function testWithVersion(): void
     {
-        $base = json_encode([
-            'minimum-stability' => 'dev',
-        ], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+        $this->createPackagesComposerJson();
 
-        file_put_contents($this->directory . PlugAndPlayInterface::PACKAGES_FILE, $base);
+        $this->runCommand('plug-and-play:add dex/extra 1.0');
 
-        $application = new Application();
-        $input = new StringInput("plug-and-play:add -d {$this->directory} dex/extra 1.0");
-        $output = new BufferedOutput();
-
-        $application->doRun($input, $output);
-
-        $expected = json_encode([
+        $expected = $this->encodeContent([
             'minimum-stability' => 'dev',
             'require' => [
                 'dex/extra' => '1.0',
             ],
-        ], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+        ]);
 
-        $this->assertFileExists($this->directory . PlugAndPlayInterface::PACKAGES_FILE);
-        $this->assertJsonStringEqualsJsonFile($this->directory . PlugAndPlayInterface::PACKAGES_FILE, $expected);
+        $this->assertFileExists($this->packagesFile());
+        $this->assertJsonStringEqualsJsonFile($this->packagesFile(), $expected);
     }
 
     public function testFileNotExists(): void
     {
-        $application = new Application();
-        $input = new StringInput("plug-and-play:add -d {$this->directory} dex/extra");
-        $output = new BufferedOutput();
-
-        $application->doRun($input, $output);
-
-        $output = $output->fetch();
+        $output = $this->runCommand('plug-and-play:add dex/extra');
 
         $message = 'The [' . PlugAndPlayInterface::PACKAGES_FILE . '] file not exists.';
 
-        $this->assertStringContainsString($message, $output);
+        $this->assertStringContainsString($message, $output->fetch());
     }
 }
