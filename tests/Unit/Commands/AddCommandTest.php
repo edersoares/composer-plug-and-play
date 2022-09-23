@@ -24,6 +24,7 @@ class AddCommandTest extends TestCase
         ], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
 
         mkdir($this->directory);
+        mkdir($this->directory . '/packages');
         file_put_contents($this->directory . '/composer.json', $composer);
     }
 
@@ -34,6 +35,12 @@ class AddCommandTest extends TestCase
 
     public function test(): void
     {
+        $base = json_encode([
+            'minimum-stability' => 'dev',
+        ], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+
+        file_put_contents($this->directory . '/packages/composer.json', $base);
+
         $application = new Application();
         $input = new StringInput("plug-and-play:add -d {$this->directory} dex/extra");
         $output = new BufferedOutput();
@@ -41,19 +48,14 @@ class AddCommandTest extends TestCase
         $application->doRun($input, $output);
 
         $expected = json_encode([
-            'name' => 'dex/test',
-            'config' => [
-                'allow-plugins' => [
-                    'dex/composer-plug-and-play' => true,
-                    'dex/fake' => true,
-                ],
-            ],
+            'minimum-stability' => 'dev',
             'require' => [
                 'dex/extra' => '*',
             ],
         ], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
 
-        $this->assertJsonStringEqualsJsonFile($expected, $this->directory . '/packages/composer.json');
+        $this->assertFileExists($this->directory . '/packages/composer.json');
+        $this->assertJsonStringEqualsJsonFile($this->directory . '/packages/composer.json', $expected);
     }
 
     public function testFileNotExists(): void
