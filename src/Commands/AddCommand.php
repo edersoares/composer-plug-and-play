@@ -34,6 +34,16 @@ class AddCommand extends BaseCommand
             return 1;
         }
 
+        $composer = file_get_contents('packages/composer.json');
+
+        $json = json_decode($composer, true);
+
+        $json['require'][$input->getArgument('package')] = '*';
+
+        $json = json_encode($json, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+
+        file_put_contents('packages/composer.json', $json);
+
         return 0;
     }
 }
