@@ -2,6 +2,7 @@
 
 namespace Dex\Composer\PlugAndPlay\Tests\Unit\Commands;
 
+use Dex\Composer\PlugAndPlay\PlugAndPlayInterface;
 use Dex\Composer\PlugAndPlay\Tests\Application;
 use Dex\Composer\PlugAndPlay\Tests\TestCase;
 use Symfony\Component\Console\Input\StringInput;
@@ -39,7 +40,7 @@ class AddCommandTest extends TestCase
             'minimum-stability' => 'dev',
         ], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
 
-        file_put_contents($this->directory . '/packages/composer.json', $base);
+        file_put_contents($this->directory . PlugAndPlayInterface::PACKAGES_FILE, $base);
 
         $application = new Application();
         $input = new StringInput("plug-and-play:add -d {$this->directory} dex/extra");
@@ -54,8 +55,8 @@ class AddCommandTest extends TestCase
             ],
         ], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
 
-        $this->assertFileExists($this->directory . '/packages/composer.json');
-        $this->assertJsonStringEqualsJsonFile($this->directory . '/packages/composer.json', $expected);
+        $this->assertFileExists($this->directory . PlugAndPlayInterface::PACKAGES_FILE);
+        $this->assertJsonStringEqualsJsonFile($this->directory . PlugAndPlayInterface::PACKAGES_FILE, $expected);
     }
 
     public function testWithVersion(): void
@@ -64,7 +65,7 @@ class AddCommandTest extends TestCase
             'minimum-stability' => 'dev',
         ], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
 
-        file_put_contents($this->directory . '/packages/composer.json', $base);
+        file_put_contents($this->directory . PlugAndPlayInterface::PACKAGES_FILE, $base);
 
         $application = new Application();
         $input = new StringInput("plug-and-play:add -d {$this->directory} dex/extra 1.0");
@@ -79,8 +80,8 @@ class AddCommandTest extends TestCase
             ],
         ], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
 
-        $this->assertFileExists($this->directory . '/packages/composer.json');
-        $this->assertJsonStringEqualsJsonFile($this->directory . '/packages/composer.json', $expected);
+        $this->assertFileExists($this->directory . PlugAndPlayInterface::PACKAGES_FILE);
+        $this->assertJsonStringEqualsJsonFile($this->directory . PlugAndPlayInterface::PACKAGES_FILE, $expected);
     }
 
     public function testFileNotExists(): void

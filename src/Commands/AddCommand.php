@@ -3,6 +3,7 @@
 namespace Dex\Composer\PlugAndPlay\Commands;
 
 use Composer\Command\BaseCommand;
+use Dex\Composer\PlugAndPlay\PlugAndPlayInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -25,13 +26,13 @@ class AddCommand extends BaseCommand
     {
         $output->writeln('<info>You are using Composer Plug and Play Plugin.</info>');
 
-        if (file_exists('packages/composer.json') === false) {
-            $output->writeln('The [packages/composer.json] file not exists.');
+        if (file_exists(PlugAndPlayInterface::PACKAGES_FILE) === false) {
+            $output->writeln('The [' . PlugAndPlayInterface::PACKAGES_FILE . '] file not exists.');
 
             return 1;
         }
 
-        $composer = file_get_contents('packages/composer.json');
+        $composer = file_get_contents(PlugAndPlayInterface::PACKAGES_FILE);
 
         $json = json_decode($composer, true);
 
@@ -39,7 +40,7 @@ class AddCommand extends BaseCommand
 
         $json = json_encode($json, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
 
-        file_put_contents('packages/composer.json', $json);
+        file_put_contents(PlugAndPlayInterface::PACKAGES_FILE, $json);
 
         return 0;
     }
