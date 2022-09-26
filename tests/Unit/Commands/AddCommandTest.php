@@ -72,12 +72,16 @@ class AddCommandTest extends CommandTestCase
         $this->assertJsonStringEqualsJsonFile($this->packagesFile(), $expected);
     }
 
-    public function testFileNotExists(): void
+    public function testMergeJsonFiles(): void
     {
-        $output = $this->runCommand('plug-and-play:add dex/extra');
+        $this->runCommand('plug-and-play:add dex/extra');
 
-        $message = 'The [' . PlugAndPlayInterface::PACKAGES_FILE . '] file not exists.';
+        $expected = $this->encodeContent([
+            'require' => [
+                'dex/extra' => '*',
+            ],
+        ]);
 
-        $this->assertStringContainsString($message, $output->fetch());
+        $this->assertJsonStringEqualsJsonFile($this->packagesFile(), $expected);
     }
 }
