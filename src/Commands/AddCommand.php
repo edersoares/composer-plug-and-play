@@ -26,15 +26,13 @@ class AddCommand extends BaseCommand
     {
         $output->writeln('<info>You are using Composer Plug and Play Plugin.</info>');
 
-        if (file_exists(PlugAndPlayInterface::PACKAGES_FILE) === false) {
-            $output->writeln('The [' . PlugAndPlayInterface::PACKAGES_FILE . '] file not exists.');
+        $json = [];
 
-            return 1;
+        if (file_exists(PlugAndPlayInterface::PACKAGES_FILE)) {
+            $composer = file_get_contents(PlugAndPlayInterface::PACKAGES_FILE);
+
+            $json = json_decode($composer, true);
         }
-
-        $composer = file_get_contents(PlugAndPlayInterface::PACKAGES_FILE);
-
-        $json = json_decode($composer, true);
 
         $json['require'][$input->getArgument('package')] = $input->getArgument('version');
 
