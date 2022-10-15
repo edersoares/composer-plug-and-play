@@ -7,6 +7,7 @@ use Composer\Factory as ComposerFactory;
 use Composer\IO\IOInterface;
 use Composer\Json\JsonFile;
 use Composer\Json\JsonValidationException;
+use Composer\PartialComposer;
 use Dex\Composer\PlugAndPlay\PlugAndPlayInterface;
 use InvalidArgumentException;
 use UnexpectedValueException;
@@ -16,7 +17,7 @@ class Factory extends ComposerFactory implements PlugAndPlayInterface
     /**
      * @var bool
      */
-    private static $loaded = false;
+    private static bool $loaded = false;
 
     /**
      * Restart factory.
@@ -38,7 +39,7 @@ class Factory extends ComposerFactory implements PlugAndPlayInterface
      *
      * @return mixed
      */
-    private function loadJsonFile(IOInterface $io, string $filename)
+    private function loadJsonFile(IOInterface $io, string $filename): mixed
     {
         $file = new JsonFile($filename, null, $io);
 
@@ -54,7 +55,7 @@ class Factory extends ComposerFactory implements PlugAndPlayInterface
      *
      * @return void
      */
-    private function saveComposerPlugAndPlayFile(array $data)
+    private function saveComposerPlugAndPlayFile(array $data): void
     {
         $json = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . PHP_EOL;
 
@@ -72,7 +73,7 @@ class Factory extends ComposerFactory implements PlugAndPlayInterface
      *
      * @return array
      */
-    private function createRepositoryItem(string $package)
+    private function createRepositoryItem(string $package): array
     {
         return [
             'type' => 'path',
@@ -94,7 +95,7 @@ class Factory extends ComposerFactory implements PlugAndPlayInterface
      * @throws JsonValidationException
      * @throws UnexpectedValueException
      *
-     * @return Composer
+     * @return Composer|PartialComposer
      */
     public function createComposer(
         IOInterface $io,
@@ -103,7 +104,7 @@ class Factory extends ComposerFactory implements PlugAndPlayInterface
         $cwd = null,
         $fullLoad = true,
         $disableScripts = false
-    ) {
+    ): Composer|PartialComposer {
         $cwd = $cwd ?: getcwd();
 
         if (null === $localConfig) {

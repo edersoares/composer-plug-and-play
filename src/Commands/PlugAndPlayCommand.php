@@ -10,7 +10,7 @@ class PlugAndPlayCommand extends BaseCommand
 {
     use CommandNaming, ComposerCreator;
 
-    protected function configure()
+    protected function configure(): void
     {
         parent::configure();
 
@@ -18,7 +18,7 @@ class PlugAndPlayCommand extends BaseCommand
         $this->setDescription('Installs plug and play dependencies together project dependencies.');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->writeln('<info>You are using Composer Plug and Play Plugin.</info>');
 

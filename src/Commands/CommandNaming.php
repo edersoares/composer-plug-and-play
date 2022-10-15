@@ -13,7 +13,7 @@ trait CommandNaming
      *
      * @return void
      */
-    public function naming(string $command)
+    public function naming(string $command): void
     {
         $this->setName($command);
         $this->setAliases([]);

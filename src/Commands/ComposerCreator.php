@@ -6,26 +6,22 @@ use Composer\Composer;
 use Composer\Console\Application;
 use Composer\Json\JsonValidationException;
 use Dex\Composer\PlugAndPlay\Composer\Factory;
-use RuntimeException;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 trait ComposerCreator
 {
-    /**
-     * @var bool
-     */
-    protected $usePlugAndPlay = false;
+    protected bool $usePlugAndPlay = false;
 
     /**
      * @param bool      $required
      * @param bool|null $disablePlugins
+     * @param bool|null $disableScripts
      *
-     * @throws JsonValidationException|RuntimeException
-     *
-     * @return Composer
+     * @throws JsonValidationException
+     * @return Composer|null
      */
-    public function getComposer($required = true, $disablePlugins = null, $disableScripts = null)
+    public function getComposer(bool $required = true, ?bool $disablePlugins = null, ?bool $disableScripts = null): ?Composer
     {
         $composer = $this->composer ?? null;
 
@@ -75,7 +71,7 @@ trait ComposerCreator
      *
      * @return int
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $isTheCommand = $input->getFirstArgument() === $this->getName();
 

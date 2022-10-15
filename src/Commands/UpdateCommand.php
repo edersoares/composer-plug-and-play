@@ -8,7 +8,7 @@ class UpdateCommand extends ComposerUpdateCommand
 {
     use CommandNaming, ComposerCreator;
 
-    protected function configure()
+    protected function configure(): void
     {
         parent::configure();
 
