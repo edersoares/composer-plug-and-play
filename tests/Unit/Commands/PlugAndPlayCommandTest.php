@@ -9,7 +9,7 @@ use Symfony\Component\Console\Output\BufferedOutput;
 
 class PlugAndPlayCommandTest extends TestCase
 {
-    protected $directory = __DIR__ . '/../../tmp';
+    protected string $directory = __DIR__ . '/../../tmp';
 
     protected function setUp(): void
     {

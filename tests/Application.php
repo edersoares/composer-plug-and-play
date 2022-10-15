@@ -14,9 +14,6 @@ class Application extends ComposerApplication
         getComposer as createComposer;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getComposer(bool $required = true, ?bool $disablePlugins = null, ?bool $disableScripts = null): ?Composer
     {
         $composer = $this->createComposer($required, $disablePlugins, $disableScripts);
