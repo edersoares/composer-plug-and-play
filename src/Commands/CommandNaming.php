@@ -8,10 +8,6 @@ trait CommandNaming
 {
     /**
      * Define name, aliases and add plug and play option.
-     *
-     * @param string $command
-     *
-     * @return void
      */
     public function naming(string $command): void
     {

@@ -6,6 +6,7 @@ use Composer\Composer;
 use Composer\Console\Application;
 use Composer\Json\JsonValidationException;
 use Dex\Composer\PlugAndPlay\Composer\Factory;
+use RuntimeException;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -14,12 +15,7 @@ trait ComposerCreator
     protected bool $usePlugAndPlay = false;
 
     /**
-     * @param bool      $required
-     * @param bool|null $disablePlugins
-     * @param bool|null $disableScripts
-     *
      * @throws JsonValidationException
-     * @return Composer|null
      */
     public function getComposer(bool $required = true, ?bool $disablePlugins = null, ?bool $disableScripts = null): ?Composer
     {
@@ -43,10 +39,7 @@ trait ComposerCreator
      *
      * @see Application::getPluginCommands()
      *
-     * @param bool|null $disablePlugins If null, reads --no-plugins as default
-     * @param bool|null $disableScripts If null, reads --no-scripts as default
-     *
-     * @throws \RuntimeException
+     * @throws RuntimeException
      */
     public function requireComposer(?bool $disablePlugins = null, ?bool $disableScripts = null): Composer
     {
@@ -65,11 +58,6 @@ trait ComposerCreator
 
     /**
      * Check if plug and play plugin is running.
-     *
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     *
-     * @return int
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
