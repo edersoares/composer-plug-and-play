@@ -4,7 +4,6 @@ namespace Dex\Composer\PlugAndPlay\Commands;
 
 use Composer\Composer;
 use Composer\Console\Application;
-use Composer\Json\JsonValidationException;
 use Dex\Composer\PlugAndPlay\Composer\Factory;
 use RuntimeException;
 use Symfony\Component\Console\Input\InputInterface;
@@ -13,24 +12,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 trait ComposerCreator
 {
     protected bool $usePlugAndPlay = false;
-
-    /**
-     * @throws JsonValidationException
-     */
-    public function getComposer(bool $required = true, ?bool $disablePlugins = null, ?bool $disableScripts = null): ?Composer
-    {
-        $composer = $this->composer ?? null;
-
-        if (is_null($composer)) {
-            $composer = parent::getComposer($required, $disablePlugins, $disableScripts);
-        }
-
-        if ($required) {
-            $this->composer = $composer;
-        }
-
-        return $composer;
-    }
 
     /**
      * Retrieves the default Composer\Composer instance or throws
