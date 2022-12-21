@@ -1,6 +1,6 @@
 # Composer Plug and Play
 
-<a href="https://github.com/edersoares/composer-plug-and-play/actions"><img src="https://github.com/edersoares/composer-plug-and-play/workflows/tests/badge.svg" alt="Tests" /></a>
+<a href="https://github.com/edersoares/composer-plug-and-play/actions"><img src="https://img.shields.io/github/actions/workflow/status/edersoares/composer-plug-and-play/tests.yml?branch=main&label=tests" alt="Tests" /></a>
 <a href="https://github.com/edersoares/composer-plug-and-play/releases"><img src="https://img.shields.io/github/release/edersoares/composer-plug-and-play.svg?label=latest%20release" alt="Latest Release" /></a>
 <a href="https://github.com/edersoares/composer-plug-and-play/blob/master/LICENSE"><img src="https://img.shields.io/github/license/edersoares/composer-plug-and-play" alt="License" /></a>
 
