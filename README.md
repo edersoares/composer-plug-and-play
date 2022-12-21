@@ -52,6 +52,7 @@ All commands use the `plug-and-play.json` and `plug-and-play.lock` files as sour
 - `plug-and-play:install`: same that `composer install`, but using `plug-and-play` files.
 - `plug-and-play:update`: same that `composer update`, but using `plug-and-play` files.
 - `plug-and-play:dump`: same that `composer dump-autoload`, but using `plug-and-play` files.
+- `plug-and-play:add`: require a package into `packages/composer.json`.
 
 ### Directories and files
 
