@@ -17,7 +17,7 @@ class AddCommand extends BaseCommand
         parent::configure();
 
         $this->naming('plug-and-play:add');
-        $this->setDescription('Add a required package to install using plug and play plugin.');
+        $this->setDescription('Add a required package to install using plug and play plugin');
         $this->addArgument('package', InputArgument::REQUIRED, 'Package to add in plug and play dependencies');
         $this->addArgument('version', InputArgument::OPTIONAL, 'Version of the package', '*');
     }

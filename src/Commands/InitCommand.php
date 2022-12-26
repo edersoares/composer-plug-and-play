@@ -15,7 +15,7 @@ class InitCommand extends BaseCommand
         parent::configure();
 
         $this->naming('plug-and-play:init');
-        $this->setDescription('Initialize plug and play plugin.');
+        $this->setDescription('Initialize plug and play plugin');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
