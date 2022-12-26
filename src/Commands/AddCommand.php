@@ -24,7 +24,7 @@ class AddCommand extends BaseCommand
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $output->writeln('<info>You are using Composer Plug and Play Plugin.</info>');
+        $this->outputPluginUse($output);
 
         $json = [];
 

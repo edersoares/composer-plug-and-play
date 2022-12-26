@@ -46,7 +46,7 @@ trait ComposerCreator
 
         if ($isTheCommand) {
             $this->usePlugAndPlay = true;
-            $output->writeln('<info>You are using Composer Plug and Play Plugin.</info>');
+            $this->outputPluginUse($output);
         }
 
         if ($input->getOption('plug-and-play-pretend')) {
@@ -54,5 +54,10 @@ trait ComposerCreator
         }
 
         return parent::execute($input, $output);
+    }
+
+    public function outputPluginUse(OutputInterface $output): void
+    {
+        $output->writeln('<info>You are using Composer Plug and Play Plugin.</info>');
     }
 }
