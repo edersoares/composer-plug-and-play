@@ -6,7 +6,7 @@ use Composer\Command\UpdateCommand as ComposerUpdateCommand;
 
 class UpdateCommand extends ComposerUpdateCommand
 {
-    use CommandNaming, ComposerCreator;
+    use CommandConcerns;
 
     protected function configure(): void
     {

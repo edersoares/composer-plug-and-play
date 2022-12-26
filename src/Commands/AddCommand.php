@@ -10,7 +10,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class AddCommand extends BaseCommand
 {
-    use CommandNaming, ComposerCreator;
+    use CommandConcerns;
 
     protected function configure(): void
     {

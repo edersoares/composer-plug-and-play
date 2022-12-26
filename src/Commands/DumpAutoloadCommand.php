@@ -6,7 +6,7 @@ use Composer\Command\DumpAutoloadCommand as ComposerDumpAutoloadCommand;
 
 class DumpAutoloadCommand extends ComposerDumpAutoloadCommand
 {
-    use CommandNaming, ComposerCreator;
+    use CommandConcerns;
 
     protected function configure(): void
     {
