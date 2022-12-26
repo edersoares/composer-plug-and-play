@@ -11,8 +11,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 trait ComposerCreator
 {
-    protected bool $usePlugAndPlay = false;
-
     /**
      * Retrieves the default Composer\Composer instance or throws
      *
@@ -45,8 +43,7 @@ trait ComposerCreator
         $isTheCommand = $input->getFirstArgument() === $this->getName();
 
         if ($isTheCommand) {
-            $this->usePlugAndPlay = true;
-            $output->writeln('<info>You are using Composer Plug and Play Plugin.</info>');
+            $this->outputPluginUse($output);
         }
 
         if ($input->getOption('plug-and-play-pretend')) {
@@ -54,5 +51,10 @@ trait ComposerCreator
         }
 
         return parent::execute($input, $output);
+    }
+
+    public function outputPluginUse(OutputInterface $output): void
+    {
+        $output->writeln('<info>You are using Composer Plug and Play Plugin.</info>');
     }
 }

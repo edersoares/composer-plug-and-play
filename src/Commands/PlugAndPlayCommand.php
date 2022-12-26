@@ -8,25 +8,25 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class PlugAndPlayCommand extends BaseCommand
 {
-    use CommandNaming, ComposerCreator;
+    use CommandConcerns;
 
     protected function configure(): void
     {
         parent::configure();
 
         $this->naming('plug-and-play');
-        $this->setDescription('Installs plug and play dependencies together project dependencies.');
+        $this->setDescription('Installs plug and play dependencies together project dependencies');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $output->writeln('<info>You are using Composer Plug and Play Plugin.</info>');
+        $this->outputPluginUse($output);
 
         if ($input->getOption('plug-and-play-pretend')) {
             return 0;
         }
 
-        $locker = $this->getComposer()->getLocker();
+        $locker = $this->requireComposer()->getLocker();
         $runInstall = $locker->isLocked() && $locker->isFresh();
 
         $command = $runInstall

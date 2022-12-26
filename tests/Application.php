@@ -9,8 +9,11 @@ use Dex\Composer\PlugAndPlay\PlugAndPlayPlugin;
 
 class Application extends ComposerApplication
 {
-    public function getComposer(bool $required = true, ?bool $disablePlugins = null, ?bool $disableScripts = null): ?Composer
-    {
+    public function getComposer(
+        bool $required = true,
+        ?bool $disablePlugins = null,
+        ?bool $disableScripts = null,
+    ): ?Composer {
         $composer = parent::getComposer(true, $disablePlugins, $disableScripts);
 
         $composer->getPluginManager()->addPlugin(new PlugAndPlayPlugin(), false, new Package('dex/fake', '0.0.0', '0.0.0'));

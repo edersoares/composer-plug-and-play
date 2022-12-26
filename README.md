@@ -44,15 +44,17 @@ composer plug-and-play
 You can add some additional configuration in `packages/composer.json` to add more data in the final resolution of the 
 `composer.json` file.
 
-### Another commands
+### Commands
 
 All commands use the `plug-and-play.json` and `plug-and-play.lock` files as source to project dependencies instead of 
 `composer.json` and `composer.lock` original files.
 
+- `plug-and-play`: installs plug and play dependencies together project dependencies.
+- `plug-and-play:init`: initialize plug and play plugin.
+- `plug-and-play:add`: require a package into `packages/composer.json`.
 - `plug-and-play:install`: same that `composer install`, but using `plug-and-play` files.
 - `plug-and-play:update`: same that `composer update`, but using `plug-and-play` files.
 - `plug-and-play:dump`: same that `composer dump-autoload`, but using `plug-and-play` files.
-- `plug-and-play:add`: require a package into `packages/composer.json`.
 
 ### Directories and files
 
@@ -80,6 +82,23 @@ Your project directory will look like this:
 |           \__ composer.lock
 |-- composer.json
 |-- composer.lock
+```
+
+### Ignore plugged packages
+
+Sometimes you may need to ignore a package that is under development, for that add in `packages/composer.json` something
+like this and run `composer plug-and-play`.
+
+```json 
+{
+  "extra": {
+    "composer-plug-and-play": {
+      "ignore": [
+        "dex/fake"
+      ]
+    }
+  }
+}
 ```
 
 ## License

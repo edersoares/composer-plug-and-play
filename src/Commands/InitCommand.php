@@ -8,19 +8,19 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class InitCommand extends BaseCommand
 {
-    use CommandNaming, ComposerCreator;
+    use CommandConcerns;
 
     protected function configure(): void
     {
         parent::configure();
 
         $this->naming('plug-and-play:init');
-        $this->setDescription('Initialize plug and play plugin.');
+        $this->setDescription('Initialize plug and play plugin');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $output->writeln('<info>You are using Composer Plug and Play Plugin.</info>');
+        $this->outputPluginUse($output);
 
         if ($input->getOption('plug-and-play-pretend')) {
             return 0;

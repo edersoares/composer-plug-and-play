@@ -6,13 +6,13 @@ use Composer\Command\DumpAutoloadCommand as ComposerDumpAutoloadCommand;
 
 class DumpAutoloadCommand extends ComposerDumpAutoloadCommand
 {
-    use CommandNaming, ComposerCreator;
+    use CommandConcerns;
 
     protected function configure(): void
     {
         parent::configure();
 
         $this->naming('plug-and-play:dump');
-        $this->setDescription('Dumps the autoloader with plug and play dependencies.');
+        $this->setDescription('Dumps the autoloader with plug and play dependencies');
     }
 }
