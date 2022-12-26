@@ -11,8 +11,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 trait ComposerCreator
 {
-    protected bool $usePlugAndPlay = false;
-
     /**
      * Retrieves the default Composer\Composer instance or throws
      *
@@ -45,7 +43,6 @@ trait ComposerCreator
         $isTheCommand = $input->getFirstArgument() === $this->getName();
 
         if ($isTheCommand) {
-            $this->usePlugAndPlay = true;
             $this->outputPluginUse($output);
         }
 
