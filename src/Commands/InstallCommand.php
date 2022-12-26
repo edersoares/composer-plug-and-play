@@ -8,7 +8,7 @@ class InstallCommand extends ComposerInstallCommand
 {
     use CommandNaming, ComposerCreator;
 
-    protected function configure()
+    protected function configure(): void
     {
         parent::configure();
 

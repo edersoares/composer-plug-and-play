@@ -15,20 +15,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class PlugAndPlayPluginTest extends TestCase
 {
-    /**
-     * @var BufferIO
-     */
-    protected $io;
+    protected BufferIO $io;
 
-    /**
-     * @var Composer
-     */
-    protected $composer;
+    protected Composer $composer;
 
-    /**
-     * @var PluginManager
-     */
-    protected $pm;
+    protected PluginManager $pm;
 
     protected function setUp(): void
     {
@@ -49,7 +40,7 @@ class PlugAndPlayPluginTest extends TestCase
         $this->pm = new PluginManager($this->io, $this->composer);
     }
 
-    public function testAddPlugin()
+    public function testAddPlugin(): void
     {
         $this->pm->addPlugin(new PlugAndPlayPlugin(), false, new Package('dex/fake', '0.0.0', '0.0.0'));
 
@@ -57,7 +48,7 @@ class PlugAndPlayPluginTest extends TestCase
         $this->assertStringContainsString('Loading plugin ' . PlugAndPlayPlugin::class, $this->io->getOutput());
     }
 
-    public function testPluginCapability()
+    public function testPluginCapability(): void
     {
         $capability = $this->pm->getPluginCapability(new PlugAndPlayPlugin(), CommandProvider::class);
 

@@ -11,9 +11,9 @@ class ComposerCommandsTest extends TestCase
 {
     const WELCOME_MESSAGE = 'You are using Composer Plug and Play Plugin.';
 
-    protected $directory = __DIR__ . '/../Fixtures/Plugin/';
+    protected string $directory = __DIR__ . '/../Fixtures/Plugin/';
 
-    public function testPlugAndPlayCommand()
+    public function testPlugAndPlayCommand(): void
     {
         $application = new Application();
         $input = new StringInput("plug-and-play --plug-and-play-pretend -d {$this->directory}");
@@ -24,7 +24,7 @@ class ComposerCommandsTest extends TestCase
         $this->assertStringContainsString(self::WELCOME_MESSAGE, $output->fetch());
     }
 
-    public function testPlugAndPlayInstallCommand()
+    public function testPlugAndPlayInstallCommand(): void
     {
         $application = new Application();
         $input = new StringInput("plug-and-play:install --plug-and-play-pretend -d {$this->directory}");
@@ -35,7 +35,7 @@ class ComposerCommandsTest extends TestCase
         $this->assertStringContainsString(self::WELCOME_MESSAGE, $output->fetch());
     }
 
-    public function testPlugAndPlayUpdateCommand()
+    public function testPlugAndPlayUpdateCommand(): void
     {
         $application = new Application();
         $input = new StringInput("plug-and-play:update --plug-and-play-pretend -d {$this->directory}");
@@ -46,7 +46,7 @@ class ComposerCommandsTest extends TestCase
         $this->assertStringContainsString(self::WELCOME_MESSAGE, $output->fetch());
     }
 
-    public function testPlugAndPlayDumpCommand()
+    public function testPlugAndPlayDumpCommand(): void
     {
         $application = new Application();
         $input = new StringInput("plug-and-play:dump --plug-and-play-pretend -d {$this->directory}");
@@ -57,7 +57,7 @@ class ComposerCommandsTest extends TestCase
         $this->assertStringContainsString(self::WELCOME_MESSAGE, $output->fetch());
     }
 
-    public function testListCommand()
+    public function testListCommand(): void
     {
         $application = new Application();
         $input = new StringInput("list -d {$this->directory}");
@@ -72,7 +72,7 @@ class ComposerCommandsTest extends TestCase
         $this->assertStringContainsString('plug-and-play:update', $content);
     }
 
-    public function testPlugAndPlayInitCommand()
+    public function testPlugAndPlayInitCommand(): void
     {
         $application = new Application();
         $input = new StringInput("plug-and-play:init --plug-and-play-pretend -d {$this->directory}");

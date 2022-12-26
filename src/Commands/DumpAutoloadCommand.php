@@ -8,7 +8,7 @@ class DumpAutoloadCommand extends ComposerDumpAutoloadCommand
 {
     use CommandNaming, ComposerCreator;
 
-    protected function configure()
+    protected function configure(): void
     {
         parent::configure();
 

@@ -7,21 +7,18 @@ use Composer\Factory as ComposerFactory;
 use Composer\IO\IOInterface;
 use Composer\Json\JsonFile;
 use Composer\Json\JsonValidationException;
+use Composer\PartialComposer;
 use Dex\Composer\PlugAndPlay\PlugAndPlayInterface;
 use InvalidArgumentException;
+use Seld\JsonLint\ParsingException;
 use UnexpectedValueException;
 
 class Factory extends ComposerFactory implements PlugAndPlayInterface
 {
-    /**
-     * @var bool
-     */
-    private static $loaded = false;
+    private static bool $loaded = false;
 
     /**
      * Restart factory.
-     *
-     * @return void
      */
     public static function restart(): void
     {
@@ -29,16 +26,12 @@ class Factory extends ComposerFactory implements PlugAndPlayInterface
     }
 
     /**
-     * Loads Composer JSON file if has a validated schema.
-     *
-     * @param IOInterface $io
-     * @param string      $filename
+     * Loads Composer JSON file if it has a validated schema.
      *
      * @throws JsonValidationException
-     *
-     * @return mixed
+     * @throws ParsingException
      */
-    private function loadJsonFile(IOInterface $io, string $filename)
+    private function loadJsonFile(IOInterface $io, string $filename): mixed
     {
         $file = new JsonFile($filename, null, $io);
 
@@ -49,12 +42,8 @@ class Factory extends ComposerFactory implements PlugAndPlayInterface
 
     /**
      * Saves plug-and-play.json and plug-and-play.lock files.
-     *
-     * @param array $data
-     *
-     * @return void
      */
-    private function saveComposerPlugAndPlayFile(array $data)
+    private function saveComposerPlugAndPlayFile(array $data): void
     {
         $json = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . PHP_EOL;
 
@@ -67,12 +56,8 @@ class Factory extends ComposerFactory implements PlugAndPlayInterface
 
     /**
      * Creates a repository item.
-     *
-     * @param string $package
-     *
-     * @return array
      */
-    private function createRepositoryItem(string $package)
+    private function createRepositoryItem(string $package): array
     {
         return [
             'type' => 'path',
@@ -84,17 +69,10 @@ class Factory extends ComposerFactory implements PlugAndPlayInterface
     /**
      * Creates a Composer instance.
      *
-     * @param IOInterface $io
-     * @param string|null $localConfig
-     * @param false       $disablePlugins
-     * @param string|null $cwd
-     * @param bool        $fullLoad
-     *
      * @throws InvalidArgumentException
      * @throws JsonValidationException
      * @throws UnexpectedValueException
-     *
-     * @return Composer
+     * @throws ParsingException
      */
     public function createComposer(
         IOInterface $io,
@@ -103,7 +81,7 @@ class Factory extends ComposerFactory implements PlugAndPlayInterface
         $cwd = null,
         $fullLoad = true,
         $disableScripts = false
-    ) {
+    ): Composer|PartialComposer {
         $cwd = $cwd ?: getcwd();
 
         if (null === $localConfig) {
@@ -128,6 +106,12 @@ class Factory extends ComposerFactory implements PlugAndPlayInterface
         return parent::createComposer($io, self::FILENAME, $disablePlugins, $cwd, $fullLoad, $disableScripts);
     }
 
+    /**
+     * Load composer.json plug and play file and plugs its dependencies.
+     *
+     * @throws JsonValidationException
+     * @throws ParsingException
+     */
     private function loadComposerPackageFile(IOInterface $io, array &$plugged, array &$localConfig): void
     {
         $packagesConfig = file_exists(self::PACKAGES_FILE)
@@ -141,6 +125,13 @@ class Factory extends ComposerFactory implements PlugAndPlayInterface
         $localConfig = array_merge_recursive($localConfig, $packagesConfig);
     }
 
+    /**
+     * Define plugged and ignored packages to list after and prepare plug and
+     * play packages to link to its repository.
+     *
+     * @throws JsonValidationException
+     * @throws ParsingException
+     */
     private function definePluggedAndIgnoredPackages(IOInterface $io, array &$plugged, array &$ignored, array &$localConfig): void
     {
         $ignore = $localConfig['extra']['composer-plug-and-play']['ignore'] ?? [];
@@ -163,6 +154,9 @@ class Factory extends ComposerFactory implements PlugAndPlayInterface
         }
     }
 
+    /**
+     * Write in output which packages are plugged and witch are ignored.
+     */
     private function writePluggedAndIgnoredPackages(IOInterface $io, array $plugged, array $ignored): void
     {
         if (static::$loaded) {

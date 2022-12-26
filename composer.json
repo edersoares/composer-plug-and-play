@@ -33,11 +33,13 @@
         "class": "Dex\\Composer\\PlugAndPlay\\PlugAndPlayPlugin"
     },
     "scripts": {
-        "tests": "vendor/bin/phpunit tests --colors",
-        "tests:coverage": "vendor/bin/phpunit --colors --coverage-html=.phpunit.cache/coverage"
+        "test": "vendor/bin/phpunit tests --colors",
+        "test:coverage": "XDEBUG_MODE=coverage vendor/bin/phpunit --colors --coverage-html=.build/coverage",
+        "test:coverage:open": "open .build/coverage/index.html"
     },
     "scripts-descriptions": {
-        "tests": "Runs package tests",
-        "tests:coverage": "Runs coverage"
+        "test": "Runs package tests",
+        "test:coverage": "Runs coverage",
+        "test:coverage:open": "Open coverage report"
     }
 }

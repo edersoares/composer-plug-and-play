@@ -13,7 +13,7 @@ class FactoryTest extends TestCase
 {
     const PATH = __DIR__ . '/../../Fixtures/Plugin/';
 
-    private $cwd;
+    private string $cwd;
 
     protected function setUp(): void
     {
@@ -33,7 +33,7 @@ class FactoryTest extends TestCase
         chdir($this->cwd);
     }
 
-    public function testFactory()
+    public function testFactory(): void
     {
         $composerPlugAndPlayFile = self::PATH . PlugAndPlayInterface::FILENAME;
 
