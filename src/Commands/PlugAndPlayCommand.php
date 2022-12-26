@@ -26,7 +26,7 @@ class PlugAndPlayCommand extends BaseCommand
             return 0;
         }
 
-        $locker = $this->getComposer()->getLocker();
+        $locker = $this->requireComposer()->getLocker();
         $runInstall = $locker->isLocked() && $locker->isFresh();
 
         $command = $runInstall
