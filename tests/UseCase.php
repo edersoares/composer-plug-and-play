@@ -28,6 +28,10 @@ abstract class UseCase extends TestCase
 
         Factory::restart();
 
+        if (is_file($this->getPackageFilename())) {
+            unlink($this->getPackageFilename());
+        }
+
         chdir($this->cwd);
     }
 
