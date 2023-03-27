@@ -149,7 +149,7 @@ class Factory extends ComposerFactory implements PlugAndPlayInterface
 
             $plugged[] = $data['name'];
 
-            $localConfig['require'][$data['name']] = '*';
+            $localConfig['require'][$data['name']] = '@dev';
             $localConfig['repositories'][] = $this->createRepositoryItem($package);
         }
     }
