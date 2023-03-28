@@ -27,8 +27,6 @@ abstract class UseCase extends TestCase
     {
         parent::tearDown();
 
-        Factory::restart();
-
         if (is_file($this->getPackageFilename())) {
             unlink($this->getPackageFilename());
         }

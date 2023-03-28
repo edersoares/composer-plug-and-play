@@ -28,8 +28,6 @@ class FactoryTest extends TestCase
     {
         parent::tearDown();
 
-        Factory::restart();
-
         chdir($this->cwd);
     }
 
