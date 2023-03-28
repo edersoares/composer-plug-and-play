@@ -9,8 +9,7 @@ use Dex\Composer\PlugAndPlay\PlugAndPlayInterface;
 abstract class UseCase extends TestCase
 {
     protected string $cwd;
-    protected Factory $factory;
-    protected BufferIO $io;
+    protected string $output;
 
     abstract protected function path(): string;
 
@@ -41,12 +40,14 @@ abstract class UseCase extends TestCase
 
     protected function factory(): Factory
     {
-        $this->factory = new Factory();
-        $this->io = new BufferIO();
+        $factory = new Factory();
+        $io = new BufferIO();
 
-        $this->factory->createComposer(io: $this->io, cwd: $this->path());
+        $factory->createComposer(io: $io, cwd: $this->path());
 
-        return $this->factory;
+        $this->output = $io->getOutput();
+
+        return $factory;
     }
 
     protected function assertGeneratedJsonEquals(array $data): void
@@ -58,6 +59,6 @@ abstract class UseCase extends TestCase
 
     protected function assertOutput(string $output): void
     {
-        $this->assertStringContainsString($output, $this->io->getOutput());
+        $this->assertStringContainsString($output, $this->output);
     }
 }
