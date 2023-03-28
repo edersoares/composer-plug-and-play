@@ -1,6 +1,6 @@
 <?php
 
-namespace Dex\Composer\PlugAndPlay\Tests\Unit;
+namespace Dex\Composer\PlugAndPlay\Tests;
 
 use Composer\Composer;
 use Composer\Config;
