@@ -8,7 +8,7 @@ class InitCommandTest extends CommandTestCase
 {
     protected function fixture(): string
     {
-        return 'init-command';
+        return 'command';
     }
 
     public function testInitCommand(): void

@@ -8,7 +8,7 @@ class PlugAndPlayCommandTest extends CommandTestCase
 {
     protected function fixture(): string
     {
-        return 'plug-and-play-command';
+        return 'command';
     }
 
     public function testPlugAndPlayCommand(): void
