@@ -9,15 +9,15 @@ abstract class FactoryTestCase extends TestCase
 {
     use TestConcerns;
 
-    protected function factory(): Factory
+    protected function factory(): void
     {
+        Factory::restart();
+
         $factory = new Factory();
         $io = new BufferIO();
 
         $factory->createComposer(io: $io, cwd: $this->path() . $this->fixture());
 
         $this->output = $io->getOutput();
-
-        return $factory;
     }
 }
