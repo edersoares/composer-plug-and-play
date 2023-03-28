@@ -8,7 +8,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class PlugAndPlayCommand extends BaseCommand
 {
-    use ComposerCreator, CommandNaming;
+    use ComposerCreator;
+    use CommandNaming;
 
     protected function configure(): void
     {
