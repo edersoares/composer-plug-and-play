@@ -10,7 +10,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class AddCommand extends BaseCommand
 {
-    use CommandConcerns;
+    use ComposerCreator, CommandNaming;
 
     protected function configure(): void
     {
@@ -36,7 +36,7 @@ class AddCommand extends BaseCommand
 
         $json['require'][$input->getArgument('package')] = $input->getArgument('version');
 
-        $json = json_encode($json, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+        $json = json_encode($json, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . PHP_EOL;
 
         file_put_contents(PlugAndPlayInterface::PACKAGES_FILE, $json);
 

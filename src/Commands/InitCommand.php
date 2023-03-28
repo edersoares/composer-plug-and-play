@@ -8,7 +8,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class InitCommand extends BaseCommand
 {
-    use CommandConcerns;
+    use ComposerCreator, CommandNaming;
 
     protected function configure(): void
     {
@@ -21,10 +21,6 @@ class InitCommand extends BaseCommand
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->outputPluginUse($output);
-
-        if ($input->getOption('plug-and-play-pretend')) {
-            return 0;
-        }
 
         if (is_dir('packages')) {
             $output->writeln('The [packages] directory already exists.');

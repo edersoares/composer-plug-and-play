@@ -1,0 +1,9 @@
+{
+    "extra": {
+        "composer-plug-and-play": {
+            "ignore": [
+                "dex/ignore"
+            ]
+        }
+    }
+}

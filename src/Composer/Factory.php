@@ -15,16 +15,6 @@ use UnexpectedValueException;
 
 class Factory extends ComposerFactory implements PlugAndPlayInterface
 {
-    private static bool $loaded = false;
-
-    /**
-     * Restart factory.
-     */
-    public static function restart(): void
-    {
-        static::$loaded = false;
-    }
-
     /**
      * Loads Composer JSON file if it has a validated schema.
      *
@@ -88,8 +78,20 @@ class Factory extends ComposerFactory implements PlugAndPlayInterface
             $localConfig = static::getComposerFile();
         }
 
+        $lockFile = static::getLockFile($localConfig);
+
         if (is_string($localConfig)) {
             $localConfig = $this->loadJsonFile($io, $localConfig);
+        }
+
+        $lockData = $this->loadJsonFile($io, $lockFile);
+
+        foreach ($lockData['packages'] ?? [] as $package) {
+            $localConfig['require'][$package['name']] = $package['version'];
+        }
+
+        foreach ($lockData['packages-dev'] ?? [] as $package) {
+            $localConfig['require-dev'][$package['name']] = $package['version'];
         }
 
         $ignored = [];
@@ -159,10 +161,6 @@ class Factory extends ComposerFactory implements PlugAndPlayInterface
      */
     private function writePluggedAndIgnoredPackages(IOInterface $io, array $plugged, array $ignored): void
     {
-        if (static::$loaded) {
-            return;
-        }
-
         if ($plugged) {
             sort($plugged);
 
@@ -182,7 +180,5 @@ class Factory extends ComposerFactory implements PlugAndPlayInterface
         foreach ($ignored as $package) {
             $io->write("  Ignored: $package");
         }
-
-        static::$loaded = true;
     }
 }

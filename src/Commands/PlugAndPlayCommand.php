@@ -8,7 +8,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class PlugAndPlayCommand extends BaseCommand
 {
-    use CommandConcerns;
+    use ComposerCreator, CommandNaming;
 
     protected function configure(): void
     {
@@ -21,10 +21,6 @@ class PlugAndPlayCommand extends BaseCommand
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->outputPluginUse($output);
-
-        if ($input->getOption('plug-and-play-pretend')) {
-            return 0;
-        }
 
         $locker = $this->requireComposer()->getLocker();
         $runInstall = $locker->isLocked() && $locker->isFresh();
