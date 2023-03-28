@@ -22,10 +22,6 @@ class InitCommand extends BaseCommand
     {
         $this->outputPluginUse($output);
 
-        if ($input->getOption('plug-and-play-pretend')) {
-            return 0;
-        }
-
         if (is_dir('packages')) {
             $output->writeln('The [packages] directory already exists.');
         } else {

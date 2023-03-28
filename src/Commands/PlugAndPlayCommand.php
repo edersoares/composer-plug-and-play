@@ -22,10 +22,6 @@ class PlugAndPlayCommand extends BaseCommand
     {
         $this->outputPluginUse($output);
 
-        if ($input->getOption('plug-and-play-pretend')) {
-            return 0;
-        }
-
         $locker = $this->requireComposer()->getLocker();
         $runInstall = $locker->isLocked() && $locker->isFresh();
 

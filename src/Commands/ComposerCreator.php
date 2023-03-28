@@ -46,10 +46,6 @@ trait ComposerCreator
             $this->outputPluginUse($output);
         }
 
-        if ($input->getOption('plug-and-play-pretend')) {
-            return 0;
-        }
-
         return parent::execute($input, $output);
     }
 
