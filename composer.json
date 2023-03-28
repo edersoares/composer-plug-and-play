@@ -17,7 +17,8 @@
     },
     "require-dev": {
         "composer/composer": "^2.3.0",
-        "phpunit/phpunit": "^9.5"
+        "phpunit/phpunit": "^9.5",
+        "laravel/pint": "^1.7"
     },
     "autoload": {
         "psr-4": {
@@ -33,11 +34,13 @@
         "class": "Dex\\Composer\\PlugAndPlay\\PlugAndPlayPlugin"
     },
     "scripts": {
+        "format": "vendor/bin/pint",
         "test": "vendor/bin/phpunit tests --colors",
         "test:coverage": "XDEBUG_MODE=coverage vendor/bin/phpunit --colors --coverage-html=.build/coverage",
         "test:coverage:open": "open .build/coverage/index.html"
     },
     "scripts-descriptions": {
+        "format": "Format code",
         "test": "Runs package tests",
         "test:coverage": "Runs coverage",
         "test:coverage:open": "Open coverage report"
