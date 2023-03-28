@@ -32,14 +32,3 @@ class CustomRepositoriesTest extends UseCase
         ]);
     }
 }
-/*
-
-            "type": "path",
-            "url": "../packages/dex/fake",
-            "options": {
-                "reference": "none",
-                "versions": {
-                    "dex/fake": "0.0.0"
-                }
-            }
-*/
