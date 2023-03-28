@@ -2,7 +2,7 @@
 
 namespace Dex\Composer\PlugAndPlay\Tests;
 
-use Composer\IO\IOInterface;
+use Composer\IO\BufferIO;
 use Dex\Composer\PlugAndPlay\Composer\Factory;
 use Dex\Composer\PlugAndPlay\PlugAndPlayInterface;
 
@@ -10,6 +10,7 @@ abstract class UseCase extends TestCase
 {
     protected string $cwd;
     protected Factory $factory;
+    protected BufferIO $io;
 
     abstract protected function path(): string;
 
@@ -42,13 +43,12 @@ abstract class UseCase extends TestCase
 
     protected function factory(): Factory
     {
-        $io = $this->createMock(IOInterface::class);
+        $this->factory = new Factory();
+        $this->io = new BufferIO();
 
-        $factory = new Factory();
+        $this->factory->createComposer(io: $this->io, cwd: $this->path());
 
-        $factory->createComposer(io: $io, cwd: $this->path());
-
-        return $factory;
+        return $this->factory;
     }
 
     protected function assertGeneratedJsonEquals(array $data): void
@@ -56,5 +56,10 @@ abstract class UseCase extends TestCase
         $json = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . PHP_EOL;
 
         $this->assertStringEqualsFile($this->getPackageFilename(), $json);
+    }
+
+    protected function assertOutput(string $output): void
+    {
+        $this->assertStringContainsString($output, $this->io->getOutput());
     }
 }
