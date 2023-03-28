@@ -6,7 +6,7 @@ use Composer\Command\InstallCommand as ComposerInstallCommand;
 
 class InstallCommand extends ComposerInstallCommand
 {
-    use CommandConcerns;
+    use ComposerCreator, CommandNaming;
 
     protected function configure(): void
     {
