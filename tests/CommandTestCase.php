@@ -9,7 +9,7 @@ use Symfony\Component\Console\Output\BufferedOutput;
 abstract class CommandTestCase extends TestCase
 {
     protected string $cwd;
-    protected BufferedOutput $output;
+    protected string $output;
 
     abstract protected function fixture(): string;
 
@@ -28,8 +28,6 @@ abstract class CommandTestCase extends TestCase
         parent::setUp();
 
         $this->cwd = getcwd();
-        $this->output = new BufferedOutput();
-
         $from = $this->fixturesPath();
         $tmp = $this->path() . $this->fixture();
 
@@ -58,8 +56,11 @@ abstract class CommandTestCase extends TestCase
     {
         $application = new Application();
         $input = new StringInput($command);
+        $output = new BufferedOutput();
 
-        $application->doRun($input, $this->output);
+        $application->doRun($input, $output);
+
+        $this->output = $output->fetch();
     }
 
     protected function assertPackagesFileJsonEquals(array $data): void
@@ -71,6 +72,6 @@ abstract class CommandTestCase extends TestCase
 
     protected function assertOutputContains(string $string): void
     {
-        $this->assertStringContainsString($string, $this->output->fetch());
+        $this->assertStringContainsString($string, $this->output);
     }
 }
