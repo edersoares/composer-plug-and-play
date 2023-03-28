@@ -15,6 +15,8 @@ class IgnoredPackagesTest extends UseCase
     {
         $this->factory();
 
+        $this->assertOutput('Plugged: dex/not-ignore');
+        $this->assertOutput('Ignored: dex/ignore');
         $this->assertGeneratedJsonEquals([
             'extra' => [
                 'composer-plug-and-play' => [
