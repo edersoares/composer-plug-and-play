@@ -22,4 +22,16 @@ class AddCommandTest extends CommandTestCase
             ],
         ]);
     }
+
+    public function testAddCommandWithVersion(): void
+    {
+        $this->runCommand('plug-and-play:add dex/extra 1.0');
+
+        $this->assertOutputContains('You are using Composer Plug and Play Plugin.');
+        $this->assertPackagesFileJsonEquals([
+            'require' => [
+                'dex/extra' => '1.0',
+            ],
+        ]);
+    }
 }
