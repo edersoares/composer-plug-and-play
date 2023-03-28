@@ -3,9 +3,9 @@
 namespace Dex\Composer\PlugAndPlay\Tests\Unit\Commands;
 
 use Dex\Composer\PlugAndPlay\PlugAndPlayInterface;
-use Dex\Composer\PlugAndPlay\Tests\CommandTestCase;
+use Dex\Composer\PlugAndPlay\Tests\OldCommandTestCase;
 
-class AddCommandTest extends CommandTestCase
+class AddOldCommandTest extends OldCommandTestCase
 {
     protected function setUp(): void
     {

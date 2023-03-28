@@ -6,7 +6,7 @@ use Dex\Composer\PlugAndPlay\PlugAndPlayInterface;
 use Symfony\Component\Console\Input\StringInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 
-abstract class CommandTestCase extends TestCase
+abstract class OldCommandTestCase extends TestCase
 {
     protected string $directory = __DIR__ . '/../../tmp/';
 
