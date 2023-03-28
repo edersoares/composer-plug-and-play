@@ -6,17 +6,17 @@ use Dex\Composer\PlugAndPlay\Tests\FactoryTestCase;
 
 class IgnoredPackagesTest extends FactoryTestCase
 {
-    protected function path(): string
+    protected function fixture(): string
     {
-        return __DIR__ . '/../../../fixtures/ignored-packages/';
+        return 'ignored-packages';
     }
 
     public function testFactory(): void
     {
         $this->factory();
 
-        $this->assertOutput('Plugged: dex/not-ignore');
-        $this->assertOutput('Ignored: dex/ignore');
+        $this->assertOutputContains('Plugged: dex/not-ignore');
+        $this->assertOutputContains('Ignored: dex/ignore');
         $this->assertGeneratedJsonEquals([
             'extra' => [
                 'composer-plug-and-play' => [

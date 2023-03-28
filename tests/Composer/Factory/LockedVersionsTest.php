@@ -6,9 +6,9 @@ use Dex\Composer\PlugAndPlay\Tests\FactoryTestCase;
 
 class LockedVersionsTest extends FactoryTestCase
 {
-    protected function path(): string
+    protected function fixture(): string
     {
-        return __DIR__ . '/../../../fixtures/locked-versions/';
+        return 'locked-versions';
     }
 
     public function testFactory(): void
