@@ -1,14 +1,14 @@
 <?php
 
-namespace Dex\Composer\PlugAndPlay\Tests\UseCase;
+namespace Dex\Composer\PlugAndPlay\Tests\Composer\Factory;
 
-use Dex\Composer\PlugAndPlay\Tests\UseCase;
+use Dex\Composer\PlugAndPlay\Tests\FactoryTestCase;
 
-class CustomRepositoriesTest extends UseCase
+class CustomRepositoriesTest extends FactoryTestCase
 {
     protected function path(): string
     {
-        return __DIR__ . '/../../fixtures/custom-repositories/';
+        return __DIR__ . '/../../../fixtures/custom-repositories/';
     }
 
     public function testFactory(): void

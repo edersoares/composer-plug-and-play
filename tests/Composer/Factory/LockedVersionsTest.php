@@ -1,14 +1,14 @@
 <?php
 
-namespace Dex\Composer\PlugAndPlay\Tests\UseCase;
+namespace Dex\Composer\PlugAndPlay\Tests\Composer\Factory;
 
-use Dex\Composer\PlugAndPlay\Tests\UseCase;
+use Dex\Composer\PlugAndPlay\Tests\FactoryTestCase;
 
-class LockedVersionsTest extends UseCase
+class LockedVersionsTest extends FactoryTestCase
 {
     protected function path(): string
     {
-        return __DIR__ . '/../../fixtures/locked-versions/';
+        return __DIR__ . '/../../../fixtures/locked-versions/';
     }
 
     public function testFactory(): void

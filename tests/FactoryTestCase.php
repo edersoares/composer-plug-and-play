@@ -6,7 +6,7 @@ use Composer\IO\BufferIO;
 use Dex\Composer\PlugAndPlay\Composer\Factory;
 use Dex\Composer\PlugAndPlay\PlugAndPlayInterface;
 
-abstract class UseCase extends TestCase
+abstract class FactoryTestCase extends TestCase
 {
     protected string $cwd;
     protected string $output;

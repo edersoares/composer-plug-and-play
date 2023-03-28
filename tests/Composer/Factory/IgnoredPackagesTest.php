@@ -1,14 +1,14 @@
 <?php
 
-namespace Dex\Composer\PlugAndPlay\Tests\UseCase;
+namespace Dex\Composer\PlugAndPlay\Tests\Composer\Factory;
 
-use Dex\Composer\PlugAndPlay\Tests\UseCase;
+use Dex\Composer\PlugAndPlay\Tests\FactoryTestCase;
 
-class IgnoredPackagesTest extends UseCase
+class IgnoredPackagesTest extends FactoryTestCase
 {
     protected function path(): string
     {
-        return __DIR__ . '/../../fixtures/ignored-packages/';
+        return __DIR__ . '/../../../fixtures/ignored-packages/';
     }
 
     public function testFactory(): void
