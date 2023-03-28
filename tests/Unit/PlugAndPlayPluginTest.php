@@ -4,6 +4,7 @@ namespace Dex\Composer\PlugAndPlay\Tests\Unit;
 
 use Composer\Composer;
 use Composer\Config;
+use Composer\EventDispatcher\EventDispatcher;
 use Composer\IO\BufferIO;
 use Composer\Package\Locker;
 use Composer\Package\Package;
@@ -24,6 +25,7 @@ class PlugAndPlayPluginTest extends TestCase
     protected function setUp(): void
     {
         $locker = $this->createMock(Locker::class);
+        $dispatcher = $this->createMock(EventDispatcher::class);
 
         $config = new Config();
         $config->merge([
@@ -35,6 +37,7 @@ class PlugAndPlayPluginTest extends TestCase
         $this->composer = new Composer();
         $this->composer->setConfig($config);
         $this->composer->setLocker($locker);
+        $this->composer->setEventDispatcher($dispatcher);
 
         $this->io = new BufferIO('', OutputInterface::VERBOSITY_DEBUG);
         $this->pm = new PluginManager($this->io, $this->composer);
@@ -46,6 +49,24 @@ class PlugAndPlayPluginTest extends TestCase
 
         $this->assertCount(1, $this->pm->getPlugins());
         $this->assertStringContainsString('Loading plugin ' . PlugAndPlayPlugin::class, $this->io->getOutput());
+    }
+
+    public function testRemovePlugin(): void
+    {
+        $plugin = new PlugAndPlayPlugin();
+
+        $this->pm->addPlugin($plugin, false, new Package('dex/fake', '0.0.0', '0.0.0'));
+        $this->pm->removePlugin($plugin);
+
+        $this->assertCount(0, $this->pm->getPlugins());
+        $this->assertStringContainsString('Unloading plugin ' . PlugAndPlayPlugin::class, $this->io->getOutput());
+    }
+
+    public function testUninstallPlugin(): void
+    {
+        $this->pm->uninstallPlugin(new PlugAndPlayPlugin());
+
+        $this->assertCount(0, $this->pm->getPlugins());
     }
 
     public function testPluginCapability(): void
