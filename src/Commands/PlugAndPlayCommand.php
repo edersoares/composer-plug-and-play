@@ -15,7 +15,7 @@ class PlugAndPlayCommand extends BaseCommand
     {
         parent::configure();
 
-        $this->naming('plug-and-play');
+        $this->naming('plug-and-play', 'pp');
         $this->setDescription('Installs plug and play dependencies together project dependencies');
     }
 
