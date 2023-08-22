@@ -7,9 +7,9 @@ trait CommandNaming
     /**
      * Define name, aliases and add plug and play option.
      */
-    public function naming(string $command): void
+    public function naming(string $command, ...$aliases): void
     {
         $this->setName($command);
-        $this->setAliases([]);
+        $this->setAliases($aliases);
     }
 }
