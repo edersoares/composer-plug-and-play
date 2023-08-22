@@ -134,6 +134,17 @@ class Factory extends ComposerFactory implements PlugAndPlayInterface
             $plugged[] = $package;
         }
 
+        # TODO improve next lines
+        if (isset($packagesConfig['minimum-stability'])) {
+            $localConfig['minimum-stability'] = $packagesConfig['minimum-stability'];
+            unset($packagesConfig['minimum-stability']);
+        }
+
+        if (isset($packagesConfig['prefer-stable'])) {
+            $localConfig['prefer-stable'] = $packagesConfig['prefer-stable'];
+            unset($packagesConfig['prefer-stable']);
+        }
+
         $localConfig = array_merge_recursive($localConfig, $packagesConfig);
     }
 
