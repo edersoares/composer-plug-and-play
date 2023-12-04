@@ -16,7 +16,7 @@ class ResetCommand extends BaseCommand
     {
         parent::configure();
 
-        $this->naming('plug-and-play:reset');
+        $this->naming('plug-and-play:reset', 'pp:reset');
         $this->setDescription('Reset plug and play files');
     }
 

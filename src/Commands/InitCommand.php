@@ -15,7 +15,7 @@ class InitCommand extends BaseCommand
     {
         parent::configure();
 
-        $this->naming('plug-and-play:init');
+        $this->naming('plug-and-play:init', 'pp:init');
         $this->setDescription('Initialize plug and play plugin');
     }
 
