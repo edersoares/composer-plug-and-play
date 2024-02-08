@@ -147,6 +147,20 @@ class Factory extends ComposerFactory implements PlugAndPlayInterface
             unset($packagesConfig['prefer-stable']);
         }
 
+        $allowPlugins = $packagesConfig['config']['allow-plugins'] ?? null;
+
+        if (is_bool($allowPlugins)) {
+            $localConfig['config']['allow-plugins'] = $allowPlugins;
+            unset($packagesConfig['config']['allow-plugins']);
+        }
+
+        if (is_array($allowPlugins)) {
+            foreach ($allowPlugins as $plugin => $allow) {
+                $localConfig['config']['allow-plugins'][$plugin] = $allow;
+            }
+            unset($packagesConfig['config']['allow-plugins']);
+        }
+
         $localConfig = array_merge_recursive($localConfig, $packagesConfig);
     }
 
