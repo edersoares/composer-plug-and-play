@@ -94,14 +94,16 @@ class Factory extends ComposerFactory implements PlugAndPlayInterface
             $localConfig = $this->loadJsonFile($io, $localConfig);
         }
 
-        $lockData = $this->loadJsonFile($io, $lockFile);
+        if (file_exists($lockFile)) {
+            $lockData = $this->loadJsonFile($io, $lockFile);
 
-        foreach ($lockData['packages'] ?? [] as $package) {
-            $localConfig['require'][$package['name']] = $package['version'];
-        }
+            foreach ($lockData['packages'] ?? [] as $package) {
+                $localConfig['require'][$package['name']] = $package['version'];
+            }
 
-        foreach ($lockData['packages-dev'] ?? [] as $package) {
-            $localConfig['require-dev'][$package['name']] = $package['version'];
+            foreach ($lockData['packages-dev'] ?? [] as $package) {
+                $localConfig['require-dev'][$package['name']] = $package['version'];
+            }
         }
 
         $ignored = [];
