@@ -158,6 +158,7 @@ class Factory extends ComposerFactory implements PlugAndPlayInterface
     private function definePluggedAndIgnoredPackages(IOInterface $io, array &$plugged, array &$ignored, array &$localConfig): void
     {
         $ignore = $localConfig['extra']['composer-plug-and-play']['ignore'] ?? [];
+        $requireDev = $localConfig['extra']['composer-plug-and-play']['require-dev'] ?? [];
 
         $packages = glob(self::PATH);
 
@@ -168,6 +169,13 @@ class Factory extends ComposerFactory implements PlugAndPlayInterface
                 $ignored[] = $data['name'];
 
                 continue;
+            }
+
+            // TODO show dev dependencies required
+            if (in_array($data['name'], $requireDev)) {
+                foreach ($data['require-dev'] ?? [] as $pack => $version) {
+                    $localConfig['require-dev'][$pack] = $version;
+                }
             }
 
             $plugged[] = $data['name'];
