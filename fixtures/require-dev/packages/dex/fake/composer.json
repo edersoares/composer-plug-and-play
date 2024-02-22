@@ -1,0 +1,6 @@
+{
+    "name": "dex/fake",
+    "require-dev": {
+        "dex/composer-plug-and-play": "@dev"
+    }
+}
