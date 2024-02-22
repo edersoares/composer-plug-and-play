@@ -49,12 +49,16 @@ You can add some additional configuration in `packages/composer.json` to add mor
 All commands use the `plug-and-play.json` and `plug-and-play.lock` files as source to project dependencies instead of 
 `composer.json` and `composer.lock` original files.
 
+You can use `composer pp` and `composer pp:*` as alias for all commands.
+
 - `plug-and-play`: installs plug and play dependencies together project dependencies.
-- `plug-and-play:init`: initialize plug and play plugin.
 - `plug-and-play:add`: require a package into `packages/composer.json`.
-- `plug-and-play:install`: same that `composer install`, but using `plug-and-play` files.
-- `plug-and-play:update`: same that `composer update`, but using `plug-and-play` files.
 - `plug-and-play:dump`: same that `composer dump-autoload`, but using `plug-and-play` files.
+- `plug-and-play:init`: initialize plug and play plugin.
+- `plug-and-play:install`: same that `composer install`, but using `plug-and-play` files.
+- `plug-and-play:reset`: remove `plug-and-play` files.
+- `plug-and-play:run`: same that `composer run-script`, but using `plug-and-play` files.
+- `plug-and-play:update`: same that `composer update`, but using `plug-and-play` files.
 
 ### Directories and files
 
