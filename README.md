@@ -110,4 +110,4 @@ something like this and run `composer plug-and-play`.
 ## License
 
 [Composer Plug and Play](https://github.com/edersoares/composer-plug-and-play/) is licensed under the MIT license.
-See the [license](https://github.com/edersoares/composer-plug-and-play/blob/master/LICENSE) file for more details.
+See the [license](https://github.com/edersoares/composer-plug-and-play/blob/main/LICENSE.md) file for more details.
