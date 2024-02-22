@@ -14,7 +14,9 @@ test('merge `composer.json` keys', function () {
         "minimum-stability" => "dev",
         "prefer-stable" => false,
         'config' => [
-            'allow-plugins' => true,
+            'allow-plugins' => [
+                'dex/composer-plug-and-play' => true,
+            ],
         ],
     ]);
 });
