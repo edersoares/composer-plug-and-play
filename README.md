@@ -71,21 +71,23 @@ dependencies.
 Your project directory will look like this:
 
 ```
-|-- packages 
-|   \__ <vendor-name>
-|       \__ <plug-and-play-package>
-|           \__ composer.json
-|           \__ composer.lock
-|   \__ composer.json
-|   \__ plug-and-play.json
-|   \__ plug-and-play.lock
-|-- vendor
-|   \__ <vendor-name>
-|       \__ <require-package>
-|           \__ composer.json
-|           \__ composer.lock
-|-- composer.json
-|-- composer.lock
+|- packages 
+|  |- <vendor-name>
+|  |  |- <plug-and-play-package>
+|  |     |- composer.json
+|  |     |- composer.lock
+|  |- composer.json
+|  |- plug-and-play.json
+|  |- plug-and-play.lock
+|
+|- vendor
+|  |- <vendor-name>
+|     |- <require-package>
+|        |- composer.json
+|        |- composer.lock
+|
+|- composer.json
+|- composer.lock
 ```
 
 ### Ignore plugged packages
