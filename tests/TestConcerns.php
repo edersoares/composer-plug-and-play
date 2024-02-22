@@ -8,27 +8,29 @@ trait TestConcerns
 {
     protected string $cwd;
     protected string $output;
+    protected string $fixture;
 
-    abstract protected function fixture(): string;
-
-    protected function setUp(): void
+    public function fixture(string $fixture): static
     {
-        parent::setUp();
+        $this->fixture = $fixture;
 
+        return $this;
+    }
+
+    public function prepare(): void
+    {
         $this->cwd = getcwd();
         $from = $this->fixturesPath();
-        $tmp = $this->path() . $this->fixture();
+        $tmp = $this->path() . $this->fixture;
 
         exec("cp -R $from $tmp");
 
         chdir($tmp);
     }
 
-    protected function tearDown(): void
+    public function cleanup(): void
     {
-        parent::tearDown();
-
-        $tmp = $this->path() . $this->fixture();
+        $tmp = $this->path() . $this->fixture;
 
         exec("rm -r $tmp");
 
@@ -42,14 +44,14 @@ trait TestConcerns
 
     protected function fixturesPath(): string
     {
-        return __DIR__ . '/../fixtures/' . $this->fixture();
+        return __DIR__ . '/../fixtures/' . $this->fixture;
     }
 
     protected function assertGeneratedJsonEquals(array $data): void
     {
         $json = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . PHP_EOL;
 
-        $path = $this->path() . $this->fixture() . '/' . PlugAndPlayInterface::FILENAME;
+        $path = $this->path() . $this->fixture . '/' . PlugAndPlayInterface::FILENAME;
 
         $this->assertStringEqualsFile($path, $json);
     }
@@ -58,7 +60,7 @@ trait TestConcerns
     {
         $json = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . PHP_EOL;
 
-        $path = $this->path() . $this->fixture() . '/' . PlugAndPlayInterface::PACKAGES_FILE;
+        $path = $this->path() . $this->fixture . '/' . PlugAndPlayInterface::PACKAGES_FILE;
 
         $this->assertStringEqualsFile($path, $json);
     }
