@@ -35,10 +35,9 @@
         "class": "Dex\\Composer\\PlugAndPlay\\PlugAndPlayPlugin"
     },
     "scripts": {
+        "coverage": "XDEBUG_MODE=coverage vendor/bin/pest --coverage",
         "format": "vendor/bin/pint",
-        "test": "vendor/bin/phpunit tests --colors",
-        "test:coverage": "XDEBUG_MODE=coverage vendor/bin/phpunit --colors --coverage-html=.build/coverage",
-        "test:coverage:open": "open .build/coverage/index.html"
+        "test": "vendor/bin/pest"
     },
     "scripts-descriptions": {
         "format": "Format code",
