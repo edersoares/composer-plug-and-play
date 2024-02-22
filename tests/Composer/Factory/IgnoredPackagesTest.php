@@ -1,43 +1,41 @@
 <?php
 
-namespace Dex\Composer\PlugAndPlay\Tests\Composer\Factory;
-
 use Dex\Composer\PlugAndPlay\Tests\FactoryTestCase;
 
-class IgnoredPackagesTest extends FactoryTestCase
-{
-    protected function fixture(): string
-    {
-        return 'ignored-packages';
-    }
+uses(FactoryTestCase::class);
 
-    public function testFactory(): void
-    {
-        $this->factory();
+beforeEach()
+    ->fixture('ignored-packages')
+    ->prepare();
 
-        $this->assertOutputContains('Plugged: dex/not-ignore');
-        $this->assertOutputContains('Ignored: dex/ignore');
-        $this->assertGeneratedJsonEquals([
-            'extra' => [
-                'composer-plug-and-play' => [
-                    'ignore' => [
-                        'dex/ignore',
-                    ],
+afterEach()
+    ->cleanup();
+
+test('factory', function () {
+    $this->factory();
+
+    $this->assertOutputContains('Plugged: dex/not-ignore');
+    $this->assertOutputContains('Ignored: dex/ignore');
+    $this->assertGeneratedJsonEquals([
+        'extra' => [
+            'composer-plug-and-play' => [
+                'ignore' => [
+                    'dex/ignore',
                 ],
             ],
-            'config' => [
-                'allow-plugins' => true,
+        ],
+        'config' => [
+            'allow-plugins' => true,
+        ],
+        'require' => [
+            'dex/not-ignore' => '@dev',
+        ],
+        'repositories' => [
+            [
+                'type' => 'path',
+                'url' => './packages/dex/not-ignore',
+                'symlink' => true,
             ],
-            'require' => [
-                'dex/not-ignore' => '@dev',
-            ],
-            'repositories' => [
-                [
-                    'type' => 'path',
-                    'url' => './packages/dex/not-ignore',
-                    'symlink' => true,
-                ],
-            ],
-        ]);
-    }
-}
+        ],
+    ]);
+});
