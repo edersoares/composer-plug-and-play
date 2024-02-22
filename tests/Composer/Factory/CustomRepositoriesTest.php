@@ -1,9 +1,5 @@
 <?php
 
-use Dex\Composer\PlugAndPlay\Tests\FactoryTestCase;
-
-uses(FactoryTestCase::class);
-
 beforeEach()
     ->fixture('custom-repositories')
     ->prepare();

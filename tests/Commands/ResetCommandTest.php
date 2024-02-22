@@ -1,9 +1,5 @@
 <?php
 
-use Dex\Composer\PlugAndPlay\Tests\CommandTestCase;
-
-uses(CommandTestCase::class);
-
 beforeEach()
     ->fixture('reset-command')
     ->prepare();
