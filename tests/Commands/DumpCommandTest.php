@@ -1,20 +1,18 @@
 <?php
 
-namespace Dex\Composer\PlugAndPlay\Tests\Commands;
-
 use Dex\Composer\PlugAndPlay\Tests\CommandTestCase;
 
-class DumpCommandTest extends CommandTestCase
-{
-    protected function fixture(): string
-    {
-        return 'command';
-    }
+uses(CommandTestCase::class);
 
-    public function testDumpCommand(): void
-    {
-        $this->runCommand('plug-and-play:dump');
+beforeEach()
+    ->fixture('command')
+    ->prepare();
 
-        $this->assertOutputContains('You are using Composer Plug and Play Plugin.');
-    }
-}
+afterEach()
+    ->cleanup();
+
+test('dump command', function () {
+    $this->runCommand('plug-and-play:dump');
+
+    $this->assertOutputContains('You are using Composer Plug and Play Plugin.');
+});

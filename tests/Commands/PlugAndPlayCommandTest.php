@@ -1,23 +1,22 @@
 <?php
 
-namespace Dex\Composer\PlugAndPlay\Tests\Commands;
-
 use Dex\Composer\PlugAndPlay\Tests\CommandTestCase;
 
-class PlugAndPlayCommandTest extends CommandTestCase
-{
-    protected function fixture(): string
-    {
-        return 'command';
-    }
+uses(CommandTestCase::class);
 
-    public function testPlugAndPlayCommand(): void
-    {
-        $this->runCommand('plug-and-play'); // Runs UpdateCommand
-        $this->runCommand('plug-and-play'); // Runs InstallCommand
+beforeEach()
+    ->fixture('command')
+    ->prepare();
 
-        $this->assertFileExists($this->path() . $this->fixture() . '/packages/plug-and-play.json');
-        $this->assertFileExists($this->path() . $this->fixture() . '/packages/plug-and-play.lock');
-        $this->assertOutputContains('You are using Composer Plug and Play Plugin.');
-    }
-}
+afterEach()
+    ->cleanup();
+
+test('plug and play command', function () {
+    $this->runCommand('plug-and-play'); // Runs UpdateCommand
+    $this->runCommand('plug-and-play'); // Runs InstallCommand
+
+    expect($this->path() . $this->fixture . '/packages/plug-and-play.json')->toBeFile();
+    expect($this->path() . $this->fixture . '/packages/plug-and-play.lock')->toBeFile();
+
+    $this->assertOutputContains('You are using Composer Plug and Play Plugin.');
+});

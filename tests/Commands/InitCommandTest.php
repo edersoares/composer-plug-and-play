@@ -1,29 +1,28 @@
 <?php
 
-namespace Dex\Composer\PlugAndPlay\Tests\Commands;
-
 use Dex\Composer\PlugAndPlay\Tests\CommandTestCase;
 
-class InitCommandTest extends CommandTestCase
-{
-    protected function fixture(): string
-    {
-        return 'command';
-    }
+uses(CommandTestCase::class);
 
-    public function testInitCommand(): void
-    {
-        $this->runCommand('plug-and-play:init');
+beforeEach()
+    ->fixture('command')
+    ->prepare();
 
-        $this->assertFileExists($this->path() . $this->fixture() . '/packages/.gitignore');
-        $this->assertFileExists($this->path() . $this->fixture() . '/packages/composer.json');
-        $this->assertOutputContains('You are using Composer Plug and Play Plugin.');
+afterEach()
+    ->cleanup();
 
-        $this->runCommand('plug-and-play:init');
+test('init command', function () {
+    $this->runCommand('plug-and-play:init');
 
-        $this->assertOutputContains('You are using Composer Plug and Play Plugin.');
-        $this->assertOutputContains('The [packages] directory already exists.');
-        $this->assertOutputContains('The [packages/.gitignore] file already exists.');
-        $this->assertOutputContains('The [packages/composer.json] file already exists.');
-    }
-}
+    expect($this->path() . $this->fixture . '/packages/.gitignore')->toBeFile();
+    expect($this->path() . $this->fixture . '/packages/composer.json')->toBeFile();
+
+    $this->assertOutputContains('You are using Composer Plug and Play Plugin.');
+
+    $this->runCommand('plug-and-play:init');
+
+    $this->assertOutputContains('You are using Composer Plug and Play Plugin.');
+    $this->assertOutputContains('The [packages] directory already exists.');
+    $this->assertOutputContains('The [packages/.gitignore] file already exists.');
+    $this->assertOutputContains('The [packages/composer.json] file already exists.');
+});
