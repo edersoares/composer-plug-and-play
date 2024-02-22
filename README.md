@@ -107,6 +107,24 @@ something like this and run `composer plug-and-play`.
 }
 ```
 
+### Require dev dependencies from plugged packages
+
+When developing some package or library you may need to require its dev dependencies, for that adds in 
+`packages/composer.json` something like this and run `composer plug-and-play` that the `require-dev` dependencies will 
+be installed.
+
+```json 
+{
+    "extra": {
+        "composer-plug-and-play": {
+            "require-dev": [
+                "dex/fake"
+            ]
+        }
+    }
+}
+```
+
 ## License
 
 [Composer Plug and Play](https://github.com/edersoares/composer-plug-and-play/) is licensed under the MIT license.
