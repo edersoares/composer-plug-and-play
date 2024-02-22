@@ -92,18 +92,18 @@ Your project directory will look like this:
 
 ### Ignore plugged packages
 
-Sometimes you may need to ignore a package that is under development, for that add in `packages/composer.json` something
-like this and run `composer plug-and-play`.
+Sometimes you may need to ignore a package that is under development, for that adds in `packages/composer.json` 
+something like this and run `composer plug-and-play`.
 
 ```json 
 {
-  "extra": {
-    "composer-plug-and-play": {
-      "ignore": [
-        "dex/fake"
-      ]
+    "extra": {
+        "composer-plug-and-play": {
+            "ignore": [
+                "dex/fake"
+            ]
+        }
     }
-  }
 }
 ```
 
