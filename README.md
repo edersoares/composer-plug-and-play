@@ -49,12 +49,16 @@ You can add some additional configuration in `packages/composer.json` to add mor
 All commands use the `plug-and-play.json` and `plug-and-play.lock` files as source to project dependencies instead of 
 `composer.json` and `composer.lock` original files.
 
+You can use `composer pp` and `composer pp:*` as alias for all commands.
+
 - `plug-and-play`: installs plug and play dependencies together project dependencies.
-- `plug-and-play:init`: initialize plug and play plugin.
 - `plug-and-play:add`: require a package into `packages/composer.json`.
-- `plug-and-play:install`: same that `composer install`, but using `plug-and-play` files.
-- `plug-and-play:update`: same that `composer update`, but using `plug-and-play` files.
 - `plug-and-play:dump`: same that `composer dump-autoload`, but using `plug-and-play` files.
+- `plug-and-play:init`: initialize plug and play plugin.
+- `plug-and-play:install`: same that `composer install`, but using `plug-and-play` files.
+- `plug-and-play:reset`: remove `plug-and-play` files.
+- `plug-and-play:run`: same that `composer run-script`, but using `plug-and-play` files.
+- `plug-and-play:update`: same that `composer update`, but using `plug-and-play` files.
 
 ### Directories and files
 
@@ -67,41 +71,61 @@ dependencies.
 Your project directory will look like this:
 
 ```
-|-- packages 
-|   \__ <vendor-name>
-|       \__ <plug-and-play-package>
-|           \__ composer.json
-|           \__ composer.lock
-|   \__ composer.json
-|   \__ plug-and-play.json
-|   \__ plug-and-play.lock
-|-- vendor
-|   \__ <vendor-name>
-|       \__ <require-package>
-|           \__ composer.json
-|           \__ composer.lock
-|-- composer.json
-|-- composer.lock
+|- packages 
+|  |- <vendor-name>
+|  |  |- <plug-and-play-package>
+|  |     |- composer.json
+|  |     |- composer.lock
+|  |- composer.json
+|  |- plug-and-play.json
+|  |- plug-and-play.lock
+|
+|- vendor
+|  |- <vendor-name>
+|     |- <require-package>
+|        |- composer.json
+|        |- composer.lock
+|
+|- composer.json
+|- composer.lock
 ```
 
 ### Ignore plugged packages
 
-Sometimes you may need to ignore a package that is under development, for that add in `packages/composer.json` something
-like this and run `composer plug-and-play`.
+Sometimes you may need to ignore a package that is under development, for that adds in `packages/composer.json` 
+something like this and run `composer plug-and-play`.
 
 ```json 
 {
-  "extra": {
-    "composer-plug-and-play": {
-      "ignore": [
-        "dex/fake"
-      ]
+    "extra": {
+        "composer-plug-and-play": {
+            "ignore": [
+                "dex/fake"
+            ]
+        }
     }
-  }
+}
+```
+
+### Require dev dependencies from plugged packages
+
+When developing some package or library you may need to require its dev dependencies, for that adds in 
+`packages/composer.json` something like this and run `composer plug-and-play` that the `require-dev` dependencies will 
+be installed.
+
+```json 
+{
+    "extra": {
+        "composer-plug-and-play": {
+            "require-dev": [
+                "dex/fake"
+            ]
+        }
+    }
 }
 ```
 
 ## License
 
 [Composer Plug and Play](https://github.com/edersoares/composer-plug-and-play/) is licensed under the MIT license.
-See the [license](https://github.com/edersoares/composer-plug-and-play/blob/master/LICENSE) file for more details.
+See the [license](https://github.com/edersoares/composer-plug-and-play/blob/main/LICENSE.md) file for more details.
