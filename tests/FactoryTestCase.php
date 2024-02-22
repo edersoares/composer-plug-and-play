@@ -16,7 +16,7 @@ abstract class FactoryTestCase extends TestCase
         $factory = new Factory();
         $io = new BufferIO();
 
-        $factory->createComposer(io: $io, cwd: $this->path() . $this->fixture());
+        $factory->createComposer(io: $io, cwd: $this->path() . $this->fixture);
 
         $this->output = $io->getOutput();
     }
