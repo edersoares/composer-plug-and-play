@@ -17,7 +17,8 @@
     },
     "require-dev": {
         "composer/composer": "^2.3.0",
-        "laravel/pint": "^1.7"
+        "laravel/pint": "^1.7",
+        "pestphp/pest": "^2.34"
     },
     "autoload": {
         "psr-4": {
@@ -43,5 +44,10 @@
         "test": "Runs package tests",
         "test:coverage": "Runs coverage",
         "test:coverage:open": "Open coverage report"
+    },
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
     }
 }
