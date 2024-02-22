@@ -18,7 +18,8 @@
     "require-dev": {
         "composer/composer": "^2.3.0",
         "laravel/pint": "^1.7",
-        "pestphp/pest": "^2.34"
+        "pestphp/pest": "^2.34",
+        "pestphp/pest-plugin-drift": "^2.5"
     },
     "autoload": {
         "psr-4": {
