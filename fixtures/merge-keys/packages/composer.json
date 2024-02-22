@@ -1,0 +1,7 @@
+{
+    "config": {
+        "allow-plugins": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": false
+}
