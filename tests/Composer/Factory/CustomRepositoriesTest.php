@@ -1,34 +1,28 @@
 <?php
 
-namespace Dex\Composer\PlugAndPlay\Tests\Composer\Factory;
+beforeEach()
+    ->fixture('custom-repositories')
+    ->prepare();
 
-use Dex\Composer\PlugAndPlay\Tests\FactoryTestCase;
+afterEach()
+    ->cleanup();
 
-class CustomRepositoriesTest extends FactoryTestCase
-{
-    protected function fixture(): string
-    {
-        return 'custom-repositories';
-    }
+test('factory', function () {
+    $this->factory();
 
-    public function testFactory(): void
-    {
-        $this->factory();
-
-        $this->assertOutputContains('Plugged: dex/fake');
-        $this->assertGeneratedJsonEquals([
-            'config' => [
-                'allow-plugins' => true,
+    $this->assertOutputContains('Plugged: dex/fake');
+    $this->assertGeneratedJsonEquals([
+        'config' => [
+            'allow-plugins' => true,
+        ],
+        'require' => [
+            'dex/fake' => '*',
+        ],
+        'repositories' => [
+            [
+                'type' => 'path',
+                'url' => '../packages/dex/fake',
             ],
-            'require' => [
-                'dex/fake' => '*',
-            ],
-            'repositories' => [
-                [
-                    'type' => 'path',
-                    'url' => '../packages/dex/fake',
-                ],
-            ],
-        ]);
-    }
-}
+        ],
+    ]);
+});

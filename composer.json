@@ -17,8 +17,9 @@
     },
     "require-dev": {
         "composer/composer": "^2.3.0",
-        "phpunit/phpunit": "^9.5",
-        "laravel/pint": "^1.7"
+        "laravel/pint": "^1.7",
+        "pestphp/pest": "^2.34",
+        "pestphp/pest-plugin-drift": "^2.5"
     },
     "autoload": {
         "psr-4": {
@@ -34,15 +35,19 @@
         "class": "Dex\\Composer\\PlugAndPlay\\PlugAndPlayPlugin"
     },
     "scripts": {
+        "coverage": "XDEBUG_MODE=coverage vendor/bin/pest --coverage",
         "format": "vendor/bin/pint",
-        "test": "vendor/bin/phpunit tests --colors",
-        "test:coverage": "XDEBUG_MODE=coverage vendor/bin/phpunit --colors --coverage-html=.build/coverage",
-        "test:coverage:open": "open .build/coverage/index.html"
+        "test": "vendor/bin/pest"
     },
     "scripts-descriptions": {
         "format": "Format code",
         "test": "Runs package tests",
         "test:coverage": "Runs coverage",
         "test:coverage:open": "Open coverage report"
+    },
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
     }
 }

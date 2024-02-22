@@ -1,7 +1,5 @@
 <?php
 
-namespace Dex\Composer\PlugAndPlay\Tests;
-
 use Composer\Composer;
 use Composer\Config;
 use Composer\EventDispatcher\EventDispatcher;
@@ -11,68 +9,49 @@ use Composer\Package\Package;
 use Composer\Plugin\Capability\CommandProvider;
 use Composer\Plugin\PluginManager;
 use Dex\Composer\PlugAndPlay\PlugAndPlayPlugin;
-use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class PlugAndPlayPluginTest extends TestCase
-{
-    protected BufferIO $io;
+beforeEach(function () {
+    $locker = $this->createMock(Locker::class);
+    $dispatcher = $this->createMock(EventDispatcher::class);
 
-    protected Composer $composer;
+    $config = new Config();
+    $config->merge([
+        'config' => [
+            'allow-plugins' => true,
+        ],
+    ]);
 
-    protected PluginManager $pm;
+    $this->composer = new Composer();
+    $this->composer->setConfig($config);
+    $this->composer->setLocker($locker);
+    $this->composer->setEventDispatcher($dispatcher);
 
-    protected function setUp(): void
-    {
-        $locker = $this->createMock(Locker::class);
-        $dispatcher = $this->createMock(EventDispatcher::class);
+    $this->io = new BufferIO('', OutputInterface::VERBOSITY_DEBUG);
+    $this->pm = new PluginManager($this->io, $this->composer);
+})->defer(fn () => true);
 
-        $config = new Config();
-        $config->merge([
-            'config' => [
-                'allow-plugins' => true,
-            ],
-        ]);
+test('add plugin')
+    ->defer(fn () => $this->pm->addPlugin(new PlugAndPlayPlugin(), false, new Package('dex/fake', '0.0.0', '0.0.0')))
+    ->expect(fn () => $this->pm->getPlugins())
+    ->toHaveCount(1)
+    ->and(fn () => $this->io->getOutput())
+    ->toContain('Loading plugin ' . PlugAndPlayPlugin::class);
 
-        $this->composer = new Composer();
-        $this->composer->setConfig($config);
-        $this->composer->setLocker($locker);
-        $this->composer->setEventDispatcher($dispatcher);
+test('remove plugin')
+    ->with([new PlugAndPlayPlugin()])
+    ->defer(fn (PlugAndPlayPlugin $plugin) => $this->pm->addPlugin($plugin, false, new Package('dex/fake', '0.0.0', '0.0.0')))
+    ->defer(fn (PlugAndPlayPlugin $plugin) => $this->pm->removePlugin($plugin))
+    ->expect(fn () => $this->pm->getPlugins())
+    ->toHaveCount(0)
+    ->and(fn () => $this->io->getOutput())
+    ->toContain('Unloading plugin ' . PlugAndPlayPlugin::class);
 
-        $this->io = new BufferIO('', OutputInterface::VERBOSITY_DEBUG);
-        $this->pm = new PluginManager($this->io, $this->composer);
-    }
+test('uninstall plugin')
+    ->defer(fn () => $this->pm->uninstallPlugin(new PlugAndPlayPlugin()))
+    ->expect(fn () => $this->pm->getPlugins())
+    ->toHaveCount(0);
 
-    public function testAddPlugin(): void
-    {
-        $this->pm->addPlugin(new PlugAndPlayPlugin(), false, new Package('dex/fake', '0.0.0', '0.0.0'));
-
-        $this->assertCount(1, $this->pm->getPlugins());
-        $this->assertStringContainsString('Loading plugin ' . PlugAndPlayPlugin::class, $this->io->getOutput());
-    }
-
-    public function testRemovePlugin(): void
-    {
-        $plugin = new PlugAndPlayPlugin();
-
-        $this->pm->addPlugin($plugin, false, new Package('dex/fake', '0.0.0', '0.0.0'));
-        $this->pm->removePlugin($plugin);
-
-        $this->assertCount(0, $this->pm->getPlugins());
-        $this->assertStringContainsString('Unloading plugin ' . PlugAndPlayPlugin::class, $this->io->getOutput());
-    }
-
-    public function testUninstallPlugin(): void
-    {
-        $this->pm->uninstallPlugin(new PlugAndPlayPlugin());
-
-        $this->assertCount(0, $this->pm->getPlugins());
-    }
-
-    public function testPluginCapability(): void
-    {
-        $capability = $this->pm->getPluginCapability(new PlugAndPlayPlugin(), CommandProvider::class);
-
-        $this->assertInstanceOf(PlugAndPlayPlugin::class, $capability);
-    }
-}
+test('plugin capability')
+    ->expect(fn () => $this->pm->getPluginCapability(new PlugAndPlayPlugin(), CommandProvider::class))
+    ->toBeInstanceOf(PlugAndPlayPlugin::class);

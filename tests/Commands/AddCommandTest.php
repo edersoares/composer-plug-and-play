@@ -1,37 +1,30 @@
 <?php
 
-namespace Dex\Composer\PlugAndPlay\Tests\Commands;
+beforeEach()
+    ->fixture('add-command')
+    ->prepare();
 
-use Dex\Composer\PlugAndPlay\Tests\CommandTestCase;
+afterEach()
+    ->cleanup();
 
-class AddCommandTest extends CommandTestCase
-{
-    protected function fixture(): string
-    {
-        return 'add-command';
-    }
+test('add command', function () {
+    $this->runCommand('plug-and-play:add dex/extra');
 
-    public function testAddCommand(): void
-    {
-        $this->runCommand('plug-and-play:add dex/extra');
+    $this->assertOutputContains('You are using Composer Plug and Play Plugin.');
+    $this->assertPackagesFileJsonEquals([
+        'require' => [
+            'dex/extra' => '*',
+        ],
+    ]);
+});
 
-        $this->assertOutputContains('You are using Composer Plug and Play Plugin.');
-        $this->assertPackagesFileJsonEquals([
-            'require' => [
-                'dex/extra' => '*',
-            ],
-        ]);
-    }
+test('add command with version', function () {
+    $this->runCommand('plug-and-play:add dex/extra 1.0');
 
-    public function testAddCommandWithVersion(): void
-    {
-        $this->runCommand('plug-and-play:add dex/extra 1.0');
-
-        $this->assertOutputContains('You are using Composer Plug and Play Plugin.');
-        $this->assertPackagesFileJsonEquals([
-            'require' => [
-                'dex/extra' => '1.0',
-            ],
-        ]);
-    }
-}
+    $this->assertOutputContains('You are using Composer Plug and Play Plugin.');
+    $this->assertPackagesFileJsonEquals([
+        'require' => [
+            'dex/extra' => '1.0',
+        ],
+    ]);
+});
