@@ -1,0 +1,9 @@
+{
+    "config": {
+        "allow-plugins": {
+            "dex/composer-plug-and-play": true
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": false
+}

@@ -1,0 +1,12 @@
+{
+    "config": {
+        "allow-plugins": true
+    },
+    "extra": {
+        "composer-plug-and-play": {
+            "require-dev": [
+                "dex/fake"
+            ]
+        }
+    }
+}
