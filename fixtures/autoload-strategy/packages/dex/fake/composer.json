@@ -1,0 +1,19 @@
+{
+    "name": "dex/fake",
+    "require": {
+        "composer/composer": "*"
+    },
+    "require-dev": {
+        "dex/composer-plug-and-play": "@dev"
+    },
+    "autoload": {
+        "psr-4": {
+            "Dex\\Fake\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Dex\\Fake\\Tests\\": "tests/"
+        }
+    }
+}

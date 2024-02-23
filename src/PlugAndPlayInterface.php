@@ -10,5 +10,7 @@ interface PlugAndPlayInterface
 
     public const PACKAGES_PATH = 'packages';
 
+    public const PACKAGES_VENDOR = 'packages/vendor';
+
     public const PATH = 'packages/*/*/composer.json';
 }

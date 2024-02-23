@@ -1,0 +1,11 @@
+{
+    "config": {
+        "allow-plugins": true
+    },
+    "extra": {
+        "composer-plug-and-play": {
+            "strategy": "experimental:autoload",
+            "autoload-dev": ["dex/fake"]
+        }
+    }
+}

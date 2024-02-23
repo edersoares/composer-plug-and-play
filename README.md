@@ -125,6 +125,31 @@ be installed.
 }
 ```
 
+### Autoload (strategy)
+
+You may have some problems with symlinks and recursion when developing packages inside another application or package, 
+for that, you can use `experimental:autoload` strategy.
+
+This strategy will create a simple copy of your `composer.json` in `packages/vendor` directory to do a symlink from your 
+original `vendor` directory.
+
+To activate it, you should change your `packages/composer.json`.
+
+```json 
+{
+    "extra": {
+        "composer-plug-and-play": {
+            "autoload-dev": ["dex/fake"],
+            "require-dev": ["dex/fake"],
+            "strategy": "experimental:autoload"
+        }
+    }
+}
+```
+
+You must add to `autoload-dev` the packages that you want to map its autoload and add to `require-dev` the packages
+that you want to require its dev dependencies.
+
 ## License
 
 [Composer Plug and Play](https://github.com/edersoares/composer-plug-and-play/) is licensed under the MIT license.

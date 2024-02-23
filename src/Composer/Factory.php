@@ -8,6 +8,7 @@ use Composer\IO\IOInterface;
 use Composer\Json\JsonFile;
 use Composer\Json\JsonValidationException;
 use Composer\PartialComposer;
+use Composer\Util\Filesystem;
 use Dex\Composer\PlugAndPlay\PlugAndPlayInterface;
 use InvalidArgumentException;
 use Seld\JsonLint\ParsingException;
@@ -16,6 +17,8 @@ use UnexpectedValueException;
 class Factory extends ComposerFactory implements PlugAndPlayInterface
 {
     private static bool $loaded = false;
+
+    private Filesystem $filesystem;
 
     /**
      * Restart factory.
@@ -57,11 +60,11 @@ class Factory extends ComposerFactory implements PlugAndPlayInterface
     /**
      * Creates a repository item.
      */
-    private function createRepositoryItem(string $package): array
+    private function createRepositoryItem(string $url): array
     {
         return [
             'type' => 'path',
-            'url' => './' . dirname($package),
+            'url' => $url,
             'symlink' => true
         ];
     }
@@ -175,8 +178,16 @@ class Factory extends ComposerFactory implements PlugAndPlayInterface
     {
         $ignore = $localConfig['extra']['composer-plug-and-play']['ignore'] ?? [];
         $requireDev = $localConfig['extra']['composer-plug-and-play']['require-dev'] ?? [];
+        $autoloadDev = $localConfig['extra']['composer-plug-and-play']['autoload-dev'] ?? [];
+        $strategy = $localConfig['extra']['composer-plug-and-play']['strategy'] ?? 'default';
+        $isExperimental = $strategy === 'experimental:autoload';
 
         $packages = glob(self::PATH);
+
+        if ($isExperimental) {
+            $this->filesystem()->removeDirectoryPhp(PlugAndPlayInterface::PACKAGES_VENDOR);
+            $this->filesystem()->ensureDirectoryExists(PlugAndPlayInterface::PACKAGES_VENDOR);
+        }
 
         foreach ($packages as $package) {
             $data = $this->loadJsonFile($io, $package);
@@ -185,6 +196,20 @@ class Factory extends ComposerFactory implements PlugAndPlayInterface
                 $ignored[] = $data['name'];
 
                 continue;
+            }
+
+            if ($isExperimental) {
+                foreach ($data['autoload']['psr-4'] ?? [] as $namespace => $directory) {
+                    $localConfig['autoload']['psr-4'][$namespace] = dirname($package) . DIRECTORY_SEPARATOR . $directory;
+                }
+
+                if (in_array($data['name'], $autoloadDev)) {
+                    foreach ($data['autoload-dev']['psr-4'] ?? [] as $namespace => $directory) {
+                        $localConfig['autoload-dev']['psr-4'][$namespace] = dirname($package) . DIRECTORY_SEPARATOR . $directory;
+                    }
+                }
+
+                $this->experimentalAutoloadStrategy($data);
             }
 
             // TODO show dev dependencies required
@@ -196,9 +221,32 @@ class Factory extends ComposerFactory implements PlugAndPlayInterface
 
             $plugged[] = $data['name'];
 
+            $url = './' . dirname($package);
+
+            if ($isExperimental) {
+                $url = './' . str_replace('packages', PlugAndPlayInterface::PACKAGES_VENDOR, dirname($package));
+            }
+
             $localConfig['require'][$data['name']] = '@dev';
-            $localConfig['repositories'][] = $this->createRepositoryItem($package);
+            $localConfig['repositories'][] = $this->createRepositoryItem($url);
         }
+    }
+
+    private function filesystem(): Filesystem
+    {
+        return $this->filesystem ??= new Filesystem();
+    }
+
+    private function experimentalAutoloadStrategy(array $data): void
+    {
+        $this->filesystem()->ensureDirectoryExists(PlugAndPlayInterface::PACKAGES_VENDOR . $data['name']);
+
+        unset($data['autoload']);
+        unset($data['autoload-dev']);
+
+        $json = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . PHP_EOL;
+
+        file_put_contents(PlugAndPlayInterface::PACKAGES_VENDOR . $data['name'] . '/composer.json', $json);
     }
 
     /**
