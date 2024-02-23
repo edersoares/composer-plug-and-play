@@ -60,11 +60,11 @@ class Factory extends ComposerFactory implements PlugAndPlayInterface
     /**
      * Creates a repository item.
      */
-    private function createRepositoryItem(string $package): array
+    private function createRepositoryItem(string $url): array
     {
         return [
             'type' => 'path',
-            'url' => './' . dirname($package),
+            'url' => $url,
             'symlink' => true
         ];
     }
@@ -199,8 +199,10 @@ class Factory extends ComposerFactory implements PlugAndPlayInterface
 
             $plugged[] = $data['name'];
 
+            $url = './' . dirname($package);
+
             $localConfig['require'][$data['name']] = '@dev';
-            $localConfig['repositories'][] = $this->createRepositoryItem($package);
+            $localConfig['repositories'][] = $this->createRepositoryItem($url);
         }
     }
 
