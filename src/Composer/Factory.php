@@ -8,6 +8,7 @@ use Composer\IO\IOInterface;
 use Composer\Json\JsonFile;
 use Composer\Json\JsonValidationException;
 use Composer\PartialComposer;
+use Composer\Util\Filesystem;
 use Dex\Composer\PlugAndPlay\PlugAndPlayInterface;
 use InvalidArgumentException;
 use Seld\JsonLint\ParsingException;
@@ -16,6 +17,8 @@ use UnexpectedValueException;
 class Factory extends ComposerFactory implements PlugAndPlayInterface
 {
     private static bool $loaded = false;
+
+    private Filesystem $filesystem;
 
     /**
      * Restart factory.
@@ -199,6 +202,11 @@ class Factory extends ComposerFactory implements PlugAndPlayInterface
             $localConfig['require'][$data['name']] = '@dev';
             $localConfig['repositories'][] = $this->createRepositoryItem($package);
         }
+    }
+
+    private function filesystem(): Filesystem
+    {
+        return $this->filesystem ??= new Filesystem();
     }
 
     /**
