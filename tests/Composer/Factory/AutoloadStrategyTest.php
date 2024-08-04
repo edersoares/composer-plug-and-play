@@ -18,17 +18,20 @@ test('factory', function () {
             'composer-plug-and-play' => [
                 'strategy' => 'experimental:autoload',
                 'autoload-dev' => ['dex/fake'],
-            ]
+            ],
         ],
         'autoload' => [
             'psr-4' => [
                 'Dex\\Fake\\' => 'packages/dex/fake/src/',
-            ]
+            ],
+            'files' => [
+                'packages/dex/fake/scripts/start.php',
+            ],
         ],
         'autoload-dev' => [
             'psr-4' => [
                 'Dex\\Fake\\Tests\\' => 'packages/dex/fake/tests/',
-            ]
+            ],
         ],
         'require' => [
             'dex/fake' => '@dev',
@@ -39,6 +42,6 @@ test('factory', function () {
                 'url' => './packages/vendor/dex/fake',
                 'symlink' => true,
             ],
-        ]
+        ],
     ]);
 });

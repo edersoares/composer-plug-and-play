@@ -9,7 +9,8 @@
     "autoload": {
         "psr-4": {
             "Dex\\Fake\\": "src/"
-        }
+        },
+        "files": ["scripts/start.php"]
     },
     "autoload-dev": {
         "psr-4": {

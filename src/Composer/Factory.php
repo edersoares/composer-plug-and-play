@@ -203,6 +203,11 @@ class Factory extends ComposerFactory implements PlugAndPlayInterface
                     $localConfig['autoload']['psr-4'][$namespace] = dirname($package) . DIRECTORY_SEPARATOR . $directory;
                 }
 
+                foreach ($data['autoload']['files'] ?? [] as $file) {
+                    $localConfig['autoload']['files'] ??= [];
+                    $localConfig['autoload']['files'][] = dirname($package) . DIRECTORY_SEPARATOR . $file;
+                }
+
                 if (in_array($data['name'], $autoloadDev)) {
                     foreach ($data['autoload-dev']['psr-4'] ?? [] as $namespace => $directory) {
                         $localConfig['autoload-dev']['psr-4'][$namespace] = dirname($package) . DIRECTORY_SEPARATOR . $directory;
@@ -239,14 +244,14 @@ class Factory extends ComposerFactory implements PlugAndPlayInterface
 
     private function experimentalAutoloadStrategy(array $data): void
     {
-        $this->filesystem()->ensureDirectoryExists(PlugAndPlayInterface::PACKAGES_VENDOR . $data['name']);
+        $this->filesystem()->ensureDirectoryExists(PlugAndPlayInterface::PACKAGES_VENDOR . '/' . $data['name']);
 
         unset($data['autoload']);
         unset($data['autoload-dev']);
 
         $json = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . PHP_EOL;
 
-        file_put_contents(PlugAndPlayInterface::PACKAGES_VENDOR . $data['name'] . '/composer.json', $json);
+        file_put_contents(PlugAndPlayInterface::PACKAGES_VENDOR . '/' . $data['name'] . '/composer.json', $json);
     }
 
     /**
