@@ -244,14 +244,16 @@ class Factory extends ComposerFactory implements PlugAndPlayInterface
 
     private function experimentalAutoloadStrategy(array $data): void
     {
-        $this->filesystem()->ensureDirectoryExists(PlugAndPlayInterface::PACKAGES_VENDOR . '/' . $data['name']);
+        $path = PlugAndPlayInterface::PACKAGES_VENDOR . DIRECTORY_SEPARATOR . $data['name'];
+
+        $this->filesystem()->ensureDirectoryExists($path);
 
         unset($data['autoload']);
         unset($data['autoload-dev']);
 
         $json = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . PHP_EOL;
 
-        file_put_contents(PlugAndPlayInterface::PACKAGES_VENDOR . '/' . $data['name'] . '/composer.json', $json);
+        file_put_contents($path . '/composer.json', $json);
     }
 
     /**
