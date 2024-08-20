@@ -4,8 +4,8 @@
 <a href="https://github.com/edersoares/composer-plug-and-play/releases"><img src="https://img.shields.io/github/release/edersoares/composer-plug-and-play.svg?label=latest%20release" alt="Latest Release" /></a>
 <a href="https://github.com/edersoares/composer-plug-and-play/blob/master/LICENSE"><img src="https://img.shields.io/github/license/edersoares/composer-plug-and-play" alt="License" /></a>
 
-Add to [Composer](https://getcomposer.org/), a dependency manager for PHP, the ability to plug and play packages without
-necessarily installing a new dependency on `composer.json`.
+Adds to [Composer](https://getcomposer.org/), PHP's dependency manager, the ability to plug and play packages without necessarily installing 
+a new dependency on `composer.json`.
 
 ## Installation
 
@@ -18,8 +18,7 @@ composer require dex/composer-plug-and-play
 
 ### Global installation
 
-You can install [Composer Plug and Play](https://github.com/edersoares/composer-plug-and-play/) globally to use its
-abilities in all your local projects.
+You can install [Composer Plug and Play](https://github.com/edersoares/composer-plug-and-play/) globally to use its abilities in all your local projects.
 
 ```bash
 composer global require dex/composer-plug-and-play
