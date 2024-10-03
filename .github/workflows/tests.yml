@@ -30,7 +30,7 @@ jobs:
           - 2.8
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
 
     - name: Install PHP
       uses: shivammathur/setup-php@v2
@@ -52,7 +52,7 @@ jobs:
 
     - name: Install dependencies
       if: steps.composer-cache.outputs.cache-hit != 'true'
-      run: composer install --prefer-dist --no-progress --no-suggest
+      run: composer install --no-interaction --no-progress --optimize-autoloader --prefer-dist
 
     - name: Run test suite
       run: composer run-script test
