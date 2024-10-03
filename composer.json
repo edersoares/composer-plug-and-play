@@ -18,8 +18,7 @@
     "require-dev": {
         "composer/composer": "^2.3.0",
         "laravel/pint": "^1.7",
-        "pestphp/pest": "^2.34",
-        "pestphp/pest-plugin-drift": "^2.5"
+        "pestphp/pest": "^2.34"
     },
     "autoload": {
         "psr-4": {
@@ -43,7 +42,7 @@
         "format": "Format code",
         "test": "Runs package tests",
         "test:coverage": "Runs coverage",
-        "test:coverage:open": "Open coverage report"
+        "test:coverage:open": "Opens coverage report"
     },
     "config": {
         "allow-plugins": {
