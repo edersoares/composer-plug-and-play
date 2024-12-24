@@ -184,7 +184,7 @@ class Factory extends ComposerFactory implements PlugAndPlayInterface
 
         $packages = glob(self::PATH);
 
-        if ($isExperimental) {
+        if ($isExperimental && self::$loaded === false) {
             $this->filesystem()->removeDirectoryPhp(PlugAndPlayInterface::PACKAGES_VENDOR);
             $this->filesystem()->ensureDirectoryExists(PlugAndPlayInterface::PACKAGES_VENDOR);
         }
@@ -244,6 +244,10 @@ class Factory extends ComposerFactory implements PlugAndPlayInterface
 
     private function experimentalAutoloadStrategy(array $data): void
     {
+        if (self::$loaded) {
+            return;
+        }
+
         $path = PlugAndPlayInterface::PACKAGES_VENDOR . DIRECTORY_SEPARATOR . $data['name'];
 
         $this->filesystem()->ensureDirectoryExists($path);
