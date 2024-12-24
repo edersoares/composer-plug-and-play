@@ -185,8 +185,31 @@ class Factory extends ComposerFactory implements PlugAndPlayInterface
         $packages = glob(self::PATH);
 
         if ($isExperimental && self::$loaded === false) {
+            $cwd = getcwd();
+
+            $realBinPath = $cwd . '/vendor/bin';
+            $newBinPath = $cwd . DIRECTORY_SEPARATOR . PlugAndPlayInterface::PACKAGES_VENDOR . DIRECTORY_SEPARATOR . 'bin';
+
+            $realComposerPath = $cwd . '/vendor/composer';
+            $newComposerPath = $cwd . DIRECTORY_SEPARATOR . PlugAndPlayInterface::PACKAGES_VENDOR . DIRECTORY_SEPARATOR . 'composer';
+
+            $realAutoloadPath = $cwd . '/vendor/autoload.php';
+            $newAutoloadPath = $cwd . DIRECTORY_SEPARATOR . PlugAndPlayInterface::PACKAGES_VENDOR . DIRECTORY_SEPARATOR . 'autoload.php';
+
+            if ($this->filesystem()->isSymlinkedDirectory($newBinPath)) {
+                $this->filesystem()->unlink($newBinPath);
+            }
+
+            if ($this->filesystem()->isSymlinkedDirectory($newComposerPath)) {
+                $this->filesystem()->unlink($newComposerPath);
+            }
+
             $this->filesystem()->removeDirectoryPhp(PlugAndPlayInterface::PACKAGES_VENDOR);
             $this->filesystem()->ensureDirectoryExists(PlugAndPlayInterface::PACKAGES_VENDOR);
+
+            $this->filesystem()->relativeSymlink($realBinPath, $newBinPath);
+            $this->filesystem()->relativeSymlink($realComposerPath, $newComposerPath);
+            $this->filesystem()->relativeSymlink($realAutoloadPath, $newAutoloadPath);
         }
 
         foreach ($packages as $package) {
@@ -258,6 +281,13 @@ class Factory extends ComposerFactory implements PlugAndPlayInterface
         $json = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . PHP_EOL;
 
         file_put_contents($path . '/composer.json', $json);
+
+        $cwd = getcwd();
+
+        $realVendorPath = $cwd . DIRECTORY_SEPARATOR . PlugAndPlayInterface::PACKAGES_VENDOR;
+        $newVendorPath = $cwd . DIRECTORY_SEPARATOR . PlugAndPlayInterface::PACKAGES_PATH . DIRECTORY_SEPARATOR . $data['name'] . DIRECTORY_SEPARATOR . 'vendor';
+
+        $this->filesystem()->relativeSymlink($realVendorPath, $newVendorPath);
     }
 
     /**
