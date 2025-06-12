@@ -125,7 +125,7 @@ class Factory extends ComposerFactory implements PlugAndPlayInterface
                 $plugged[] = $package;
             }
 
-            $localConfig = array_merge_recursive($localConfig, $packagesConfig);
+            $localConfig = $this->mergeRecursiveDistinct($localConfig, $packagesConfig);
         }
 
         $ignore = $localConfig['extra']['composer-plug-and-play']['ignore'] ?? [];
@@ -172,5 +172,27 @@ class Factory extends ComposerFactory implements PlugAndPlayInterface
         }
 
         return parent::createComposer($io, self::FILENAME, $disablePlugins, $cwd, $fullLoad, $disableScripts);
+    }
+
+    /**
+     * Performs a recursive merge of two arrays,
+     * but replaces values instead of merging duplicate entries into arrays.
+     *
+     * @param array<int|string, mixed> $array1
+     * @param array<int|string, mixed> $array2
+     * @return array<int|string, mixed>
+     */
+    private function mergeRecursiveDistinct(array $array1, array &$array2): array
+    {
+        $merged = $array1;
+        foreach ($array2 as $key => &$value) {
+            if (is_array($value) && isset($merged[$key]) && is_array($merged[$key])) {
+                $merged[$key] = $this->mergeRecursiveDistinct($merged[$key], $value);
+            } else {
+                $merged[$key] = $value;
+            }
+        }
+
+        return $merged;
     }
 }
