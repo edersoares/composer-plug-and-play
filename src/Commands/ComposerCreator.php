@@ -64,7 +64,7 @@ trait ComposerCreator
      * @param bool|null $disableScripts If null, reads --no-scripts as default
      * @throws \Dex\Composer\PlugAndPlay\Exceptions\ComposerCreationException
      */
-    public function requireComposer(bool $disablePlugins = null, bool $disableScripts = null): Composer
+    public function requireComposer(?bool $disablePlugins = false, ?bool $disableScripts = false): Composer
     {
         // It's needed that Composer will be reseted because
         // Application::getPluginCommands() creates a Composer instance without
@@ -75,8 +75,8 @@ trait ComposerCreator
         return Factory::create(
             $this->getApplication()->getIO(),
             null,
-            $disablePlugins,
-            $disableScripts
+            $disablePlugins ?? false,
+            $disableScripts ?? false
         );
     }
 
