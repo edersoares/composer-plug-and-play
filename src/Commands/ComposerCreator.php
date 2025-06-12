@@ -72,7 +72,12 @@ trait ComposerCreator
 
         $this->resetComposer();
 
-        return Factory::create($this->getApplication()->getIO());
+        return Factory::create(
+            $this->getApplication()->getIO(),
+            null,
+            $disablePlugins,
+            $disableScripts
+        );
     }
 
     /**
