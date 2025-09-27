@@ -135,36 +135,32 @@ class Factory extends ComposerFactory implements PlugAndPlayInterface
             ? $this->loadJsonFile($io, self::PACKAGES_FILE)
             : [];
 
-        foreach ($packagesConfig['require'] ?? [] as $package => $version) {
-            $plugged[] = $package;
-        }
+        $localConfig = array_merge_recursive($localConfig, $packagesConfig);
 
-        # TODO improve next lines
         if (isset($packagesConfig['minimum-stability'])) {
             $localConfig['minimum-stability'] = $packagesConfig['minimum-stability'];
-            unset($packagesConfig['minimum-stability']);
         }
 
         if (isset($packagesConfig['prefer-stable'])) {
             $localConfig['prefer-stable'] = $packagesConfig['prefer-stable'];
-            unset($packagesConfig['prefer-stable']);
         }
 
         $allowPlugins = $packagesConfig['config']['allow-plugins'] ?? null;
 
         if (is_bool($allowPlugins)) {
             $localConfig['config']['allow-plugins'] = $allowPlugins;
-            unset($packagesConfig['config']['allow-plugins']);
         }
 
         if (is_array($allowPlugins)) {
             foreach ($allowPlugins as $plugin => $allow) {
                 $localConfig['config']['allow-plugins'][$plugin] = $allow;
             }
-            unset($packagesConfig['config']['allow-plugins']);
         }
 
-        $localConfig = array_merge_recursive($localConfig, $packagesConfig);
+        foreach ($packagesConfig['require'] ?? [] as $package => $version) {
+            $plugged[] = $package;
+            $localConfig['require'][$package] = $version;
+        }
     }
 
     /**
