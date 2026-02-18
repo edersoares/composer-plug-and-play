@@ -1,7 +1,7 @@
 <?php
 
 beforeEach()
-    ->fixture('require-dev')
+    ->fixtures('require-dev')
     ->prepare();
 
 afterEach()

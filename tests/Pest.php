@@ -6,9 +6,9 @@ use Dex\Composer\PlugAndPlay\Tests\FactoryTestCase;
 uses(CommandTestCase::class)->in('Commands');
 uses(FactoryTestCase::class)->in('Composer/Factory');
 
-function fixture(string $fixture): mixed
+function fixtures(string $fixture): mixed
 {
-    return test()->fixture($fixture);
+    return test()->fixtures($fixture);
 }
 
 function prepare(): mixed

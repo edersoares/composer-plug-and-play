@@ -1,7 +1,7 @@
 <?php
 
 beforeEach()
-    ->fixture('command')
+    ->fixtures('command')
     ->prepare();
 
 afterEach()

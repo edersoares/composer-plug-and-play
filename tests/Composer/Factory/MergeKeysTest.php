@@ -1,7 +1,7 @@
 <?php
 
 beforeEach()
-    ->fixture('merge-keys')
+    ->fixtures('merge-keys')
     ->prepare();
 
 afterEach()
