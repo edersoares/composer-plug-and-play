@@ -1,7 +1,7 @@
 <?php
 
 beforeEach()
-    ->fixture('locked-versions')
+    ->fixtures('locked-versions')
     ->prepare();
 
 afterEach()

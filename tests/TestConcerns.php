@@ -10,7 +10,7 @@ trait TestConcerns
     protected string $output;
     protected string $fixture;
 
-    public function fixture(string $fixture): static
+    public function fixtures(string $fixture): static
     {
         $this->fixture = $fixture;
 

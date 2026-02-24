@@ -1,7 +1,7 @@
 <?php
 
 beforeEach()
-    ->fixture('custom-repositories')
+    ->fixtures('custom-repositories')
     ->prepare();
 
 afterEach()

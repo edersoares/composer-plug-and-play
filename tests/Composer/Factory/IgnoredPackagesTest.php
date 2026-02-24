@@ -1,7 +1,7 @@
 <?php
 
 beforeEach()
-    ->fixture('ignored-packages')
+    ->fixtures('ignored-packages')
     ->prepare();
 
 afterEach()

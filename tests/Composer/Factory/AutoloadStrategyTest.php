@@ -1,7 +1,7 @@
 <?php
 
 beforeEach()
-    ->fixture('autoload-strategy')
+    ->fixtures('autoload-strategy')
     ->prepare();
 
 afterEach()
