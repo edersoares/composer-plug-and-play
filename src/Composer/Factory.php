@@ -220,6 +220,12 @@ class Factory extends ComposerFactory implements PlugAndPlayInterface
                 }
             }
 
+            if (in_array($data['name'], $autoloadDev) && ! $isExperimental) {
+                foreach ($data['autoload-dev']['psr-4'] ?? [] as $namespace => $directory) {
+                    $localConfig['autoload-dev']['psr-4'][$namespace] = dirname($package) . DIRECTORY_SEPARATOR . $directory;
+                }
+            }
+
             $plugged[] = $data['name'];
 
             $url = './' . dirname($package);
