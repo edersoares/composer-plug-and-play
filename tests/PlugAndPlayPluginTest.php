@@ -6,6 +6,7 @@ use Composer\EventDispatcher\EventDispatcher;
 use Composer\IO\BufferIO;
 use Composer\Package\Locker;
 use Composer\Package\Package;
+use Composer\Package\RootPackageInterface;
 use Composer\Plugin\Capability\CommandProvider;
 use Composer\Plugin\PluginManager;
 use Dex\Composer\PlugAndPlay\PlugAndPlayPlugin;
@@ -14,6 +15,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 beforeEach(function () {
     $locker = $this->createMock(Locker::class);
     $dispatcher = $this->createMock(EventDispatcher::class);
+    $package = $this->createMock(RootPackageInterface::class);
 
     $config = new Config();
     $config->merge([
@@ -26,6 +28,7 @@ beforeEach(function () {
     $this->composer->setConfig($config);
     $this->composer->setLocker($locker);
     $this->composer->setEventDispatcher($dispatcher);
+    $this->composer->setPackage($package);
 
     $this->io = new BufferIO('', OutputInterface::VERBOSITY_DEBUG);
     $this->pm = new PluginManager($this->io, $this->composer);
