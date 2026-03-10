@@ -4,6 +4,9 @@ namespace Dex\Composer\PlugAndPlay\Commands;
 
 use Composer\Command\RunScriptCommand as ComposerRunCommand;
 
+/**
+ * @deprecated
+ */
 class RunCommand extends ComposerRunCommand
 {
     use ComposerCreator;

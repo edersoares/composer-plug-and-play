@@ -1,0 +1,8 @@
+{
+    "config": {
+        "allow-plugins": true
+    },
+    "scripts": {
+        "root-script": "echo root > /dev/null"
+    }
+}

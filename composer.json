@@ -39,10 +39,9 @@
         "test": "vendor/bin/pest"
     },
     "scripts-descriptions": {
+        "coverage": "Runs coverage",
         "format": "Format code",
-        "test": "Runs package tests",
-        "test:coverage": "Runs coverage",
-        "test:coverage:open": "Opens coverage report"
+        "test": "Runs tests"
     },
     "config": {
         "allow-plugins": {

@@ -1,0 +1,6 @@
+{
+    "scripts": {
+        "pp-script": "echo pp > /dev/null",
+        "root-script": "echo pp > /dev/null"
+    }
+}
