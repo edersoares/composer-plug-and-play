@@ -2,7 +2,9 @@
 
 use Composer\Composer;
 use Composer\Config;
+use Composer\Downloader\DownloadManager;
 use Composer\EventDispatcher\EventDispatcher;
+use Composer\Installer\InstallationManager;
 use Composer\IO\BufferIO;
 use Composer\Package\Locker;
 use Composer\Package\Package;
@@ -16,6 +18,8 @@ beforeEach(function () {
     $locker = $this->createMock(Locker::class);
     $dispatcher = $this->createMock(EventDispatcher::class);
     $package = $this->createMock(RootPackageInterface::class);
+    $manager = $this->createMock(InstallationManager::class);
+    $download = $this->createMock(DownloadManager::class);
 
     $config = new Config();
     $config->merge([
@@ -29,6 +33,8 @@ beforeEach(function () {
     $this->composer->setLocker($locker);
     $this->composer->setEventDispatcher($dispatcher);
     $this->composer->setPackage($package);
+    $this->composer->setInstallationManager($manager);
+    $this->composer->setDownloadManager($download);
 
     $this->io = new BufferIO('', OutputInterface::VERBOSITY_DEBUG);
     $this->pm = new PluginManager($this->io, $this->composer);

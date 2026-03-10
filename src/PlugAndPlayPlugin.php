@@ -8,6 +8,7 @@ use Composer\Plugin\Capability\CommandProvider;
 use Composer\Plugin\Capable;
 use Composer\Plugin\PluginInterface;
 use Dex\Composer\PlugAndPlay\Commands\AddCommand;
+use Dex\Composer\PlugAndPlay\Composer\Installer;
 use Dex\Composer\PlugAndPlay\Commands\DumpAutoloadCommand;
 use Dex\Composer\PlugAndPlay\Commands\InitCommand;
 use Dex\Composer\PlugAndPlay\Commands\InstallCommand;
@@ -20,6 +21,8 @@ class PlugAndPlayPlugin implements Capable, CommandProvider, PluginInterface
 {
     public function activate(Composer $composer, IOInterface $io): void
     {
+        $composer->getInstallationManager()->addInstaller(new Installer($io, $composer));
+
         if (file_exists(PlugAndPlayInterface::PACKAGES_FILE)) {
             $this->mergeScripts($composer);
         }
