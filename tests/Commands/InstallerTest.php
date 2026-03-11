@@ -15,19 +15,10 @@ test('install-path points directly to packages directory', function () {
     expect($installedJsonPath)->toBeFile();
 
     $installed = json_decode(file_get_contents($installedJsonPath), true);
-    $packages = $installed['packages'] ?? [];
+    $package = $installed['packages'][0];
 
-    $fakePackage = null;
-
-    foreach ($packages as $package) {
-        if ($package['name'] === 'dex/fake') {
-            $fakePackage = $package;
-            break;
-        }
-    }
-
-    expect($fakePackage)->not->toBeNull();
-    expect($fakePackage['install-path'])->toBe('../../packages/dex/fake');
+    expect($package)->not->toBeNull();
+    expect($package['install-path'])->toBe('../../packages/dex/fake');
 });
 
 test('no symlink created in vendor directory', function () {
