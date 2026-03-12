@@ -8,5 +8,11 @@ use Composer\Package\Package;
 use Dex\Composer\PlugAndPlay\PlugAndPlayPlugin;
 
 $application = new Application();
-$application->getComposer()->getPluginManager()->addPlugin(new PlugAndPlayPlugin(), false, new Package('dex/composer-plug-and-play', '0.0.0', '0.0.0'));
+
+$loaded = array_filter($application->getComposer()->getPluginManager()->getPlugins(), fn ($plugin) => $plugin instanceof PlugAndPlayPlugin);
+
+if (empty($loaded)) {
+    $application->getComposer()->getPluginManager()->addPlugin(new PlugAndPlayPlugin(), false, new Package('dex/composer-plug-and-play', '0.0.0', '0.0.0'));
+}
+
 $application->run();
