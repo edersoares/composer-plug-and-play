@@ -187,7 +187,6 @@ class Factory extends ComposerFactory implements PlugAndPlayInterface
                 continue;
             }
 
-            // TODO show dev dependencies required
             if (in_array($data['name'], $requireDev)) {
                 foreach ($data['require-dev'] ?? [] as $pack => $version) {
                     $localConfig['require-dev'][$pack] = $version;
