@@ -175,7 +175,6 @@ class Factory extends ComposerFactory implements PlugAndPlayInterface
         $ignore = $localConfig['extra']['composer-plug-and-play']['ignore'] ?? [];
         $requireDev = $localConfig['extra']['composer-plug-and-play']['require-dev'] ?? [];
         $autoloadDev = $localConfig['extra']['composer-plug-and-play']['autoload-dev'] ?? [];
-        $strategy = $localConfig['extra']['composer-plug-and-play']['strategy'] ?? 'default';
 
         $packages = glob(self::PATH);
 
