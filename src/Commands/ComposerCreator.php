@@ -5,7 +5,6 @@ namespace Dex\Composer\PlugAndPlay\Commands;
 use Composer\Composer;
 use Composer\Console\Application;
 use Dex\Composer\PlugAndPlay\Composer\Factory;
-use Dex\Composer\PlugAndPlay\PlugAndPlayPlugin;
 use RuntimeException;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -34,8 +33,6 @@ trait ComposerCreator
             disablePlugins: boolval($disablePlugins),
             disableScripts: boolval($disableScripts)
         );
-
-        $composer->getPluginManager()->addPlugin(new PlugAndPlayPlugin());
 
         return $composer;
     }

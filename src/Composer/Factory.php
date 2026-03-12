@@ -4,11 +4,14 @@ namespace Dex\Composer\PlugAndPlay\Composer;
 
 use Composer\Composer;
 use Composer\Factory as ComposerFactory;
+use Composer\Installer;
 use Composer\IO\IOInterface;
 use Composer\Json\JsonFile;
 use Composer\Json\JsonValidationException;
 use Composer\PartialComposer;
 use Composer\Util\Filesystem;
+use Composer\Util\ProcessExecutor;
+use Dex\Composer\PlugAndPlay\Composer\Installer as PlugAndPlayInstaller;
 use Dex\Composer\PlugAndPlay\PlugAndPlayInterface;
 use InvalidArgumentException;
 use Seld\JsonLint\ParsingException;
@@ -288,5 +291,12 @@ class Factory extends ComposerFactory implements PlugAndPlayInterface
         }
 
         static::$loaded = true;
+    }
+
+    protected function createDefaultInstallers(Installer\InstallationManager $im, PartialComposer $composer, IOInterface $io, ?ProcessExecutor $process = null): void
+    {
+        parent::createDefaultInstallers($im, $composer, $io, $process);
+
+        $im->addInstaller(new PlugAndPlayInstaller($io, $composer));
     }
 }
