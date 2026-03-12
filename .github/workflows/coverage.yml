@@ -1,4 +1,4 @@
-name: Coverage
+name: SonarQube
 
 on:
   push:
@@ -8,6 +8,8 @@ on:
 jobs:
 
   tests:
+
+    name: Coverage
 
     runs-on: ubuntu-latest
 
