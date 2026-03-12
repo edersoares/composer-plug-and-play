@@ -16,7 +16,7 @@ class Application extends ComposerApplication
     ): ?Composer {
         $composer = parent::getComposer(true, $disablePlugins, $disableScripts);
 
-        $composer->getPluginManager()->addPlugin(new PlugAndPlayPlugin(), false, new Package('dex/fake', '0.0.0', '0.0.0'));
+        $composer->getPluginManager()->addPlugin(new PlugAndPlayPlugin(), false, new Package('dex/composer-plug-and-play', '0.0.0', '0.0.0'));
 
         return $composer;
     }

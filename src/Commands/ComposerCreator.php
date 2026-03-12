@@ -28,11 +28,13 @@ trait ComposerCreator
 
         $this->resetComposer();
 
-        return Factory::create(
+        $composer = Factory::create(
             $this->getApplication()->getIO(),
             disablePlugins: boolval($disablePlugins),
             disableScripts: boolval($disableScripts)
         );
+
+        return $composer;
     }
 
     /**
