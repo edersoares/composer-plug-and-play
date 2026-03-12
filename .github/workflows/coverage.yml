@@ -9,9 +9,10 @@ jobs:
 
   tests:
 
-    name: Tests
-
     runs-on: ubuntu-latest
+
+    environment:
+      name: main
 
     steps:
       - name: Checkout

@@ -161,29 +161,6 @@ When developing a package or library you may need to autoload its dev dependenci
 }
 ```
 
-### Autoload strategy
-
-You may have some problems with symlinks and recursion when developing packages inside another application or package.
-For that, you can use the `experimental:autoload` strategy.
-
-This strategy creates a simple copy of your `composer.json` in `packages/vendor` and directly injects PSR-4 autoload
-paths into the merged config, avoiding symlink issues.
-
-```json
-{
-    "extra": {
-        "composer-plug-and-play": {
-            "autoload-dev": ["dex/fake"],
-            "require-dev": ["dex/fake"],
-            "strategy": "experimental:autoload"
-        }
-    }
-}
-```
-
-Add to `autoload-dev` the packages you want to map autoload for, and to `require-dev` the packages whose dev
-dependencies you want installed.
-
 ## Contributing
 
 Contributions are welcome. Please open an issue before submitting a pull request so the change can be discussed first.
