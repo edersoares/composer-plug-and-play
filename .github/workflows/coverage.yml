@@ -32,6 +32,11 @@ jobs:
       - name: Coverage
         run: XDEBUG_MODE=coverage vendor/bin/pest --coverage --coverage-clover=coverage.xml
 
+      - name: SonarQube Config
+        run: |
+          echo "sonar.projectKey=edersoares_composer-plug-and-play" >> sonar-project.properties
+          echo "sonar.organization=edersoares" >> sonar-project.properties
+
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v7
         env:
