@@ -20,9 +20,7 @@ class PlugAndPlayPlugin implements Capable, CommandProvider, PluginInterface
 {
     public function activate(Composer $composer, IOInterface $io): void
     {
-        if (file_exists(PlugAndPlayInterface::PACKAGES_FILE)) {
-            $this->mergeScripts($composer);
-        }
+        // Do nothing..
     }
 
     public function deactivate(Composer $composer, IOInterface $io): void
@@ -54,25 +52,5 @@ class PlugAndPlayPlugin implements Capable, CommandProvider, PluginInterface
             new ResetCommand(),
             new RunCommand(),
         ];
-    }
-
-    private function mergeScripts(Composer $composer): void
-    {
-        $file = file_get_contents(PlugAndPlayInterface::PACKAGES_FILE);
-        $config = json_decode($file, true) ?? [];
-        $scripts = $config['scripts'] ?? [];
-
-        if (empty($scripts)) {
-            return;
-        }
-
-        $rootPackage = $composer->getPackage();
-        $existingScripts = $rootPackage->getScripts();
-
-        foreach ($scripts as $name => $script) {
-            $existingScripts[$name] = (array) $script;
-        }
-
-        $rootPackage->setScripts($existingScripts);
     }
 }
