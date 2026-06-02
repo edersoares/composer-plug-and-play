@@ -18,13 +18,13 @@ jobs:
     strategy:
       matrix:
         php-version:
-          - 8.3
-          - 8.4
-          - 8.5
+          - "8.3"
+          - "8.4"
+          - "8.5"
         composer-version:
-          - 2.8
-          - 2.9
-          - 2.10
+          - "2.8"
+          - "2.9"
+          - "2.10"
 
     steps:
     - uses: actions/checkout@v6
