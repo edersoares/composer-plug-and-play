@@ -11,6 +11,7 @@ use Composer\Json\JsonValidationException;
 use Composer\PartialComposer;
 use Composer\Util\ProcessExecutor;
 use Dex\Composer\PlugAndPlay\Composer\Installer as PlugAndPlayInstaller;
+use Dex\Composer\PlugAndPlay\PlugAndPlayDirectories;
 use Dex\Composer\PlugAndPlay\PlugAndPlayInterface;
 use InvalidArgumentException;
 use Seld\JsonLint\ParsingException;
@@ -192,7 +193,11 @@ class Factory extends ComposerFactory implements PlugAndPlayInterface
         $requireDev = $localConfig['extra']['composer-plug-and-play']['require-dev'] ?? [];
         $autoloadDev = $localConfig['extra']['composer-plug-and-play']['autoload-dev'] ?? [];
 
-        $packages = glob(self::PATH);
+        $packages = [];
+
+        foreach (PlugAndPlayDirectories::resolve($localConfig['extra'] ?? []) as $directory) {
+            $packages = array_merge($packages, glob($directory . '/*/*/composer.json') ?: []);
+        }
 
         foreach ($packages as $package) {
             $data = $this->loadJsonFile($io, $package);

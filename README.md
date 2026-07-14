@@ -161,6 +161,23 @@ When developing a package or library you may need to autoload its dev dependenci
 }
 ```
 
+### Scan additional directories for plugged packages
+
+By default only `packages/*/*/composer.json` is scanned for local packages. You can list extra directories to scan
+using the same `<directory>/*/*/composer.json` structure:
+
+```json
+{
+    "extra": {
+        "composer-plug-and-play": {
+            "directories": [
+                "libraries"
+            ]
+        }
+    }
+}
+```
+
 ### Override root dependencies with plugged packages
 
 Sometimes the root `composer.json` (or its `composer.lock`) pins a dependency to a fixed version, and a plugged
