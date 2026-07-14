@@ -1,0 +1,15 @@
+{
+    "extra": {
+        "composer-plug-and-play": {
+            "override": [
+                "composer/composer"
+            ]
+        }
+    },
+    "require": {
+        "composer/composer": "2.5.0"
+    },
+    "require-dev": {
+        "dex/composer-plug-and-play": "*"
+    }
+}
