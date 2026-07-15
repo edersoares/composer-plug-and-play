@@ -161,28 +161,6 @@ When developing a package or library you may need to autoload its dev dependenci
 }
 ```
 
-### Override root dependencies with plugged packages
-
-Sometimes the root `composer.json` (or its `composer.lock`) pins a dependency to a fixed version, and a plugged
-package (or `packages/composer.json`) needs a different version of that same dependency. Declare it under `override`
-in the root `composer.json` to release it from the root/lock constraint, so Composer resolves it instead from
-`packages/composer.json` or from a plugged local package:
-
-```json
-{
-    "extra": {
-        "composer-plug-and-play": {
-            "override": [
-                "vendor-name/package-to-override"
-            ]
-        }
-    }
-}
-```
-
-Unlike `ignore`, `require-dev` and `autoload-dev`, `override` must be declared in the root project's `composer.json`,
-since it needs to take effect before `packages/composer.json` is merged in.
-
 ## Contributing
 
 Contributions are welcome. Please open an issue before submitting a pull request so the change can be discussed first.

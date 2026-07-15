@@ -112,9 +112,6 @@ class Factory extends ComposerFactory implements PlugAndPlayInterface
         $ignored = [];
         $plugged = [];
 
-        $override = $localConfig['extra']['composer-plug-and-play']['override'] ?? [];
-
-        $this->removeOverriddenPackages($override, $localConfig);
         $this->loadComposerPackageFile($io, $plugged, $localConfig);
         $this->definePluggedAndIgnoredPackages($io, $plugged, $ignored, $localConfig);
         $this->writePluggedAndIgnoredPackages($io, $plugged, $ignored);
@@ -124,19 +121,6 @@ class Factory extends ComposerFactory implements PlugAndPlayInterface
         }
 
         return parent::createComposer($io, self::FILENAME, $disablePlugins, $cwd, $fullLoad, $disableScripts);
-    }
-
-    /**
-     * Remove overridden packages from require and require-dev so their
-     * version can be freely defined by packages/composer.json or a
-     * plugged local package.
-     */
-    private function removeOverriddenPackages(array $override, array &$localConfig): void
-    {
-        foreach ($override as $package) {
-            unset($localConfig['require'][$package]);
-            unset($localConfig['require-dev'][$package]);
-        }
     }
 
     /**
@@ -221,9 +205,6 @@ class Factory extends ComposerFactory implements PlugAndPlayInterface
 
             $localConfig['require'][$data['name']] = '@dev';
             $localConfig['repositories'][] = $this->createRepositoryItem($url);
-
-            // TODO: check if unset is better approach
-            unset($localConfig['require-dev'][$data['name']]);
         }
     }
 
