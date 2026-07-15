@@ -1,8 +1,0 @@
-{
-    "config": {
-        "allow-plugins": true
-    },
-    "require": {
-        "composer/composer": "^7.0"
-    }
-}
