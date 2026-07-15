@@ -158,6 +158,8 @@ class Factory extends ComposerFactory implements PlugAndPlayInterface
         }
 
         foreach ($packagesConfig['require'] ?? [] as $package => $version) {
+            $this->overridePackage($package, $localConfig);
+
             $plugged[] = $package;
             $localConfig['require'][$package] = $version;
         }
@@ -187,6 +189,8 @@ class Factory extends ComposerFactory implements PlugAndPlayInterface
                 continue;
             }
 
+            $this->overridePackage($data['name'], $localConfig);
+
             if (in_array($data['name'], $requireDev)) {
                 foreach ($data['require-dev'] ?? [] as $pack => $version) {
                     $localConfig['require-dev'][$pack] = $version;
@@ -206,6 +210,12 @@ class Factory extends ComposerFactory implements PlugAndPlayInterface
             $localConfig['require'][$data['name']] = '@dev';
             $localConfig['repositories'][] = $this->createRepositoryItem($url);
         }
+    }
+
+    private function overridePackage(string $package, array &$localConfig): void
+    {
+        unset($localConfig['require'][$package]);
+        unset($localConfig['require-dev'][$package]);
     }
 
     /**
