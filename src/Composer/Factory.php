@@ -112,9 +112,19 @@ class Factory extends ComposerFactory implements PlugAndPlayInterface
         $ignored = [];
         $plugged = [];
 
+        $originalRepositories = $localConfig['repositories'] ?? [];
+
         $this->loadComposerPackageFile($io, $plugged, $localConfig);
         $this->definePluggedAndIgnoredPackages($io, $plugged, $ignored, $localConfig);
         $this->writePluggedAndIgnoredPackages($io, $plugged, $ignored);
+
+        $repositories = array_merge($localConfig['repositories'] ?? [], $originalRepositories);
+
+        if ($repositories) {
+            $localConfig['repositories'] = $repositories;
+        } else {
+            unset($localConfig['repositories']);
+        }
 
         if ($fullLoad) {
             $this->saveComposerPlugAndPlayFile($localConfig);
@@ -134,6 +144,8 @@ class Factory extends ComposerFactory implements PlugAndPlayInterface
         $packagesConfig = file_exists(self::PACKAGES_FILE)
             ? $this->loadJsonFile($io, self::PACKAGES_FILE)
             : [];
+
+        unset($localConfig['repositories']);
 
         $localConfig = array_merge_recursive($localConfig, $packagesConfig);
 
