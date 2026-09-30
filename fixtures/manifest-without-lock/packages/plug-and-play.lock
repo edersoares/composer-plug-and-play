@@ -9,18 +9,9 @@
             "version": "1.0.0"
         },
         {
-            "name": "dex/remote",
-            "version": "1.0.0"
-        },
-        {
             "name": "dex/transitive-dependency",
             "version": "1.0.0"
         }
     ],
-    "packages-dev": [
-        {
-            "name": "dex/transitive-development-dependency",
-            "version": "1.0.0"
-        }
-    ]
+    "packages-dev": []
 }

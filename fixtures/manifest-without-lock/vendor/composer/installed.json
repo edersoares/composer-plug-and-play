@@ -1,0 +1,28 @@
+{
+    "packages": [
+        {
+            "name": "dex/fake",
+            "version": "1.0.0",
+            "version_normalized": "1.0.0.0",
+            "type": "library",
+            "dist": {
+                "type": "path",
+                "url": "./packages/dex/fake"
+            }
+        },
+        {
+            "name": "dex/root-dependency",
+            "version": "1.0.0",
+            "version_normalized": "1.0.0.0",
+            "type": "library"
+        },
+        {
+            "name": "dex/transitive-dependency",
+            "version": "1.0.0",
+            "version_normalized": "1.0.0.0",
+            "type": "library"
+        }
+    ],
+    "dev": true,
+    "dev-package-names": []
+}

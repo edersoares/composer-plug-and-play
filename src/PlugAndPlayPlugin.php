@@ -41,16 +41,15 @@ class PlugAndPlayPlugin implements Capable, CommandProvider, EventSubscriberInte
         return [
             ScriptEvents::POST_INSTALL_CMD => 'writeManifest',
             ScriptEvents::POST_UPDATE_CMD => 'writeManifest',
-            ScriptEvents::POST_AUTOLOAD_DUMP => 'writeManifest',
         ];
     }
 
     /**
-     * Keeps packages/plug-and-play.php in sync with the lock files.
+     * Keeps packages/plug-and-play.php in sync with what is installed.
      */
     public function writeManifest(Event $event): void
     {
-        Manifest::write();
+        Manifest::write($event->getComposer());
     }
 
     public function getCapabilities(): array

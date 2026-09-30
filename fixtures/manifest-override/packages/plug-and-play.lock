@@ -1,0 +1,13 @@
+{
+    "packages": [
+        {
+            "name": "dex/fake",
+            "version": "1.0.0"
+        },
+        {
+            "name": "dex/transitive-dependency",
+            "version": "1.0.0"
+        }
+    ],
+    "packages-dev": []
+}

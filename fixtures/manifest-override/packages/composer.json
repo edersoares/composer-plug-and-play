@@ -1,8 +1,5 @@
 {
     "config": {
         "allow-plugins": true
-    },
-    "require": {
-        "dex/remote": "^1.0"
     }
 }
