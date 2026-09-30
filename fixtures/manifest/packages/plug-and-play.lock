@@ -1,0 +1,18 @@
+{
+    "packages": [
+        {
+            "name": "dex/root-dependency"
+        },
+        {
+            "name": "dex/fake"
+        },
+        {
+            "name": "dex/transitive-dependency"
+        }
+    ],
+    "packages-dev": [
+        {
+            "name": "dex/transitive-development-dependency"
+        }
+    ]
+}

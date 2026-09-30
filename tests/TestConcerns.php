@@ -65,6 +65,14 @@ trait TestConcerns
         $this->assertStringEqualsFile($path, $json);
     }
 
+    protected function assertManifestEquals(array $data): void
+    {
+        $path = $this->path() . $this->fixture . '/' . PlugAndPlayInterface::MANIFEST;
+
+        $this->assertFileExists($path);
+        $this->assertSame($data, require $path);
+    }
+
     protected function assertOutputContains(string $string): void
     {
         $this->assertStringContainsString($string, $this->output);
