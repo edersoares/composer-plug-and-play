@@ -33,10 +33,8 @@ class ResetCommand extends BaseCommand
             $filesystem->unlink(PlugAndPlayInterface::FILENAME);
         }
 
-        $lock = str_replace('.json', '.lock', PlugAndPlayInterface::FILENAME);
-
-        if (file_exists($lock)) {
-            $filesystem->unlink($lock);
+        if (file_exists(PlugAndPlayInterface::LOCKFILE)) {
+            $filesystem->unlink(PlugAndPlayInterface::LOCKFILE);
         }
 
         return 0;
