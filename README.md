@@ -19,6 +19,7 @@ polluting your real lock file.
 - [Directories and Files](#directories-and-files)
 - [Commands](#commands)
 - [Configuration](#configuration)
+- [The Manifest File](#the-manifest-file)
 - [Contributing](#contributing)
 - [License](#license)
 
@@ -160,6 +161,70 @@ When developing a package or library you may need to autoload its dev dependenci
     }
 }
 ```
+
+## The Manifest File
+
+Every install, update and autoload dump writes `packages/plug-and-play.php`, a plain PHP file your application can
+`require` to find out which packages are only there because of plug and play.
+
+```php
+<?php return [
+    'plugged' => ['acme/blog'],
+    'ignored' => ['acme/draft'],
+    'installed' => ['acme/blog', 'league/commonmark'],
+];
+```
+
+- `plugged` — the packages found under `packages/<vendor>/<package>`.
+- `ignored` — the plugged packages listed in `extra.composer-plug-and-play.ignore`.
+- `installed` — `plugged` plus every dependency they dragged in, computed as the difference between
+  `packages/plug-and-play.lock` and your real `composer.lock`. **This is the list you want**: it is what would
+  disappear from `vendor` if you ran `plug-and-play:reset`.
+
+`plug-and-play:reset` deletes the file, so its absence simply means nothing is plugged.
+
+### Running a Laravel test suite as if nothing were plugged
+
+A plugged package's service provider is auto-discovered, so it registers routes, config, observers and migrations
+into the host application — which can break the host's own test suite. `installed` lets you switch that off at
+runtime, without uninstalling anything.
+
+Filter Laravel's `PackageManifest`, which is what feeds both `providers()` and `aliases()`:
+
+```php
+namespace App\Support;
+
+use Illuminate\Foundation\PackageManifest;
+
+class UnpluggedPackageManifest extends PackageManifest
+{
+    protected function getManifest()
+    {
+        $file = $this->basePath . '/packages/plug-and-play.php';
+
+        $plugged = is_file($file) ? (require $file)['installed'] ?? [] : [];
+
+        return array_diff_key(parent::getManifest(), array_flip($plugged));
+    }
+}
+```
+
+Then bind it in `bootstrap/app.php` when a flag asks for it, and set that flag in `phpunit.xml`:
+
+```php
+$app->beforeBootstrapping(Illuminate\Foundation\Bootstrap\RegisterProviders::class, function ($app) {
+    if (env('PLUG_AND_PLAY', true)) {
+        return;
+    }
+
+    $app->singleton(PackageManifest::class, fn () => new UnpluggedPackageManifest(
+        new Illuminate\Filesystem\Filesystem, $app->basePath(), $app->getCachedPackagesPath()
+    ));
+});
+```
+
+Because the packages' service providers are never registered, their `loadMigrationsFrom()` calls never run either —
+so `php artisan migrate` stops seeing their migrations too.
 
 ## Contributing
 
