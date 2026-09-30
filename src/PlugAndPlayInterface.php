@@ -8,6 +8,8 @@ interface PlugAndPlayInterface
 
     public const LOCKFILE = 'packages/plug-and-play.lock';
 
+    public const MANIFEST = 'packages/plug-and-play.php';
+
     public const PACKAGES_FILE = 'packages/composer.json';
 
     public const PACKAGES_PATH = 'packages';
