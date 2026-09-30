@@ -37,6 +37,10 @@ class ResetCommand extends BaseCommand
             $filesystem->unlink(PlugAndPlayInterface::LOCKFILE);
         }
 
+        if (file_exists(PlugAndPlayInterface::MANIFEST)) {
+            $filesystem->unlink(PlugAndPlayInterface::MANIFEST);
+        }
+
         return 0;
     }
 }
