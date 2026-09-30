@@ -3,6 +3,6 @@
         "allow-plugins": true
     },
     "require": {
-        "dex/remote": "^1.0"
+        "dex/fake": "^1.0"
     }
 }

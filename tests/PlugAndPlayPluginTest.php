@@ -66,10 +66,9 @@ test('plugin capability')
     ->expect(fn () => $this->pm->getPluginCapability(new PlugAndPlayPlugin(), CommandProvider::class))
     ->toBeInstanceOf(PlugAndPlayPlugin::class);
 
-test('plugin writes the manifest after install, update and autoload dump')
+test('plugin writes the manifest after install and update')
     ->expect(fn () => PlugAndPlayPlugin::getSubscribedEvents())
     ->toBe([
         ScriptEvents::POST_INSTALL_CMD => 'writeManifest',
         ScriptEvents::POST_UPDATE_CMD => 'writeManifest',
-        ScriptEvents::POST_AUTOLOAD_DUMP => 'writeManifest',
     ]);

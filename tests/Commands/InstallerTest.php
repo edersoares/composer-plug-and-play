@@ -29,3 +29,17 @@ test('no symlink created in vendor directory', function () {
     expect(is_link($vendorPath))->toBeFalse();
     expect(is_dir($vendorPath))->toBeFalse();
 });
+
+test('manifest is written after install', function () {
+    $this->runCommand('plug-and-play:install');
+
+    $this->assertManifestEquals([
+        'plugged' => [
+            'dex/fake',
+        ],
+        'ignored' => [],
+        'installed' => [
+            'dex/fake',
+        ],
+    ]);
+});
