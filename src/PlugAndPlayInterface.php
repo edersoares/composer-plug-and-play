@@ -6,6 +6,8 @@ interface PlugAndPlayInterface
 {
     public const FILENAME = 'packages/plug-and-play.json';
 
+    public const LOCKFILE = 'packages/plug-and-play.lock';
+
     public const PACKAGES_FILE = 'packages/composer.json';
 
     public const PACKAGES_PATH = 'packages';
