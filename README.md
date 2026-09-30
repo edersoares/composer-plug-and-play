@@ -164,8 +164,8 @@ When developing a package or library you may need to autoload its dev dependenci
 
 ## The Manifest File
 
-Every install, update and autoload dump writes `packages/plug-and-play.php`, a plain PHP file your application can
-`require` to find out which packages are only there because of plug and play.
+Every install and update writes `packages/plug-and-play.php`, a plain PHP file your application can `require` to find
+out which packages are only there because of plug and play.
 
 ```php
 <?php return [
@@ -175,13 +175,20 @@ Every install, update and autoload dump writes `packages/plug-and-play.php`, a p
 ];
 ```
 
-- `plugged` — the packages found under `packages/<vendor>/<package>`.
+- `plugged` — the packages found under `packages/<vendor>/<package>` plus the ones required by
+  `packages/composer.json`.
 - `ignored` — the plugged packages listed in `extra.composer-plug-and-play.ignore`.
-- `installed` — `plugged` plus every dependency they dragged in, computed as the difference between
-  `packages/plug-and-play.lock` and your real `composer.lock`. **This is the list you want**: it is what would
-  disappear from `vendor` if you ran `plug-and-play:reset`.
+- `installed` — every package present in `vendor` that your real `composer.lock` does not lock: the plugged packages
+  and every dependency they dragged in. **This is the list you want**: it is what would disappear from `vendor` if you
+  ran `plug-and-play:reset` and installed again. A plugged package that overrides a dependency your project already
+  locks is left out, since resetting would only swap it back to the locked version.
 
-`plug-and-play:reset` deletes the file, so its absence simply means nothing is plugged.
+The file is only written once `packages/plug-and-play.lock` exists. `plug-and-play:reset` deletes both, so a missing
+manifest means nothing is plugged. A plain `composer install` also refreshes it: since that removes the plugged
+packages from `vendor`, `installed` becomes empty.
+
+When your project has no `composer.lock` there is no way to tell your dependencies apart from the plugged ones, so
+`installed` falls back to the plugged packages only.
 
 ### Running a Laravel test suite as if nothing were plugged
 
@@ -209,7 +216,7 @@ class UnpluggedPackageManifest extends PackageManifest
 }
 ```
 
-Then bind it in `bootstrap/app.php` when a flag asks for it, and set that flag in `phpunit.xml`:
+Then bind it in `bootstrap/app.php` when a flag asks for it:
 
 ```php
 $app->beforeBootstrapping(Illuminate\Foundation\Bootstrap\RegisterProviders::class, function ($app) {
@@ -217,10 +224,18 @@ $app->beforeBootstrapping(Illuminate\Foundation\Bootstrap\RegisterProviders::cla
         return;
     }
 
-    $app->singleton(PackageManifest::class, fn () => new UnpluggedPackageManifest(
+    $app->singleton(Illuminate\Foundation\PackageManifest::class, fn () => new App\Support\UnpluggedPackageManifest(
         new Illuminate\Filesystem\Filesystem, $app->basePath(), $app->getCachedPackagesPath()
     ));
 });
+```
+
+And turn the flag off in `phpunit.xml`:
+
+```xml
+<php>
+    <env name="PLUG_AND_PLAY" value="false"/>
+</php>
 ```
 
 Because the packages' service providers are never registered, their `loadMigrationsFrom()` calls never run either —
