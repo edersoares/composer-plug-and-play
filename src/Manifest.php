@@ -90,19 +90,14 @@ class Manifest implements PlugAndPlayInterface
      */
     public static function localPackages(): array
     {
-        $extra = array_merge_recursive(
-            static::json('composer.json')['extra'] ?? [],
-            static::json(self::PACKAGES_FILE)['extra'] ?? [],
-        );
-
-        $ignore = $extra['composer-plug-and-play']['ignore'] ?? [];
+        $ignore = static::config('ignore');
 
         $plugged = [];
         $ignored = [];
 
         $files = [];
 
-        foreach (PlugAndPlayDirectories::resolve($extra) as $directory) {
+        foreach (static::directories() as $directory) {
             $files = array_merge($files, glob($directory . '/*/*/composer.json') ?: []);
         }
 
@@ -123,6 +118,33 @@ class Manifest implements PlugAndPlayInterface
         }
 
         return [$plugged, $ignored];
+    }
+
+    /**
+     * Directories scanned for local packages: the packages directory and the
+     * ones listed in extra.composer-plug-and-play.directories.
+     *
+     * @return string[]
+     */
+    public static function directories(): array
+    {
+        $directories = array_merge([self::PACKAGES_PATH], static::config('directories'));
+
+        return array_values(array_unique($directories));
+    }
+
+    /**
+     * A list of the plug and play extra config, from the project composer.json
+     * and from the plug and play one.
+     *
+     * @return string[]
+     */
+    private static function config(string $key): array
+    {
+        return array_merge(
+            static::json('composer.json')['extra']['composer-plug-and-play'][$key] ?? [],
+            static::json(self::PACKAGES_FILE)['extra']['composer-plug-and-play'][$key] ?? [],
+        );
     }
 
     /**
