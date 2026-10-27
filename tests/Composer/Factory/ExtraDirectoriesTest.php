@@ -55,3 +55,16 @@ test('a package found in more than one directory comes from the first one', func
         './libraries/dex/from-libraries',
     ]);
 });
+
+test('directories may be listed in the project composer.json', function () {
+    file_put_contents('composer.json', json_encode([
+        'config' => ['allow-plugins' => true],
+        'extra' => ['composer-plug-and-play' => ['directories' => ['libraries']]],
+    ]));
+    file_put_contents('packages/composer.json', '{}');
+
+    $this->factory();
+
+    $this->assertOutputContains('Plugged: dex/from-libraries');
+    $this->assertOutputContains('Plugged: dex/from-packages');
+});
