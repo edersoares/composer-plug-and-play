@@ -22,5 +22,6 @@ test('manifest lists the plugged packages and everything they brought along', fu
             'dex/transitive-dependency',
             'dex/transitive-development-dependency',
         ],
+        'unplugged' => [],
     ]);
 });

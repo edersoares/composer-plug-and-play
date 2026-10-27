@@ -4,8 +4,7 @@ namespace Dex\Composer\PlugAndPlay;
 
 /**
  * Writes a manifest telling which packages are present only because of plug
- * and play. Applications can read it to behave as if those packages were not
- * installed, without having to reset the plug and play files.
+ * and play, and which of them plug-and-play:unplug is currently hiding.
  */
 class Manifest implements PlugAndPlayInterface
 {
@@ -20,16 +19,18 @@ class Manifest implements PlugAndPlayInterface
 
         [$plugged, $ignored] = static::pluggedAndIgnoredPackages();
 
-        $installed = array_unique(array_merge($plugged, static::onlyPluggedPackages()));
+        $installed = static::installed();
+        $unplugged = Snapshot::unplugged(static::vendorDir());
 
         sort($plugged);
         sort($ignored);
-        sort($installed);
+        sort($unplugged);
 
         $data = [
             'plugged' => array_values($plugged),
             'ignored' => array_values($ignored),
-            'installed' => array_values($installed),
+            'installed' => $installed,
+            'unplugged' => array_values($unplugged),
         ];
 
         file_put_contents(
@@ -39,12 +40,37 @@ class Manifest implements PlugAndPlayInterface
     }
 
     /**
+     * Packages that are present only because of plug and play: the plugged
+     * ones and every dependency they brought along.
+     *
+     * @return string[]
+     */
+    public static function installed(): array
+    {
+        [$plugged] = static::pluggedAndIgnoredPackages();
+
+        $installed = array_unique(array_merge($plugged, static::onlyPluggedPackages()));
+
+        sort($installed);
+
+        return array_values($installed);
+    }
+
+    /**
+     * Vendor directory of the project, as configured in its composer.json.
+     */
+    public static function vendorDir(): string
+    {
+        return static::json('composer.json')['config']['vendor-dir'] ?? 'vendor';
+    }
+
+    /**
      * Packages found in the packages directory, split between the plugged ones
      * and the ignored ones.
      *
      * @return array{0: string[], 1: string[]}
      */
-    private static function pluggedAndIgnoredPackages(): array
+    public static function pluggedAndIgnoredPackages(): array
     {
         $ignore = array_merge(
             static::json('composer.json')['extra']['composer-plug-and-play']['ignore'] ?? [],

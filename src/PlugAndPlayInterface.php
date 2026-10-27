@@ -10,6 +10,8 @@ interface PlugAndPlayInterface
 
     public const MANIFEST = 'packages/plug-and-play.php';
 
+    public const SNAPSHOT = 'packages/plug-and-play.installed';
+
     public const PACKAGES_FILE = 'packages/composer.json';
 
     public const PACKAGES_PATH = 'packages';
