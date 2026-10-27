@@ -70,7 +70,7 @@ class Manifest implements PlugAndPlayInterface
      *
      * @return array{0: string[], 1: string[]}
      */
-    private static function pluggedAndIgnoredPackages(): array
+    public static function pluggedAndIgnoredPackages(): array
     {
         $ignore = array_merge(
             static::json('composer.json')['extra']['composer-plug-and-play']['ignore'] ?? [],

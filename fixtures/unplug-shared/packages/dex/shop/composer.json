@@ -1,5 +1,8 @@
 {
     "name": "dex/shop",
+    "require": {
+        "dex/text": "*"
+    },
     "autoload": {
         "psr-4": {
             "Dex\\Shop\\": "src/"

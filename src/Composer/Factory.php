@@ -30,6 +30,15 @@ class Factory extends ComposerFactory implements PlugAndPlayInterface
     }
 
     /**
+     * Skips the list of plugged and ignored packages, for a command that
+     * writes it by itself.
+     */
+    public static function silence(): void
+    {
+        static::$loaded = true;
+    }
+
+    /**
      * Loads Composer JSON file if it has a validated schema.
      *
      * @throws JsonValidationException
@@ -121,7 +130,12 @@ class Factory extends ComposerFactory implements PlugAndPlayInterface
 
         $this->loadComposerPackageFile($io, $plugged, $localConfig);
         $this->definePluggedAndIgnoredPackages($io, $plugged, $ignored, $localConfig);
-        $this->writePluggedAndIgnoredPackages($io, $plugged, $ignored);
+
+        if (static::$loaded === false) {
+            static::writePackages($io, $plugged, $ignored);
+        }
+
+        static::$loaded = true;
 
         $repositories = array_merge($localConfig['repositories'] ?? [], $originalRepositories);
 
@@ -236,14 +250,10 @@ class Factory extends ComposerFactory implements PlugAndPlayInterface
     }
 
     /**
-     * Write in output which packages are plugged and witch are ignored.
+     * Write in output which packages are plugged, ignored and unplugged.
      */
-    private function writePluggedAndIgnoredPackages(IOInterface $io, array $plugged, array $ignored): void
+    public static function writePackages(IOInterface $io, array $plugged, array $ignored, array $unplugged = []): void
     {
-        if (static::$loaded) {
-            return;
-        }
-
         if ($plugged) {
             sort($plugged);
 
@@ -264,7 +274,15 @@ class Factory extends ComposerFactory implements PlugAndPlayInterface
             $io->write("  Ignored: $package");
         }
 
-        static::$loaded = true;
+        if ($unplugged) {
+            sort($unplugged);
+
+            $io->write('<info>Unplugged packages</info>');
+        }
+
+        foreach ($unplugged as $package) {
+            $io->write("  Unplugged: $package");
+        }
     }
 
     protected function createDefaultInstallers(Installer\InstallationManager $im, PartialComposer $composer, IOInterface $io, ?ProcessExecutor $process = null): void

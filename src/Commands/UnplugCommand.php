@@ -4,6 +4,7 @@ namespace Dex\Composer\PlugAndPlay\Commands;
 
 use Composer\Command\BaseCommand;
 use Composer\Repository\InstalledRepositoryInterface;
+use Dex\Composer\PlugAndPlay\Composer\Factory;
 use Dex\Composer\PlugAndPlay\Manifest;
 use Dex\Composer\PlugAndPlay\Snapshot;
 use Symfony\Component\Console\Input\InputInterface;
@@ -27,6 +28,10 @@ class UnplugCommand extends BaseCommand
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->outputPluginUse($output);
+
+        // The packages are listed at the end, once it is known which ones
+        // stay plugged.
+        Factory::silence();
 
         $composer = $this->requireComposer();
         $installationManager = $composer->getInstallationManager();
@@ -61,9 +66,12 @@ class UnplugCommand extends BaseCommand
 
         Manifest::write();
 
-        foreach (Snapshot::unplugged($vendorDir) as $package) {
-            $output->writeln("  Unplugged: <info>$package</info>");
-        }
+        // Only the plugged packages are listed: the dependencies they brought
+        // along are hidden with them without being mentioned.
+        [$plugged, $ignored] = Manifest::pluggedAndIgnoredPackages();
+        $unplugged = array_intersect($plugged, $hidden);
+
+        Factory::writePackages($this->getIO(), array_diff($plugged, $unplugged), $ignored, $unplugged);
 
         return 0;
     }

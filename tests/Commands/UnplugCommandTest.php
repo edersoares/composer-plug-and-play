@@ -25,6 +25,8 @@ test('unplug hides every plugged package from the installed repository and the a
 
     $this->assertOutputContains('Unplugged: dex/shop');
 
+    expect($this->output)->not->toContain('Plugged packages');
+
     expect(installedPackages())->toBe([])
         ->and(autoloadedNamespaces())->not->toContain('Dex\\Blog\\', 'Dex\\Markdown\\', 'Dex\\Shop\\')
         ->and(file_get_contents('discovered.txt'))->toBe('')

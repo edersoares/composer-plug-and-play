@@ -9,6 +9,10 @@
         {
             "type": "path",
             "url": "libs/app"
+        },
+        {
+            "type": "path",
+            "url": "libs/text"
         }
     ],
     "require": {
