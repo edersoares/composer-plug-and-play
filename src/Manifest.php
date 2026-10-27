@@ -72,12 +72,30 @@ class Manifest implements PlugAndPlayInterface
      */
     public static function pluggedAndIgnoredPackages(): array
     {
+        [$local, $ignored] = static::localPackages();
+
+        $plugged = array_merge(
+            array_keys(static::json(self::PACKAGES_FILE)['require'] ?? []),
+            array_keys($local)
+        );
+
+        return [array_values(array_unique($plugged)), $ignored];
+    }
+
+    /**
+     * Packages found in the packages directory, split between the plugged
+     * ones, keyed by name with their directory as value, and the ignored ones.
+     *
+     * @return array{0: array<string, string>, 1: string[]}
+     */
+    public static function localPackages(): array
+    {
         $ignore = array_merge(
             static::json('composer.json')['extra']['composer-plug-and-play']['ignore'] ?? [],
             static::json(self::PACKAGES_FILE)['extra']['composer-plug-and-play']['ignore'] ?? [],
         );
 
-        $plugged = array_keys(static::json(self::PACKAGES_FILE)['require'] ?? []);
+        $plugged = [];
         $ignored = [];
 
         foreach (glob(self::PATH) as $file) {
@@ -93,10 +111,10 @@ class Manifest implements PlugAndPlayInterface
                 continue;
             }
 
-            $plugged[] = $name;
+            $plugged[$name] = dirname($file);
         }
 
-        return [array_values(array_unique($plugged)), $ignored];
+        return [$plugged, $ignored];
     }
 
     /**
