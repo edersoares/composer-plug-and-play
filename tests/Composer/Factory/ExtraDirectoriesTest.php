@@ -41,3 +41,17 @@ test('factory', function () {
         ],
     ]);
 });
+
+test('a package found in more than one directory comes from the first one', function () {
+    mkdir('libraries/dex/from-packages', recursive: true);
+    file_put_contents('libraries/dex/from-packages/composer.json', '{"name": "dex/from-packages"}');
+
+    $this->factory();
+
+    $repositories = json_decode(file_get_contents('packages/plug-and-play.json'), true)['repositories'];
+
+    expect(array_column($repositories, 'url'))->toBe([
+        './packages/dex/from-packages',
+        './libraries/dex/from-libraries',
+    ]);
+});

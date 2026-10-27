@@ -85,6 +85,7 @@ class Manifest implements PlugAndPlayInterface
     /**
      * Packages found in the packages directories, split between the plugged
      * ones, keyed by name with their directory as value, and the ignored ones.
+     * A package found in more than one directory comes from the first one.
      *
      * @return array{0: array<string, string>, 1: string[]}
      */
@@ -104,7 +105,8 @@ class Manifest implements PlugAndPlayInterface
         foreach ($files as $file) {
             $name = static::json($file)['name'] ?? null;
 
-            if ($name === null) {
+            // The first directory wins: packages, then the listed ones in order.
+            if ($name === null || isset($plugged[$name]) || in_array($name, $ignored, true)) {
                 continue;
             }
 

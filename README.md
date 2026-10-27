@@ -168,7 +168,8 @@ When developing a package or library you may need to autoload its dev dependenci
 
 By default only `packages/*/*/composer.json` is scanned for local packages. You can list extra directories to scan
 using the same `<directory>/*/*/composer.json` structure. A directory is relative to the project root, unless it is an
-absolute path:
+absolute path. When a package is found in more than one directory, it comes from the first one: `packages`, then the
+listed directories in order.
 
 ```json
 {
