@@ -65,8 +65,8 @@ class Manifest implements PlugAndPlayInterface
     }
 
     /**
-     * Packages found in the packages directory, split between the plugged ones
-     * and the ignored ones.
+     * Packages required by the plug and play composer.json or found in the
+     * packages directory, split between the plugged ones and the ignored ones.
      *
      * @return array{0: string[], 1: string[]}
      */
@@ -77,7 +77,7 @@ class Manifest implements PlugAndPlayInterface
             static::json(self::PACKAGES_FILE)['extra']['composer-plug-and-play']['ignore'] ?? [],
         );
 
-        $plugged = [];
+        $plugged = array_keys(static::json(self::PACKAGES_FILE)['require'] ?? []);
         $ignored = [];
 
         foreach (glob(self::PATH) as $file) {
@@ -96,7 +96,7 @@ class Manifest implements PlugAndPlayInterface
             $plugged[] = $name;
         }
 
-        return [$plugged, $ignored];
+        return [array_values(array_unique($plugged)), $ignored];
     }
 
     /**
