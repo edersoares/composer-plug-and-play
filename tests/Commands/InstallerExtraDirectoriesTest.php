@@ -29,3 +29,17 @@ test('no symlink created in vendor directory', function () {
     expect(is_link($vendorPath))->toBeFalse();
     expect(is_dir($vendorPath))->toBeFalse();
 });
+
+test('install-path points directly to an extra directory given by its absolute path', function () {
+    file_put_contents('packages/composer.json', json_encode([
+        'config' => ['allow-plugins' => true],
+        'extra' => ['composer-plug-and-play' => ['directories' => [getcwd() . '/libraries']]],
+    ]));
+
+    $this->runCommand('plug-and-play:install');
+
+    $installed = json_decode(file_get_contents('vendor/composer/installed.json'), true);
+
+    expect($installed['packages'][0]['install-path'])->toBe('../../libraries/dex/fake')
+        ->and(is_dir('vendor/dex/fake'))->toBeFalse();
+});

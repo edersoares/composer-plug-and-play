@@ -9,6 +9,7 @@ use Composer\IO\IOInterface;
 use Composer\Json\JsonFile;
 use Composer\Json\JsonValidationException;
 use Composer\PartialComposer;
+use Composer\Util\Filesystem;
 use Composer\Util\ProcessExecutor;
 use Dex\Composer\PlugAndPlay\Composer\Installer as PlugAndPlayInstaller;
 use Dex\Composer\PlugAndPlay\Manifest;
@@ -230,7 +231,9 @@ class Factory extends ComposerFactory implements PlugAndPlayInterface
         }
 
         $localConfig['require'][$package] = '@dev';
-        $localConfig['repositories'][] = $this->createRepositoryItem('./' . $directory);
+        $url = (new Filesystem())->isAbsolutePath($directory) ? $directory : './' . $directory;
+
+        $localConfig['repositories'][] = $this->createRepositoryItem($url);
 
         return $localConfig;
     }

@@ -18,6 +18,10 @@ class Installer extends LibraryInstaller
             return parent::getInstallPath($package);
         }
 
+        if ($this->filesystem->isAbsolutePath($package->getDistUrl())) {
+            return $package->getDistUrl();
+        }
+
         $this->initializeVendorDir();
 
         $relPath = substr($package->getDistUrl(), 2);
@@ -90,7 +94,9 @@ class Installer extends LibraryInstaller
         }
 
         foreach (Manifest::directories() as $directory) {
-            if (str_starts_with($distUrl, './' . $directory . '/')) {
+            $url = $this->filesystem->isAbsolutePath($directory) ? $directory : './' . $directory;
+
+            if (str_starts_with($distUrl, $url . '/')) {
                 return true;
             }
         }
