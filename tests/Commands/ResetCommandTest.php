@@ -13,4 +13,5 @@ test('add command', function () {
     $this->assertOutputContains('You are using Composer Plug and Play Plugin.');
     $this->assertFileDoesNotExist($this->path() . $this->fixture . '/packages/plug-and-play.json');
     $this->assertFileDoesNotExist($this->path() . $this->fixture . '/packages/plug-and-play.lock');
+    $this->assertFileDoesNotExist($this->path() . $this->fixture . '/packages/plug-and-play.php');
 });

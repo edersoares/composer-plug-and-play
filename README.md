@@ -19,6 +19,8 @@ polluting your real lock file.
 - [Directories and Files](#directories-and-files)
 - [Commands](#commands)
 - [Configuration](#configuration)
+- [Unplugging Packages](#unplugging-packages)
+- [The Manifest File](#the-manifest-file)
 - [Contributing](#contributing)
 - [License](#license)
 
@@ -84,7 +86,7 @@ packages/                           ← managed by plug-and-play
 │   └── ...
 ├── composer.json                   ← your plug-and-play configuration
 ├── plug-and-play.json              ← generated merged config (do not commit)
-└── plug-and-play.lock              ← generated lock file (do not commit)
+├── plug-and-play.lock              ← generated lock file (do not commit)
 
 composer.json                       ← your real project config (unchanged)
 composer.lock                       ← your real lock file (unchanged)
@@ -108,6 +110,7 @@ You can use `composer pp` and `composer pp:*` as alias for all commands.
 | `plug-and-play:reset`   | Remove `plug-and-play` files                                           |
 | `plug-and-play:run`     | Same as `composer run-script`, but using `plug-and-play` files         |
 | `plug-and-play:update`  | Same as `composer update`, but using `plug-and-play` files             |
+| `plug-and-play:unplug`  | Dumps the autoloader as if the plugged packages were not installed     |
 
 ## Configuration
 
@@ -178,27 +181,57 @@ using the same `<directory>/*/*/composer.json` structure:
 }
 ```
 
-### Override root dependencies with plugged packages
+## Unplugging Packages
 
-Sometimes the root `composer.json` (or its `composer.lock`) pins a dependency to a fixed version, and a plugged
-package (or `packages/composer.json`) needs a different version of that same dependency. Declare it under `override`
-in the root `composer.json` to release it from the root/lock constraint, so Composer resolves it instead from
-`packages/composer.json` or from a plugged local package:
+Sometimes the project must run as if nothing were plugged, for instance to run its test suite the way its CI does,
+where `packages/` is empty. `plug-and-play:unplug` does that without uninstalling anything:
 
-```json
-{
-    "extra": {
-        "composer-plug-and-play": {
-            "override": [
-                "vendor-name/package-to-override"
-            ]
-        }
-    }
-}
+```bash
+composer pp:unplug                       # as if no package were plugged
+composer pp:unplug --keep=acme/blog      # only acme/blog (and what it requires) stays plugged
+composer pp:dump                         # back to everything plugged
 ```
 
-Unlike `ignore`, `require-dev` and `autoload-dev`, `override` must be declared in the root project's `composer.json`,
-since it needs to take effect before `packages/composer.json` is merged in.
+It removes from `vendor/composer/installed.json` (and `installed.php`) the packages that are there only because of
+plug and play, then dumps the autoloader and runs the project's `post-autoload-dump` scripts. Everything that reads
+the installed repository stops seeing them: the autoloader (PSR-4, classmap and files), `Composer\InstalledVersions`
+and, in Laravel, `package:discover`, so their service providers, routes and migrations are not registered.
+
+- A package is hidden only if nothing that stays needs it: the project's own packages and the `--keep` ones keep
+  their dependencies.
+- Nothing is deleted from `vendor` or `packages`. A copy of the installed repository is kept in
+  `packages/plug-and-play.installed.json` and `.php`, and **every plug and play command starts by bringing it back**,
+  so `pp:dump`, `pp:install` or `plug-and-play` plug everything again. `pp:unplug` itself always starts from the full
+  state, so it can be run again with other `--keep` options.
+- While unplugged, the whole checkout behaves that way, including a development server running from it.
+- When plug and play installed a different version of a dependency the project also uses, that version stays in
+  `vendor`: unplug only hides, it does not reinstall. For a byte-for-byte CI environment, use a clean
+  `composer install`.
+
+## The Manifest File
+
+Every install, update and autoload dump writes `packages/plug-and-play.php`, a plain PHP file your application can
+`require` to find out which packages are only there because of plug and play.
+
+```php
+<?php return [
+    'plugged' => ['acme/blog'],
+    'ignored' => ['acme/draft'],
+    'installed' => ['acme/blog', 'league/commonmark'],
+    'unplugged' => [],
+];
+```
+
+- `plugged` — the packages found under `packages/<vendor>/<package>` and the ones required by
+  `packages/composer.json`.
+- `ignored` — the plugged packages listed in `extra.composer-plug-and-play.ignore`.
+- `installed` — `plugged` plus every dependency they dragged in, computed as the difference between
+  `packages/plug-and-play.lock` and your real `composer.lock`. **This is the list you want**: it is what would
+  disappear from `vendor` if you ran `plug-and-play:reset`.
+
+- `unplugged` — the packages that `plug-and-play:unplug` is hiding right now.
+
+`plug-and-play:reset` deletes the file, so its absence simply means nothing is plugged.
 
 ## Contributing
 

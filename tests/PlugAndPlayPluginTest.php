@@ -11,6 +11,7 @@ use Composer\Package\Package;
 use Composer\Package\RootPackageInterface;
 use Composer\Plugin\Capability\CommandProvider;
 use Composer\Plugin\PluginManager;
+use Composer\Script\ScriptEvents;
 use Dex\Composer\PlugAndPlay\PlugAndPlayPlugin;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -64,3 +65,11 @@ test('uninstall plugin')
 test('plugin capability')
     ->expect(fn () => $this->pm->getPluginCapability(new PlugAndPlayPlugin(), CommandProvider::class))
     ->toBeInstanceOf(PlugAndPlayPlugin::class);
+
+test('plugin writes the manifest after install, update and autoload dump')
+    ->expect(fn () => PlugAndPlayPlugin::getSubscribedEvents())
+    ->toBe([
+        ScriptEvents::POST_INSTALL_CMD => 'writeManifest',
+        ScriptEvents::POST_UPDATE_CMD => 'writeManifest',
+        ScriptEvents::POST_AUTOLOAD_DUMP => 'writeManifest',
+    ]);

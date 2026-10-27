@@ -3,6 +3,6 @@
         "allow-plugins": true
     },
     "require": {
-        "composer/composer": "^7.0"
+        "dex/required": "*"
     }
 }

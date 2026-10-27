@@ -1,0 +1,11 @@
+{
+    "name": "dex/blog",
+    "require": {
+        "dex/markdown": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Dex\\Blog\\": "src/"
+        }
+    }
+}

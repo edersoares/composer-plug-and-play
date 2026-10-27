@@ -1,0 +1,8 @@
+{
+    "name": "dex/markdown",
+    "autoload": {
+        "psr-4": {
+            "Dex\\Markdown\\": "src/"
+        }
+    }
+}

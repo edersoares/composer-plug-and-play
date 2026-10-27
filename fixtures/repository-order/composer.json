@@ -1,0 +1,8 @@
+{
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://example.com/original-repo"
+        }
+    ]
+}

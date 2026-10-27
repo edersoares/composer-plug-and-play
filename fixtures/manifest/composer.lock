@@ -1,0 +1,8 @@
+{
+    "packages": [
+        {
+            "name": "dex/root-dependency"
+        }
+    ],
+    "packages-dev": []
+}

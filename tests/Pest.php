@@ -2,9 +2,11 @@
 
 use Dex\Composer\PlugAndPlay\Tests\CommandTestCase;
 use Dex\Composer\PlugAndPlay\Tests\FactoryTestCase;
+use Dex\Composer\PlugAndPlay\Tests\ManifestTestCase;
 
 uses(CommandTestCase::class)->in('Commands');
 uses(FactoryTestCase::class)->in('Composer/Factory');
+uses(ManifestTestCase::class)->in('Manifest');
 
 function fixtures(string $fixture): mixed
 {

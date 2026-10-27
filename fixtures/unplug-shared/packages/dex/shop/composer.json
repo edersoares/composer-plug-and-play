@@ -1,0 +1,17 @@
+{
+    "name": "dex/shop",
+    "require": {
+        "dex/text": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Dex\\Shop\\": "src/"
+        }
+    },
+    "version": "dev-main",
+    "extra": {
+        "branch-alias": {
+            "dev-main": "1.0.x-dev"
+        }
+    }
+}

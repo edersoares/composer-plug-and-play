@@ -4,7 +4,9 @@ namespace Dex\Composer\PlugAndPlay\Commands;
 
 use Composer\Command\BaseCommand;
 use Composer\Util\Filesystem;
+use Dex\Composer\PlugAndPlay\Manifest;
 use Dex\Composer\PlugAndPlay\PlugAndPlayInterface;
+use Dex\Composer\PlugAndPlay\Snapshot;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -29,14 +31,18 @@ class ResetCommand extends BaseCommand
 
         $filesystem->removeDirectoryPhp(PlugAndPlayInterface::PACKAGES_VENDOR);
 
+        Snapshot::restore(Manifest::vendorDir());
+
         if (file_exists(PlugAndPlayInterface::FILENAME)) {
             $filesystem->unlink(PlugAndPlayInterface::FILENAME);
         }
 
-        $lock = str_replace('.json', '.lock', PlugAndPlayInterface::FILENAME);
+        if (file_exists(PlugAndPlayInterface::LOCKFILE)) {
+            $filesystem->unlink(PlugAndPlayInterface::LOCKFILE);
+        }
 
-        if (file_exists($lock)) {
-            $filesystem->unlink($lock);
+        if (file_exists(PlugAndPlayInterface::MANIFEST)) {
+            $filesystem->unlink(PlugAndPlayInterface::MANIFEST);
         }
 
         return 0;
