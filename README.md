@@ -205,7 +205,8 @@ Every install, update and autoload dump writes `packages/plug-and-play.php`, a p
 ];
 ```
 
-- `plugged` — the packages found under `packages/<vendor>/<package>`.
+- `plugged` — the packages found under `packages/<vendor>/<package>` and the ones required by
+  `packages/composer.json`.
 - `ignored` — the plugged packages listed in `extra.composer-plug-and-play.ignore`.
 - `installed` — `plugged` plus every dependency they dragged in, computed as the difference between
   `packages/plug-and-play.lock` and your real `composer.lock`. **This is the list you want**: it is what would

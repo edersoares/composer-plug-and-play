@@ -13,12 +13,14 @@ test('manifest lists the plugged packages and everything they brought along', fu
     $this->assertManifestEquals([
         'plugged' => [
             'dex/fake',
+            'dex/required',
         ],
         'ignored' => [
             'dex/ignore',
         ],
         'installed' => [
             'dex/fake',
+            'dex/required',
             'dex/transitive-dependency',
             'dex/transitive-development-dependency',
         ],

@@ -1,5 +1,8 @@
 {
     "config": {
         "allow-plugins": true
+    },
+    "require": {
+        "dex/required": "*"
     }
 }

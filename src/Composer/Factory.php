@@ -11,6 +11,7 @@ use Composer\Json\JsonValidationException;
 use Composer\PartialComposer;
 use Composer\Util\ProcessExecutor;
 use Dex\Composer\PlugAndPlay\Composer\Installer as PlugAndPlayInstaller;
+use Dex\Composer\PlugAndPlay\Manifest;
 use Dex\Composer\PlugAndPlay\PlugAndPlayInterface;
 use Dex\Composer\PlugAndPlay\Snapshot;
 use InvalidArgumentException;
@@ -123,15 +124,19 @@ class Factory extends ComposerFactory implements PlugAndPlayInterface
             }
         }
 
-        $ignored = [];
-        $plugged = [];
-
         $originalRepositories = $localConfig['repositories'] ?? [];
 
-        $this->loadComposerPackageFile($io, $plugged, $localConfig);
-        $this->definePluggedAndIgnoredPackages($io, $plugged, $ignored, $localConfig);
+        $localConfig = $this->mergeComposerPackageFile($io, $localConfig);
+
+        [$local] = Manifest::localPackages();
+
+        foreach ($local as $package => $directory) {
+            $localConfig = $this->plugPackage($io, $localConfig, $package, $directory);
+        }
 
         if (static::$loaded === false) {
+            [$plugged, $ignored] = Manifest::pluggedAndIgnoredPackages();
+
             static::writePackages($io, $plugged, $ignored);
         }
 
@@ -153,12 +158,12 @@ class Factory extends ComposerFactory implements PlugAndPlayInterface
     }
 
     /**
-     * Load composer.json plug and play file and plugs its dependencies.
+     * Merges the plug and play composer.json file and plugs its dependencies.
      *
      * @throws JsonValidationException
      * @throws ParsingException
      */
-    private function loadComposerPackageFile(IOInterface $io, array &$plugged, array &$localConfig): void
+    private function mergeComposerPackageFile(IOInterface $io, array $localConfig): array
     {
         $packagesConfig = file_exists(self::PACKAGES_FILE)
             ? $this->loadJsonFile($io, self::PACKAGES_FILE)
@@ -189,64 +194,53 @@ class Factory extends ComposerFactory implements PlugAndPlayInterface
         }
 
         foreach ($packagesConfig['require'] ?? [] as $package => $version) {
-            $this->overridePackage($package, $localConfig);
+            $localConfig = $this->overridePackage($package, $localConfig);
 
-            $plugged[] = $package;
             $localConfig['require'][$package] = $version;
         }
+
+        return $localConfig;
     }
 
     /**
-     * Define plugged and ignored packages to list after and prepare plug and
-     * play packages to link to its repository.
+     * Links a plug and play package to its directory.
      *
      * @throws JsonValidationException
      * @throws ParsingException
      */
-    private function definePluggedAndIgnoredPackages(IOInterface $io, array &$plugged, array &$ignored, array &$localConfig): void
+    private function plugPackage(IOInterface $io, array $localConfig, string $package, string $directory): array
     {
-        $ignore = $localConfig['extra']['composer-plug-and-play']['ignore'] ?? [];
+        $data = $this->loadJsonFile($io, $directory . DIRECTORY_SEPARATOR . 'composer.json');
+
         $requireDev = $localConfig['extra']['composer-plug-and-play']['require-dev'] ?? [];
         $autoloadDev = $localConfig['extra']['composer-plug-and-play']['autoload-dev'] ?? [];
 
-        $packages = glob(self::PATH);
+        $localConfig = $this->overridePackage($package, $localConfig);
 
-        foreach ($packages as $package) {
-            $data = $this->loadJsonFile($io, $package);
-
-            if (in_array($data['name'], $ignore)) {
-                $ignored[] = $data['name'];
-
-                continue;
+        if (in_array($package, $requireDev)) {
+            foreach ($data['require-dev'] ?? [] as $pack => $version) {
+                $localConfig['require-dev'][$pack] = $version;
             }
-
-            $this->overridePackage($data['name'], $localConfig);
-
-            if (in_array($data['name'], $requireDev)) {
-                foreach ($data['require-dev'] ?? [] as $pack => $version) {
-                    $localConfig['require-dev'][$pack] = $version;
-                }
-            }
-
-            if (in_array($data['name'], $autoloadDev)) {
-                foreach ($data['autoload-dev']['psr-4'] ?? [] as $namespace => $directory) {
-                    $localConfig['autoload-dev']['psr-4'][$namespace] = dirname($package) . DIRECTORY_SEPARATOR . $directory;
-                }
-            }
-
-            $plugged[] = $data['name'];
-
-            $url = './' . dirname($package);
-
-            $localConfig['require'][$data['name']] = '@dev';
-            $localConfig['repositories'][] = $this->createRepositoryItem($url);
         }
+
+        if (in_array($package, $autoloadDev)) {
+            foreach ($data['autoload-dev']['psr-4'] ?? [] as $namespace => $path) {
+                $localConfig['autoload-dev']['psr-4'][$namespace] = $directory . DIRECTORY_SEPARATOR . $path;
+            }
+        }
+
+        $localConfig['require'][$package] = '@dev';
+        $localConfig['repositories'][] = $this->createRepositoryItem('./' . $directory);
+
+        return $localConfig;
     }
 
-    private function overridePackage(string $package, array &$localConfig): void
+    private function overridePackage(string $package, array $localConfig): array
     {
         unset($localConfig['require'][$package]);
         unset($localConfig['require-dev'][$package]);
+
+        return $localConfig;
     }
 
     /**
