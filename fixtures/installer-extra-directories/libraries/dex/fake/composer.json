@@ -1,8 +1,0 @@
-{
-    "name": "dex/fake",
-    "autoload": {
-        "psr-4": {
-            "Dex\\Fake\\": "src/"
-        }
-    }
-}

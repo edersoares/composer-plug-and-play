@@ -7,25 +7,48 @@ beforeEach()
 afterEach()
     ->cleanup();
 
-test('install-path points directly to packages directory', function () {
+/**
+ * Moves the fixture package to the given directory, listing it as a plug and
+ * play directory when it is not the packages one.
+ */
+function plugFrom(string $directory): void
+{
+    if ($directory === 'packages') {
+        return;
+    }
+
+    $path = $directory === 'absolute' ? getcwd() . '/libraries' : $directory;
+
+    mkdir('libraries/dex', recursive: true);
+    rename('packages/dex/fake', 'libraries/dex/fake');
+
+    file_put_contents('packages/composer.json', json_encode([
+        'config' => ['allow-plugins' => true],
+        'extra' => ['composer-plug-and-play' => ['directories' => [$path]]],
+    ]));
+}
+
+dataset('directories', [
+    'packages' => ['packages', '../../packages/dex/fake'],
+    'extra directory' => ['libraries', '../../libraries/dex/fake'],
+    'extra directory by its absolute path' => ['absolute', '../../libraries/dex/fake'],
+]);
+
+test('install-path points directly to the plugged package directory', function (string $directory, string $installPath) {
+    plugFrom($directory);
+
     $this->runCommand('plug-and-play:install');
 
-    $installedJsonPath = $this->path() . $this->fixture . '/vendor/composer/installed.json';
+    $installed = json_decode(file_get_contents('vendor/composer/installed.json'), true);
 
-    expect($installedJsonPath)->toBeFile();
+    expect($installed['packages'][0]['install-path'])->toBe($installPath);
+})->with('directories');
 
-    $installed = json_decode(file_get_contents($installedJsonPath), true);
-    $package = $installed['packages'][0];
+test('no symlink created in vendor directory', function (string $directory) {
+    plugFrom($directory);
 
-    expect($package)->not->toBeNull();
-    expect($package['install-path'])->toBe('../../packages/dex/fake');
-});
-
-test('no symlink created in vendor directory', function () {
     $this->runCommand('plug-and-play:install');
 
-    $vendorPath = $this->path() . $this->fixture . '/vendor/dex/fake';
-
-    expect(is_link($vendorPath))->toBeFalse();
-    expect(is_dir($vendorPath))->toBeFalse();
-});
+    expect(is_link('vendor/dex/fake'))->toBeFalse()
+        ->and(is_dir('vendor/dex/fake'))->toBeFalse();
+})->with('directories');
