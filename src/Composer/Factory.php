@@ -11,6 +11,7 @@ use Composer\Json\JsonValidationException;
 use Composer\PartialComposer;
 use Composer\Util\ProcessExecutor;
 use Dex\Composer\PlugAndPlay\Composer\Installer as PlugAndPlayInstaller;
+use Dex\Composer\PlugAndPlay\Manifest;
 use Dex\Composer\PlugAndPlay\PlugAndPlayInterface;
 use Dex\Composer\PlugAndPlay\Snapshot;
 use InvalidArgumentException;
@@ -123,15 +124,14 @@ class Factory extends ComposerFactory implements PlugAndPlayInterface
             }
         }
 
-        $ignored = [];
-        $plugged = [];
-
         $originalRepositories = $localConfig['repositories'] ?? [];
 
-        $this->loadComposerPackageFile($io, $plugged, $localConfig);
-        $this->definePluggedAndIgnoredPackages($io, $plugged, $ignored, $localConfig);
+        $this->loadComposerPackageFile($io, $localConfig);
+        $this->definePluggedAndIgnoredPackages($io, $localConfig);
 
         if (static::$loaded === false) {
+            [$plugged, $ignored] = Manifest::pluggedAndIgnoredPackages();
+
             static::writePackages($io, $plugged, $ignored);
         }
 
@@ -158,7 +158,7 @@ class Factory extends ComposerFactory implements PlugAndPlayInterface
      * @throws JsonValidationException
      * @throws ParsingException
      */
-    private function loadComposerPackageFile(IOInterface $io, array &$plugged, array &$localConfig): void
+    private function loadComposerPackageFile(IOInterface $io, array &$localConfig): void
     {
         $packagesConfig = file_exists(self::PACKAGES_FILE)
             ? $this->loadJsonFile($io, self::PACKAGES_FILE)
@@ -191,19 +191,17 @@ class Factory extends ComposerFactory implements PlugAndPlayInterface
         foreach ($packagesConfig['require'] ?? [] as $package => $version) {
             $this->overridePackage($package, $localConfig);
 
-            $plugged[] = $package;
             $localConfig['require'][$package] = $version;
         }
     }
 
     /**
-     * Define plugged and ignored packages to list after and prepare plug and
-     * play packages to link to its repository.
+     * Prepares the plug and play packages to link to its repository.
      *
      * @throws JsonValidationException
      * @throws ParsingException
      */
-    private function definePluggedAndIgnoredPackages(IOInterface $io, array &$plugged, array &$ignored, array &$localConfig): void
+    private function definePluggedAndIgnoredPackages(IOInterface $io, array &$localConfig): void
     {
         $ignore = $localConfig['extra']['composer-plug-and-play']['ignore'] ?? [];
         $requireDev = $localConfig['extra']['composer-plug-and-play']['require-dev'] ?? [];
@@ -215,8 +213,6 @@ class Factory extends ComposerFactory implements PlugAndPlayInterface
             $data = $this->loadJsonFile($io, $package);
 
             if (in_array($data['name'], $ignore)) {
-                $ignored[] = $data['name'];
-
                 continue;
             }
 
@@ -233,8 +229,6 @@ class Factory extends ComposerFactory implements PlugAndPlayInterface
                     $localConfig['autoload-dev']['psr-4'][$namespace] = dirname($package) . DIRECTORY_SEPARATOR . $directory;
                 }
             }
-
-            $plugged[] = $data['name'];
 
             $url = './' . dirname($package);
 
