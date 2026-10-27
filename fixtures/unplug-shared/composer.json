@@ -1,0 +1,17 @@
+{
+    "config": {
+        "allow-plugins": true
+    },
+    "scripts": {
+        "post-autoload-dump": "@php -r \"file_put_contents('discovered.txt', implode(PHP_EOL, array_column(json_decode(file_get_contents('vendor/composer/installed.json'), true)['packages'], 'name')));\""
+    },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "libs/app"
+        }
+    ],
+    "require": {
+        "dex/app": "1.0.0"
+    }
+}

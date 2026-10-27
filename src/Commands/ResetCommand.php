@@ -4,7 +4,9 @@ namespace Dex\Composer\PlugAndPlay\Commands;
 
 use Composer\Command\BaseCommand;
 use Composer\Util\Filesystem;
+use Dex\Composer\PlugAndPlay\Manifest;
 use Dex\Composer\PlugAndPlay\PlugAndPlayInterface;
+use Dex\Composer\PlugAndPlay\Snapshot;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -28,6 +30,8 @@ class ResetCommand extends BaseCommand
         $filesystem = new Filesystem();
 
         $filesystem->removeDirectoryPhp(PlugAndPlayInterface::PACKAGES_VENDOR);
+
+        Snapshot::restore(Manifest::vendorDir());
 
         if (file_exists(PlugAndPlayInterface::FILENAME)) {
             $filesystem->unlink(PlugAndPlayInterface::FILENAME);

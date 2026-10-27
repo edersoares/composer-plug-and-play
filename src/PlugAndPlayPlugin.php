@@ -17,6 +17,7 @@ use Dex\Composer\PlugAndPlay\Commands\InstallCommand;
 use Dex\Composer\PlugAndPlay\Commands\PlugAndPlayCommand;
 use Dex\Composer\PlugAndPlay\Commands\ResetCommand;
 use Dex\Composer\PlugAndPlay\Commands\RunCommand;
+use Dex\Composer\PlugAndPlay\Commands\UnplugCommand;
 use Dex\Composer\PlugAndPlay\Commands\UpdateCommand;
 
 class PlugAndPlayPlugin implements Capable, CommandProvider, EventSubscriberInterface, PluginInterface
@@ -71,6 +72,7 @@ class PlugAndPlayPlugin implements Capable, CommandProvider, EventSubscriberInte
             new InitCommand(),
             new ResetCommand(),
             new RunCommand(),
+            new UnplugCommand(),
         ];
     }
 }

@@ -12,6 +12,7 @@ use Composer\PartialComposer;
 use Composer\Util\ProcessExecutor;
 use Dex\Composer\PlugAndPlay\Composer\Installer as PlugAndPlayInstaller;
 use Dex\Composer\PlugAndPlay\PlugAndPlayInterface;
+use Dex\Composer\PlugAndPlay\Snapshot;
 use InvalidArgumentException;
 use Seld\JsonLint\ParsingException;
 use UnexpectedValueException;
@@ -96,6 +97,10 @@ class Factory extends ComposerFactory implements PlugAndPlayInterface
         if (is_string($localConfig)) {
             $localConfig = $this->loadJsonFile($io, $localConfig);
         }
+
+        // Every plug and play command starts from the full installed
+        // repository, bringing back what plug-and-play:unplug hid.
+        Snapshot::restore($localConfig['config']['vendor-dir'] ?? 'vendor');
 
         if (file_exists($lockFile)) {
             $lockData = $this->loadJsonFile($io, $lockFile);
