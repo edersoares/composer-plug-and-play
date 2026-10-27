@@ -16,7 +16,8 @@ function installedPackages(): array
 
 function autoloadedNamespaces(): array
 {
-    return array_keys(require 'vendor/composer/autoload_psr4.php');
+    // The file changes between commands, so it must be read again every time.
+    return array_keys(require 'vendor/composer/autoload_psr4.php'); // NOSONAR
 }
 
 test('unplug hides every plugged package from the installed repository and the autoloader', function () {
