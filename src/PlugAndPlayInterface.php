@@ -18,5 +18,9 @@ interface PlugAndPlayInterface
 
     public const PACKAGES_VENDOR = 'packages/vendor';
 
+    /**
+     * @deprecated Packages may live in more than one directory, use
+     *             Manifest::directories() instead.
+     */
     public const PATH = 'packages/*/*/composer.json';
 }
