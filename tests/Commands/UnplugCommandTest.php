@@ -1,5 +1,7 @@
 <?php
 
+use Dex\Composer\PlugAndPlay\Manifest;
+
 beforeEach()
     ->fixtures('unplug')
     ->prepare();
@@ -68,6 +70,10 @@ test('any plug and play command brings back what unplug hid', function () {
     expect(installedPackages())->toEqualCanonicalizing(['dex/blog', 'dex/markdown', 'dex/shop'])
         ->and(autoloadedNamespaces())->toContain('Dex\\Blog\\', 'Dex\\Markdown\\', 'Dex\\Shop\\')
         ->and('packages/plug-and-play.installed.json')->not->toBeFile();
+
+    // The plugin writes the manifest after the autoload dump, but it is not
+    // registered in the Composer instance that the commands create in tests.
+    Manifest::write();
 
     $this->assertManifestEquals([
         'plugged' => ['dex/blog', 'dex/markdown', 'dex/shop'],
