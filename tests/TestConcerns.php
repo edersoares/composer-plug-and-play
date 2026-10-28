@@ -70,7 +70,9 @@ trait TestConcerns
         $path = $this->path() . $this->fixture . '/' . PlugAndPlayInterface::MANIFEST;
 
         $this->assertFileExists($path);
-        $this->assertSame($data, require $path);
+
+        // The manifest changes between commands, so it must be read again every time.
+        $this->assertSame($data, require $path); // NOSONAR
     }
 
     protected function assertOutputContains(string $string): void
