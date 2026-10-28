@@ -6,7 +6,7 @@ use Dex\Composer\PlugAndPlay\Tests\ManifestTestCase;
 
 uses(CommandTestCase::class)->in('Commands');
 uses(FactoryTestCase::class)->in('Composer/Factory');
-uses(ManifestTestCase::class)->in('Manifest');
+uses(ManifestTestCase::class)->in('Manifest', 'Snapshot');
 
 function fixtures(string $fixture): mixed
 {
