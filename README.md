@@ -42,7 +42,7 @@ so your real `composer.json` stays clean.
 ## Installation
 
 ```bash
-composer require dex/composer-plug-and-play
+composer require --dev dex/composer-plug-and-play
 ```
 
 ### Global installation
@@ -335,14 +335,43 @@ composer pp
 
 ```bash
 composer pp
-vendor/bin/phpunit packages/acme/billing/tests
+vendor/bin/pest packages/acme/billing/tests
 ```
+
+### Add scripts to run with `pp:run`
+
+Scripts in `packages/composer.json` exist only while plugged, so you can keep shortcuts for your local packages
+without touching the project's `composer.json`:
+
+```json
+{
+    "scripts": {
+        "billing:test": "pest packages/acme/billing/tests",
+        "billing:format": "pint packages/acme/billing",
+        "plugged:check": [
+            "@billing:format",
+            "@billing:test",
+            "pest"
+        ]
+    }
+}
+```
+
+```bash
+composer pp:run billing:test
+composer pp:run plugged:check
+composer pp:run billing:test -- --filter=InvoiceTest    # extra arguments go to the script
+```
+
+Like in Composer, `vendor/bin` is in the `PATH` of the scripts and `@name` calls another script. The project's own
+scripts are available too. Give your scripts names the project does not use: a script with the same name in both files
+runs the commands of both.
 
 ### Run the project's test suite as its CI does
 
 ```bash
 composer pp:unplug
-vendor/bin/phpunit
+vendor/bin/pest
 composer pp:dump
 ```
 
