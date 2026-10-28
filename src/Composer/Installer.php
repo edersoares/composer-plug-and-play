@@ -5,7 +5,7 @@ namespace Dex\Composer\PlugAndPlay\Composer;
 use Composer\Installer\LibraryInstaller;
 use Composer\Repository\InstalledRepositoryInterface;
 use Composer\Package\PackageInterface;
-use Dex\Composer\PlugAndPlay\PlugAndPlayInterface;
+use Dex\Composer\PlugAndPlay\Manifest;
 use React\Promise\PromiseInterface;
 
 use function React\Promise\resolve;
@@ -16,6 +16,10 @@ class Installer extends LibraryInstaller
     {
         if ($this->isNotPlugAndPlayPackage($package)) {
             return parent::getInstallPath($package);
+        }
+
+        if ($this->filesystem->isAbsolutePath($package->getDistUrl())) {
+            return $package->getDistUrl();
         }
 
         $this->initializeVendorDir();
@@ -89,7 +93,15 @@ class Installer extends LibraryInstaller
             return false;
         }
 
-        return str_starts_with($distUrl, './' . PlugAndPlayInterface::PACKAGES_PATH . '/');
+        foreach (Manifest::directories() as $directory) {
+            $url = $this->filesystem->isAbsolutePath($directory) ? $directory : './' . $directory;
+
+            if (str_starts_with($distUrl, $url . '/')) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private function isNotPlugAndPlayPackage(PackageInterface $package): bool

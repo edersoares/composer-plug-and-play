@@ -83,25 +83,30 @@ class Manifest implements PlugAndPlayInterface
     }
 
     /**
-     * Packages found in the packages directory, split between the plugged
+     * Packages found in the packages directories, split between the plugged
      * ones, keyed by name with their directory as value, and the ignored ones.
+     * A package found in more than one directory comes from the first one.
      *
      * @return array{0: array<string, string>, 1: string[]}
      */
     public static function localPackages(): array
     {
-        $ignore = array_merge(
-            static::json('composer.json')['extra']['composer-plug-and-play']['ignore'] ?? [],
-            static::json(self::PACKAGES_FILE)['extra']['composer-plug-and-play']['ignore'] ?? [],
-        );
+        $ignore = static::config('ignore');
 
         $plugged = [];
         $ignored = [];
 
-        foreach (glob(self::PATH) as $file) {
+        $files = [];
+
+        foreach (static::directories() as $directory) {
+            $files = array_merge($files, glob($directory . '/*/*/composer.json') ?: []);
+        }
+
+        foreach ($files as $file) {
             $name = static::json($file)['name'] ?? null;
 
-            if ($name === null) {
+            // The first directory wins: packages, then the listed ones in order.
+            if ($name === null || isset($plugged[$name]) || in_array($name, $ignored, true)) {
                 continue;
             }
 
@@ -115,6 +120,33 @@ class Manifest implements PlugAndPlayInterface
         }
 
         return [$plugged, $ignored];
+    }
+
+    /**
+     * Directories scanned for local packages: the packages directory and the
+     * ones listed in extra.composer-plug-and-play.directories.
+     *
+     * @return string[]
+     */
+    public static function directories(): array
+    {
+        $directories = array_merge([self::PACKAGES_PATH], static::config('directories'));
+
+        return array_values(array_unique($directories));
+    }
+
+    /**
+     * A list of the plug and play extra config, from the project composer.json
+     * and from the plug and play one.
+     *
+     * @return string[]
+     */
+    private static function config(string $key): array
+    {
+        return array_merge(
+            static::json('composer.json')['extra']['composer-plug-and-play'][$key] ?? [],
+            static::json(self::PACKAGES_FILE)['extra']['composer-plug-and-play'][$key] ?? [],
+        );
     }
 
     /**
